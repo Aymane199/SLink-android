@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuDetails"
+        android:icon="@drawable/ic_details"
+        android:title="Details" />
+
+    <item
+        android:id="@+id/menuShare"
+        android:icon="@drawable/ic_man_share"
+        android:title="Share" />
+    <item
+        android:id="@+id/menuGet_link"
+        android:icon="@drawable/ic_link_grey"
+        android:title="Get link" />
+    <item
+        android:id="@+id/menuRename"
+        android:icon="@drawable/ic_mode_edit"
+        android:title="Rename" />
+    <item
+        android:id="@+id/menuDelete"
+        android:icon="@drawable/ic_remove"
+        android:title="Delete" />
+    <item
+        android:id="@+id/menuAdd_link"
+        android:icon="@drawable/ic_copy"
+        android:title="Add link from clipboard " />
+    <item
+        android:id="@+id/menuMake_public"
+        android:icon="@drawable/ic_public"
+        android:title="Make it public" />
+    <item
+        android:id="@+id/menuChange_picture"
+        android:icon="@drawable/ic_change_pic"
+        android:title="Change picture" />
+
+</menu>

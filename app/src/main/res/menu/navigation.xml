@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_explore"
+        android:icon="@drawable/ic_explore"
+        android:title="Explore" />
+
+    <item
+        android:id="@+id/navigation_folders"
+        android:icon="@drawable/ic_folders"
+        android:title="Folders" />
+
+    <item
+        android:id="@+id/navigation_preferences"
+        android:icon="@drawable/ic_preferences"
+        android:title="Preferences" />
+
+</menu>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1C3AA9</color>
+    <color name="colorPrimaryDark">#1C3AA9</color>
+    <color name="colorAccent">#E5EAFF</color>
+    <color name="colorAccentRed">#C64054</color>
+    <color name="colorAccentGrey">#cfcfcf</color>
+    <color name="colorAccentPurple">#5B507A</color>
+    <color name="colorHint">#9c1c3aa9</color>
+    <color name="colorComment">#FBFBFE</color>
+    <color name="colorStrokeComment">#D0D7F1</color>
+    <color name="colorBtn">#C2CCF2</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBackgroundIntent">#FBFBFE</color>
+</resources>

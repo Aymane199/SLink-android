@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuDetailsPublic"
+        android:icon="@drawable/ic_details"
+        android:title="Details" />
+    <item
+        android:id="@+id/menuGet_link_public"
+        android:icon="@drawable/ic_link_grey"
+        android:title="Get link" />
+    <item
+        android:id="@+id/menuSubscribe"
+        android:icon="@drawable/ic_add"
+        android:title="Subscribe" />
+    <item
+        android:id="@+id/menuLocalCopie"
+        android:icon="@drawable/ic_copy"
+        android:title="MakeLocalCopy " />
+
+</menu>
