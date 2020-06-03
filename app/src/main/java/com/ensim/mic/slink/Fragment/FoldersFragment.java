@@ -54,13 +54,13 @@ public class FoldersFragment extends Fragment implements View.OnClickListener {
 
         recyclerView = view.findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
 
         List<Folder> folderList = new ArrayList<>();
 
         String str = "https://www.gstatic.com/webp/gallery/4.sm.jpg";
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
         System.out.println("str : " + str);
 
         folderList.add(new Folder(1, 1, 21, 5005, "Cuisine", "tajine twivjyat", str, "triwtza", "folder",true));

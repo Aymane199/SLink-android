@@ -57,7 +57,7 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="71dp"
-                android:layout_height="match_parent"
+                android:layout_height="23dp"
                 android:background="@drawable/shape_bnt_filter"
                 android:padding="6dp">
 

@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                             dest = fragmentManager.findFragmentByTag(ExploreFragment.class.getName());
                             currentFragementTag = ExploreFragment.class.getName();
                             if (dest == null) {
-                                Log.d("TRANSACTION", "instanciating new fragment");
+                                Log.d("TRANSACTION", "instanciating new navigation_explore");
                                 dest = fragmentExplore;
                                 transaction.add(R.id.fragment_container, dest, ExploreFragment.class.getName());
                             }
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                             dest = fragmentManager.findFragmentByTag(FoldersFragment.class.getName());
                             currentFragementTag = FoldersFragment.class.getName();
                             if (dest == null) {
-                                Log.d("TRANSACTION", "instanciating new fragment");
+                                Log.d("TRANSACTION", "instanciating new navigation_folders");
                                 dest = fragmentFolders;
                                 transaction.add(R.id.fragment_container, dest, FoldersFragment.class.getName());
                             }
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                             dest = fragmentManager.findFragmentByTag(PreferencesFragment.class.getName());
                             currentFragementTag = PreferencesFragment.class.getName();
                             if (dest == null) {
-                                Log.d("TRANSACTION", "instanciating new fragment");
+                                Log.d("TRANSACTION", "instanciating new navigation_preferences");
                                 dest = fragmentPreferences;
                                 transaction.add(R.id.fragment_container, dest, PreferencesFragment.class.getName());
                             }

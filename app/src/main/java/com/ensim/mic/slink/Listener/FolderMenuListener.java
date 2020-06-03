@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -17,7 +16,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ensim.mic.slink.Adapter.DataAdapter_folder;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.Folder;
 import com.squareup.picasso.Picasso;
@@ -28,11 +26,10 @@ public class FolderMenuListener implements View.OnClickListener {
     Context mContext;
     Folder folder;
 
-    public FolderMenuListener(Context mContext, ImageView imageView, Folder folder)
-    {
+    public FolderMenuListener(Context mContext, ImageView imageView, Folder folder) {
         this.mContext = mContext;
-        this.imageView = imageView ;
-        this.folder =folder;
+        this.imageView = imageView;
+        this.folder = folder;
     }
 
 
@@ -65,7 +62,7 @@ public class FolderMenuListener implements View.OnClickListener {
                 //go to share intent
                 break;
             case R.id.menuGet_link:
-                Toast.makeText(mContext, "Link copied to clipboard" , Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Link copied to clipboard", Toast.LENGTH_LONG).show();
                 break;
             case R.id.menuRename:
                 showRenameDialog();
@@ -85,14 +82,13 @@ public class FolderMenuListener implements View.OnClickListener {
         }
     }
 
-
     private void showChangePictureDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
 
         final ImageView input = new ImageView(mContext);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(20,  20, 20, 20);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        //layoutParams.setMargins(20,  20, 20, 20);
         input.setLayoutParams(layoutParams);
 
         try {
@@ -117,11 +113,11 @@ public class FolderMenuListener implements View.OnClickListener {
                 .setCancelable(true);
 
 
-        alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext,  folder.getName(),
+                Toast.makeText(mContext, folder.getName(),
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -144,7 +140,7 @@ public class FolderMenuListener implements View.OnClickListener {
 
         final Switch aSwitch = new Switch(mContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(50,  0, 50, 0);
+        layoutParams.setMargins(50, 0, 50, 0);
         aSwitch.setLayoutParams(layoutParams);
         aSwitch.setChecked(folder.isPublic());
 
@@ -168,7 +164,7 @@ public class FolderMenuListener implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext, aSwitch.isChecked()+"",
+                Toast.makeText(mContext, aSwitch.isChecked() + "",
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -187,7 +183,7 @@ public class FolderMenuListener implements View.OnClickListener {
 
         final ImageView imageView = new ImageView(mContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(50,  0, 50, 0);
+        layoutParams.setMargins(50, 0, 50, 0);
         imageView.setLayoutParams(layoutParams);
         imageView.setImageResource(R.drawable.ic_success);
 
@@ -206,7 +202,7 @@ public class FolderMenuListener implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext, "OnClick" ,
+                Toast.makeText(mContext, "OnClick",
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -254,7 +250,7 @@ public class FolderMenuListener implements View.OnClickListener {
 
         final EditText input = new EditText(mContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(50,  0, 50, 0);
+        layoutParams.setMargins(50, 0, 50, 0);
         input.setLayoutParams(layoutParams);
         input.setInputType(EditText.AUTOFILL_TYPE_TEXT);
         input.setSingleLine();
