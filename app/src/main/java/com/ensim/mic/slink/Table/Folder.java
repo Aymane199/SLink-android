@@ -1,64 +1,75 @@
 package com.ensim.mic.slink.Table;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Folder {
-    int id,owner_id,links,likes;
-    String name,description,picture,owner,type;
-    Boolean isPublic;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("description")
+    @Expose
+    private String description;
+    @SerializedName("picture")
+    @Expose
+    private String picture;
+    @SerializedName("public")
+    @Expose
+    private Boolean _public;
+    @SerializedName("shareLink")
+    @Expose
+    private Boolean shareLink;
+    @SerializedName("url")
+    @Expose
+    private String url;
+    @SerializedName("date")
+    @Expose
+    private String date;
+    @SerializedName("owner")
+    @Expose
+    private User owner;
 
-    public Folder(int id, int owner_id, int links, int likes, String name, String description, String picture, String owner, String type,boolean isPublic) {
-        this.id = id;
-        this.owner_id = owner_id;
-        this.links = links;
-        this.likes = likes;
-        this.name = name;
-        this.isPublic = isPublic;
-        this.description = description;
-        this.picture = picture;
-        this.owner = owner;
-        this.type = type;
-    }
-
+    /**
+     * No args constructor for use in serialization
+     *
+     */
     public Folder() {
     }
 
-    public int getId() {
+    /**
+     *
+     * @param date
+     * @param owner
+     * @param _public
+     * @param name
+     * @param description
+     * @param shareLink
+     * @param id
+     * @param picture
+     * @param url
+     */
+    public Folder(Integer id, String name, String description, String picture, Boolean _public, Boolean shareLink, String url, String date, User owner) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+        this._public = _public;
+        this.shareLink = shareLink;
+        this.url = url;
+        this.date = date;
+        this.owner = owner;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public boolean isPublic() {
-        return this.isPublic;
-    }
-
-    public void setPublic(boolean isPublic) {
-        this.isPublic = isPublic;
-    }
-
-    public int getOwner_id() {
-        return owner_id;
-    }
-
-    public void setOwner_id(int owner_id) {
-        this.owner_id = owner_id;
-    }
-
-    public int getLinks() {
-        return links;
-    }
-
-    public void setLinks(int links) {
-        this.links = links;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
     }
 
     public String getName() {
@@ -85,19 +96,59 @@ public class Folder {
         this.picture = picture;
     }
 
-    public String getOwner() {
+    public Boolean getPublic() {
+        return _public;
+    }
+
+    public void setPublic(Boolean _public) {
+        this._public = _public;
+    }
+
+    public Boolean getShareLink() {
+        return shareLink;
+    }
+
+    public void setShareLink(Boolean shareLink) {
+        this.shareLink = shareLink;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public User getUser() {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public void setUser(User owner) {
         this.owner = owner;
     }
 
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
+    @Override
+    public String toString() {
+        return "Folder{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", picture='" + picture + '\'' +
+                ", _public=" + _public +
+                ", shareLink=" + shareLink +
+                ", url='" + url + '\'' +
+                ", date='" + date + '\'' +
+                ", owner=" + owner +
+                '}';
     }
 }

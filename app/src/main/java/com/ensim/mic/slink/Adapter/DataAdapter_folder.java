@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.ensim.mic.slink.Activities.LinksActivity;
 import com.ensim.mic.slink.Listener.FolderMenuListener;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.Folder;
+import com.ensim.mic.slink.Table.UserFolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,10 +26,10 @@ public class DataAdapter_folder extends RecyclerView.Adapter<DataAdapter_folder.
     private static final String TAG = "DataAdapter_folder";
 
     Context mContext;
-    List<Folder> mData;
+    List<UserFolder> mData;
     private OnItemClickListener mListener;
 
-    public DataAdapter_folder(Context mContext, List<Folder> mData) {
+    public DataAdapter_folder(Context mContext, List<UserFolder> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -52,32 +52,42 @@ public class DataAdapter_folder extends RecyclerView.Adapter<DataAdapter_folder.
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
-        final Folder folder = mData.get(i);
+        final UserFolder folderOutput = mData.get(i);
 
         //set default image
         myViewHolder.im_folder.setImageResource(R.drawable.ic_folder);
 
         try {
-            String imgUrl = folder.getPicture();
-            Picasso.get().load(Uri.parse(imgUrl)).into(myViewHolder.im_folder);
+            String imgUrl = folderOutput.getPicture();
+            Picasso.get().load(Uri.parse(imgUrl)).placeholder(R.drawable.ic_folder).error(R.drawable.ic_folder).into(myViewHolder.im_folder);
         } catch (Exception e) {
-            Log.e(TAG, "error on loading image <" + folder.getName() + ">");
+            Log.e(TAG, "error on loading image <" + folderOutput.getName() + ">");
+
         }
 
-        myViewHolder.tvTitle.setText(folder.getName());
-        myViewHolder.tvOwner.setText(folder.getOwner());
-        myViewHolder.tvLike.setText(folder.getLikes() + "");
-        myViewHolder.tvLink.setText(folder.getLinks() + "");
-        myViewHolder.ivMenu.setOnClickListener(new FolderMenuListener(mContext, myViewHolder.ivMenu, folder));
+        myViewHolder.tvTitle.setText(folderOutput.getName());
+        myViewHolder.tvOwner.setText(folderOutput.getOwner());
+
+        if (folderOutput.getLikes()==null)
+            myViewHolder.tvLike.setText("0");
+        else
+            myViewHolder.tvLike.setText(folderOutput.getLikes());
+
+        if (folderOutput.getLinks()==null)
+            myViewHolder.tvLink.setText("0");
+        else
+            myViewHolder.tvLink.setText(folderOutput.getLinks());
+
+        myViewHolder.ivMenu.setOnClickListener(new FolderMenuListener(mContext, myViewHolder.ivMenu, folderOutput));
 
         // open
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Log.d(TAG, "click on <" + folder.getName() + ">");
+                Log.d(TAG, "click on <" + folderOutput.getName() + ">");
                 Intent intent = new Intent(view.getContext(), LinksActivity.class);
-                intent.putExtra("artist", folder.getId());
+                intent.putExtra("idFolder", folderOutput.getId());
                 view.getContext().startActivity(intent);
             }
         });

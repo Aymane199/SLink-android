@@ -2,7 +2,7 @@ package com.ensim.mic.slink.Table;
 
 import java.util.Date;
 
-public class Link {
+public class LinkOutput {
 
     int id;
     int folder_id;
@@ -12,7 +12,7 @@ public class Link {
     String description;
     Date date;
 
-    public Link(int id, int folder_id, String name, String url, String picture, String description, Date date) {
+    public LinkOutput(int id, int folder_id, String name, String url, String picture, String description, Date date) {
         this.id = id;
         this.folder_id = folder_id;
         this.name = name;

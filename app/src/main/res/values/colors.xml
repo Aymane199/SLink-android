@@ -12,4 +12,5 @@
     <color name="colorBtn">#C2CCF2</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorBackgroundIntent">#FBFBFE</color>
+    <color name="colorTransparent">#00FFFFFF</color>
 </resources>

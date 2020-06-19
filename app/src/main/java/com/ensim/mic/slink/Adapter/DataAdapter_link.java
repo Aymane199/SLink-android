@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.Link;
+import com.ensim.mic.slink.Table.FolderLink;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,10 +23,10 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
     private static final String TAG = "DataAdapter_link";
 
     Context mContext;
-    List<Link> mData;
+    List<FolderLink> mData;
     private OnItemClickListener mListener;
 
-    public DataAdapter_link(Context mContext, List<Link> mData) {
+    public DataAdapter_link(Context mContext, List<FolderLink> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -46,7 +46,7 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
-        final Link link = mData.get(i);
+        final FolderLink link = mData.get(i);
 
         //set default image
         myViewHolder.ivPicture.setImageResource(R.drawable.youtube);

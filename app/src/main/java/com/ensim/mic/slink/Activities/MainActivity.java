@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.ensim.mic.slink.Api.ApiUserImpl;
 import com.ensim.mic.slink.Fragment.ExploreFragment;
 import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Fragment.PreferencesFragment;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragmentExplore = new ExploreFragment();
+        //fragmentExplore = new ExploreFragment();
         fragmentFolders = new FoldersFragment();
         fragmentPreferences = new PreferencesFragment();
 
@@ -40,13 +41,16 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         currentFragementTag = ExploreFragment.class.getName();
-        transaction.add(R.id.fragment_container, fragmentExplore, ExploreFragment.class.getName());
-        transaction.show(fragmentExplore);
+        transaction.add(R.id.fragment_container, fragmentFolders, FoldersFragment.class.getName());
+        transaction.show(fragmentFolders);
 
         transaction.commit();
 
         BottomNavigationView bottomNav = findViewById(R.id.navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -60,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Fragment dest;
                     switch (menuItem.getItemId()) {
-                        case R.id.navigation_explore:
+                        // TODO add explore button (in the xml navigation too)
+                 /*       case R.id.navigation_explore:
                             dest = fragmentManager.findFragmentByTag(ExploreFragment.class.getName());
                             currentFragementTag = ExploreFragment.class.getName();
                             if (dest == null) {
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                 dest = fragmentExplore;
                                 transaction.add(R.id.fragment_container, dest, ExploreFragment.class.getName());
                             }
-                            break;
+                            break;*/
                         case R.id.navigation_folders:
                             dest = fragmentManager.findFragmentByTag(FoldersFragment.class.getName());
                             currentFragementTag = FoldersFragment.class.getName();

@@ -1,6 +1,7 @@
 package com.ensim.mic.slink.Listener;
 
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -16,20 +17,37 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ensim.mic.slink.Api.ApiUserImpl;
+import com.ensim.mic.slink.Api.LinkApiServices;
+import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.Folder;
+import com.ensim.mic.slink.Table.FolderOutput;
+import com.ensim.mic.slink.Table.User;
+import com.ensim.mic.slink.Table.UserFolder;
 import com.squareup.picasso.Picasso;
+
+import java.lang.reflect.Parameter;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FolderMenuListener implements View.OnClickListener {
 
     ImageView imageView;
     Context mContext;
-    Folder folder;
+    UserFolder folderOutput;
+    LinkApiServices linkApiServices;
 
-    public FolderMenuListener(Context mContext, ImageView imageView, Folder folder) {
+
+    public FolderMenuListener(Context mContext, ImageView imageView, UserFolder folderOutput) {
         this.mContext = mContext;
         this.imageView = imageView;
-        this.folder = folder;
+        this.folderOutput = folderOutput;
+        linkApiServices = RetrofitFactory.getINSTANCE().getRetrofit().create(LinkApiServices.class);
     }
 
 
@@ -54,15 +72,15 @@ public class FolderMenuListener implements View.OnClickListener {
     }
 
     private void manageMenu(MenuItem item) {
+        ApiUserImpl apiUser = new ApiUserImpl();
         switch (item.getItemId()) {
             case R.id.menuDetails:
                 //go to intent details
                 break;
             case R.id.menuShare:
-                //go to share intent
                 break;
             case R.id.menuGet_link:
-                Toast.makeText(mContext, "Link copied to clipboard", Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, "Link copied to clipboard", Toast.LENGTH_LONG).show();
                 break;
             case R.id.menuRename:
                 showRenameDialog();
@@ -92,7 +110,7 @@ public class FolderMenuListener implements View.OnClickListener {
         input.setLayoutParams(layoutParams);
 
         try {
-            Picasso.get().load(Uri.parse(folder.getPicture())).into(input);
+            Picasso.get().load(Uri.parse(folderOutput.getPicture())).into(input);
         } catch (Exception e) {
 
         }
@@ -117,7 +135,7 @@ public class FolderMenuListener implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext, folder.getName(),
+                Toast.makeText(mContext, folderOutput.getName(),
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -126,7 +144,7 @@ public class FolderMenuListener implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext, "menuDetals no " + folder.getName(),
+                Toast.makeText(mContext, "menuDetals no " + folderOutput.getName(),
                         Toast.LENGTH_LONG).show();
             }
 
@@ -142,7 +160,7 @@ public class FolderMenuListener implements View.OnClickListener {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(50, 0, 50, 0);
         aSwitch.setLayoutParams(layoutParams);
-        aSwitch.setChecked(folder.isPublic());
+        aSwitch.setChecked(Boolean.parseBoolean(folderOutput.getPublic()));
 
         LinearLayout layout = new LinearLayout(mContext);
         layout.addView(aSwitch);
@@ -173,7 +191,38 @@ public class FolderMenuListener implements View.OnClickListener {
     }
 
     private void showLinkAddedDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
+
+        ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        String link = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
+        System.out.println("clipboard link "+link);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("name","twijnat lala na3ima");
+        body.put("URL",link);
+        body.put("picture"," ");
+        body.put("folder",folderOutput.getId());
+
+        Call<Object> call = linkApiServices.createLink(body);
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    return ;
+                }
+                Object links = response.body();
+                System.out.println(links.toString());
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                System.out.println(t.getMessage());
+                return;
+            }
+        });
+
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
         TextView tvTitle = new TextView(mContext);
         tvTitle.setText("Link added successfully");
@@ -217,7 +266,7 @@ public class FolderMenuListener implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext, "menuDetails " + folder.getName(),
+                Toast.makeText(mContext, "menuDetails " + folderOutput.getName(),
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -226,7 +275,7 @@ public class FolderMenuListener implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext, "menuDetals no " + folder.getName(),
+                Toast.makeText(mContext, "menuDetals no " + folderOutput.getName(),
                         Toast.LENGTH_LONG).show();
             }
 
@@ -264,7 +313,7 @@ public class FolderMenuListener implements View.OnClickListener {
         tvTitle.setTextSize(20F);
         tvTitle.setTextColor(Color.BLACK);
 
-        alertDialogBuilder.setMessage("Are you sure you want to permanently remove this folder ?")
+        alertDialogBuilder.setMessage("Please entre the new folder name ?")
                 .setCustomTitle(tvTitle)
                 .setCancelable(true)
                 .setView(layout)
@@ -275,7 +324,7 @@ public class FolderMenuListener implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext, input.getText() + folder.getName(),
+                Toast.makeText(mContext, input.getText() + folderOutput.getName(),
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -284,7 +333,7 @@ public class FolderMenuListener implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(mContext, "menuDetals no " + folder.getName(),
+                Toast.makeText(mContext, "menuDetals no " + folderOutput.getName(),
                         Toast.LENGTH_LONG).show();
             }
 

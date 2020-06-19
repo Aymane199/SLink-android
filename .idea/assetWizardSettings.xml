@@ -33,9 +33,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="748bdc" />
-                            <entry key="outputName" value="ic_face_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\MIC\Desktop\Aymane\project\Slink\iconeSlink\ic_back.svg" />
+                            <entry key="outputName" value="ic_logo_slink_without_background" />
+                            <entry key="sourceFile" value="C:\Users\MIC\Desktop\Aymane\project\Slink\Logo\logo_SLink_without_background.svg" />
                           </map>
                         </option>
                       </PersistentState>

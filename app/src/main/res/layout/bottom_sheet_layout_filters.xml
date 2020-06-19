@@ -58,22 +58,38 @@
         app:layout_constraintTop_toBottomOf="@id/textView3">
 
         <RadioButton
+            android:id="@+id/filter_anyone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
-            android:text="Anyone" />
+            android:text="Anyone"
+            android:checked="true"
+            android:buttonTint="@color/colorPrimary"/>
 
         <RadioButton
+            android:id="@+id/filter_ownedByme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
-            android:text="Owned by me" />
+            android:text="Owned by me"
+            android:buttonTint="@color/colorPrimary"/>
 
         <RadioButton
+            android:id="@+id/filter_sharedWithMe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
-            android:text="Not owned by me" />
+            android:text="Shared with me"
+            android:buttonTint="@color/colorPrimary"/>
+
+        <RadioButton
+            android:id="@+id/filter_subscription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:text="Subscriptions"
+            android:buttonTint="@color/colorPrimary"
+            />
     </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>
