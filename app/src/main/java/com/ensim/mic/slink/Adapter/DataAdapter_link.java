@@ -53,7 +53,7 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
 
         try {
             String imgUrl = link.getPicture();
-            Picasso.get().load(Uri.parse(imgUrl)).into(myViewHolder.ivPicture);
+            Picasso.get().load(Uri.parse(imgUrl)).placeholder(R.drawable.ic_no_img).into(myViewHolder.ivPicture);
         } catch (Exception e) {
             Log.e(TAG, "error on loading image <" + link.getName() + ">");
         }

@@ -88,6 +88,7 @@ public class DataAdapter_folder extends RecyclerView.Adapter<DataAdapter_folder.
                 Log.d(TAG, "click on <" + folderOutput.getName() + ">");
                 Intent intent = new Intent(view.getContext(), LinksActivity.class);
                 intent.putExtra("idFolder", folderOutput.getId());
+                intent.putExtra("nameFolder", folderOutput.getName());
                 view.getContext().startActivity(intent);
             }
         });

@@ -33,12 +33,14 @@ public class LinksActivity extends AppCompatActivity {
     FolderApiServices folderApiServices;
 
     String idFolder;
+    String nameFolder;
     String idUser;
     String searchText;
 
     ImageView ivBack, ivMenu;
-    TextView tvTitle;
-    EditText etSearch;
+    TextView FolderLink;
+    private EditText etSearch;
+    private TextView tvTitle;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -57,15 +59,18 @@ public class LinksActivity extends AppCompatActivity {
         //get id folder and id user
         Intent intent = getIntent();
         idFolder = intent.getStringExtra("idFolder");
+        nameFolder = intent.getStringExtra("nameFolder");
         idUser = FoldersFragment.userId + "";
+
 
         //init views
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         etSearch = findViewById(R.id.etSearchLinks);
         progressBar = findViewById(R.id.progress_circular);
-
-
+        tvTitle = findViewById(R.id.FolderLink);
+        tvTitle.setText(nameFolder);
+        
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

@@ -66,19 +66,26 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_folder);
 
+
+        //init views+
+        progressBar = findViewById(R.id.progress_circular_album);
+        hideProgress();
+
         //get URL link
         Intent receiverdIntent = getIntent();
         String receivedAction = receiverdIntent.getAction();
         String receivedType = receiverdIntent.getType();
 
         if (receivedAction.equals(Intent.ACTION_SEND)) {
-
+            showProgress();
             // check mime type
             if (receivedType.startsWith("text/")) {
 
                 linkToPut = new FolderLink();
                 String url =  receiverdIntent
                         .getStringExtra(Intent.EXTRA_TEXT);
+                String title =  receiverdIntent
+                        .getStringExtra(Intent.EXTRA_TITLE);
                 linkToPut.setUrl(url);
 
                 RichPreview richPreview = new RichPreview(new ResponseListener() {
@@ -88,16 +95,21 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
                         linkToPut.setName(metaData.getTitle());
                         linkToPut.setDescription(metaData.getDescription());
                         displayFolders(searchText);
+                        hideProgress();
                     }
 
                     @Override
                     public void onError(Exception e) {
-
+                        hideProgress();
                     }
 
                 });
 
-                richPreview.getPreview(url);
+                try{
+                    richPreview.getPreview(url);
+                }catch (Exception e){
+                    displayFolders(searchText);
+                }
             }
         }
         // get services
@@ -107,9 +119,6 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
 
         folderOutputList = new ArrayList<>();
 
-        //init views+
-        progressBar = findViewById(R.id.progress_circular_album);
-        hideProgress();
 
 
         cardViewAdd = findViewById(R.id.card_view_add);

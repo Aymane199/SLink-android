@@ -35,8 +35,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="748bdc" />
-                            <entry key="outputName" value="ic_logo_slink_without_background" />
-                            <entry key="sourceFile" value="C:\Users\MIC\Desktop\Aymane\project\Slink\Logo\logo_SLink_without_background.svg" />
+                            <entry key="outputName" value="ic_no_img" />
+                            <entry key="sourceFile" value="C:\Users\MIC\Desktop\ic_no_img.svg" />
                           </map>
                         </option>
                       </PersistentState>

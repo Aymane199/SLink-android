@@ -29,7 +29,7 @@
             android:layout_marginBottom="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            card_view:srcCompat="@drawable/ic_menu_bluelight"
+            card_view:srcCompat="@drawable/ic_parametre"
             tools:srcCompat="@drawable/ic_parametre" />
 
         <ImageView
