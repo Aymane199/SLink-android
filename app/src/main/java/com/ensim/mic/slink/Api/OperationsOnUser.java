@@ -1,7 +1,7 @@
 package com.ensim.mic.slink.Api;
 
 import com.ensim.mic.slink.Table.User;
-import com.ensim.mic.slink.Table.UserFolder;
+import com.ensim.mic.slink.Table.FolderOfUser;
 
 import java.util.List;
 
@@ -16,21 +16,21 @@ designed to group methods
 it won't be user anywhere
 we ll deleted it at the end
  */
-public class ApiUserImpl {
-    UserApiServices userApiServices;
+public class OperationsOnUser {
+    IApiServicesUser IApiServicesUser;
 
-    public ApiUserImpl() {
+    public OperationsOnUser() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://212.227.200.43/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        userApiServices = retrofit.create(UserApiServices.class);
+        IApiServicesUser = retrofit.create(IApiServicesUser.class);
     }
 
     public void getUsers() {
         System.out.println("getUsers ------------------------------------- ");
 
-        Call<List<User>> call = userApiServices.getUsers();
+        Call<List<User>> call = IApiServicesUser.getUsers();
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -58,7 +58,7 @@ public class ApiUserImpl {
     public void createUser(User user) {
         System.out.println("createUser ------------------------------------- ");
 
-        Call<User> call = userApiServices.createUser(user);
+        Call<User> call = IApiServicesUser.createUser(user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -84,7 +84,7 @@ public class ApiUserImpl {
     public void getUser(int id) {
         System.out.println("getUser ------------------------------------- ");
 
-        Call<User> call = userApiServices.getUser(id);
+        Call<User> call = IApiServicesUser.getUser(id);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -109,7 +109,7 @@ public class ApiUserImpl {
     public void updateUser(int id, User user) {
         System.out.println("updateUser ------------------------------------- ");
 
-        Call<User> call = userApiServices.updateUser(id, user);
+        Call<User> call = IApiServicesUser.updateUser(id, user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -134,7 +134,7 @@ public class ApiUserImpl {
     public void deleteUser(int id) {
         System.out.println("updateUser ------------------------------------- ");
 
-        Call<Void> call = userApiServices.deleteUser(id);
+        Call<Void> call = IApiServicesUser.deleteUser(id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -158,18 +158,18 @@ public class ApiUserImpl {
     public void getUserAllFolders(int id , String search) {
         System.out.println("getUserAllFolders ------------------------------------- ");
 
-        Call<List<UserFolder>> call = userApiServices.getUserAllFolders(id, search);
-        call.enqueue(new Callback<List<UserFolder>>() {
+        Call<List<FolderOfUser>> call = IApiServicesUser.getUserAllFolders(id, search);
+        call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
-            public void onResponse(Call<List<UserFolder>> call, Response<List<UserFolder>> response) {
+            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<UserFolder> folders = response.body();
-                for ( UserFolder folder: folders ) {
+                List<FolderOfUser> folders = response.body();
+                for ( FolderOfUser folder: folders ) {
                     System.out.println("folder : "+folder.toString());
                 }
 
@@ -177,7 +177,7 @@ public class ApiUserImpl {
             }
 
             @Override
-            public void onFailure(Call<List<UserFolder>> call, Throwable t) {
+            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });
@@ -186,18 +186,18 @@ public class ApiUserImpl {
     public void getUserFolders(int id , String search) {
         System.out.println("getUserFolders ------------------------------------- ");
 
-        Call<List<UserFolder>> call = userApiServices.getUserFolders(id, search);
-        call.enqueue(new Callback<List<UserFolder>>() {
+        Call<List<FolderOfUser>> call = IApiServicesUser.getUserFolders(id, search);
+        call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
-            public void onResponse(Call<List<UserFolder>> call, Response<List<UserFolder>> response) {
+            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<UserFolder> folders = response.body();
-                for ( UserFolder folder: folders ) {
+                List<FolderOfUser> folders = response.body();
+                for ( FolderOfUser folder: folders ) {
                     System.out.println("folder : "+folder.toString());
                 }
 
@@ -205,7 +205,7 @@ public class ApiUserImpl {
             }
 
             @Override
-            public void onFailure(Call<List<UserFolder>> call, Throwable t) {
+            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });
@@ -214,18 +214,18 @@ public class ApiUserImpl {
     public void getUserShare(int id , String search) {
         System.out.println("getUserShare ------------------------------------- ");
 
-        Call<List<UserFolder>> call = userApiServices.getUserShare(id, search);
-        call.enqueue(new Callback<List<UserFolder>>() {
+        Call<List<FolderOfUser>> call = IApiServicesUser.getUserShare(id, search);
+        call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
-            public void onResponse(Call<List<UserFolder>> call, Response<List<UserFolder>> response) {
+            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<UserFolder> folders = response.body();
-                for ( UserFolder folder: folders ) {
+                List<FolderOfUser> folders = response.body();
+                for ( FolderOfUser folder: folders ) {
                     System.out.println("folder : "+folder.toString());
                 }
 
@@ -233,7 +233,7 @@ public class ApiUserImpl {
             }
 
             @Override
-            public void onFailure(Call<List<UserFolder>> call, Throwable t) {
+            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });
@@ -242,18 +242,18 @@ public class ApiUserImpl {
     public void getUserSubscribe(int id , String search) {
         System.out.println("getUserSubscribe ------------------------------------- ");
 
-        Call<List<UserFolder>> call = userApiServices.getUserSubscribe(id, search);
-        call.enqueue(new Callback<List<UserFolder>>() {
+        Call<List<FolderOfUser>> call = IApiServicesUser.getUserSubscribe(id, search);
+        call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
-            public void onResponse(Call<List<UserFolder>> call, Response<List<UserFolder>> response) {
+            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<UserFolder> folders = response.body();
-                for ( UserFolder folder: folders ) {
+                List<FolderOfUser> folders = response.body();
+                for ( FolderOfUser folder: folders ) {
                     System.out.println("folder : "+folder.toString());
                 }
 
@@ -261,7 +261,7 @@ public class ApiUserImpl {
             }
 
             @Override
-            public void onFailure(Call<List<UserFolder>> call, Throwable t) {
+            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });
@@ -270,18 +270,18 @@ public class ApiUserImpl {
     public void getUserSave(int id , String search) {
         System.out.println("getUserSave ------------------------------------- ");
 
-        Call<List<UserFolder>> call = userApiServices.getUserSave(id, search);
-        call.enqueue(new Callback<List<UserFolder>>() {
+        Call<List<FolderOfUser>> call = IApiServicesUser.getUserSave(id, search);
+        call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
-            public void onResponse(Call<List<UserFolder>> call, Response<List<UserFolder>> response) {
+            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<UserFolder> folders = response.body();
-                for ( UserFolder folder: folders ) {
+                List<FolderOfUser> folders = response.body();
+                for ( FolderOfUser folder: folders ) {
                     System.out.println("folder : "+folder.toString());
                 }
 
@@ -289,7 +289,7 @@ public class ApiUserImpl {
             }
 
             @Override
-            public void onFailure(Call<List<UserFolder>> call, Throwable t) {
+            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });

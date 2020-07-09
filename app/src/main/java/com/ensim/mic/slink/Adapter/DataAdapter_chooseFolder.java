@@ -14,11 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ensim.mic.slink.Api.LinkApiServices;
+import com.ensim.mic.slink.Api.IApiServicesLink;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.FolderLink;
-import com.ensim.mic.slink.Table.UserFolder;
+import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Table.FolderOfUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -33,17 +33,17 @@ public class DataAdapter_chooseFolder extends RecyclerView.Adapter<DataAdapter_c
     private static final String TAG = "DataAdapter_chooseFolder";
 
     Context mContext;
-    List<UserFolder> mData;
-    FolderLink linkToput;
-    LinkApiServices linkApiServices;
+    List<FolderOfUser> mData;
+    LinkOfFolder linkToput;
+    IApiServicesLink IApiServicesLink;
     private OnItemClickListener mListener;
 
 
-    public DataAdapter_chooseFolder(Context mContext, List<UserFolder> mData, FolderLink linkToput) {
+    public DataAdapter_chooseFolder(Context mContext, List<FolderOfUser> mData, LinkOfFolder linkToput) {
         this.mContext = mContext;
         this.mData = mData;
         this.linkToput = linkToput;
-        linkApiServices = RetrofitFactory.getINSTANCE().getRetrofit().create(LinkApiServices.class);
+        IApiServicesLink = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesLink.class);
 
     }
 
@@ -65,8 +65,8 @@ public class DataAdapter_chooseFolder extends RecyclerView.Adapter<DataAdapter_c
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
-        final UserFolder folderOutput = mData.get(i);
-        final FolderLink link = linkToput;
+        final FolderOfUser folderOutput = mData.get(i);
+        final LinkOfFolder link = linkToput;
         //set default image
         myViewHolder.im_folder.setImageResource(R.drawable.ic_folder);
 
@@ -98,7 +98,7 @@ public class DataAdapter_chooseFolder extends RecyclerView.Adapter<DataAdapter_c
         return mData.size();
     }
 
-    private void showLinkAddedDialog(final UserFolder folderOutput, FolderLink link) {
+    private void showLinkAddedDialog(final FolderOfUser folderOutput, LinkOfFolder link) {
 
         HashMap<String, Object> body = new HashMap<>();
         if (link.getUrl() != null)
@@ -112,7 +112,7 @@ public class DataAdapter_chooseFolder extends RecyclerView.Adapter<DataAdapter_c
         body.put("folder", folderOutput.getId());
         // TODO add link description
 
-        Call<Object> call = linkApiServices.createLink(body);
+        Call<Object> call = IApiServicesLink.createLink(body);
         call.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {

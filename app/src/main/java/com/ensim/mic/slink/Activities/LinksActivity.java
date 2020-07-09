@@ -15,11 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Adapter.DataAdapter_link;
-import com.ensim.mic.slink.Api.FolderApiServices;
+import com.ensim.mic.slink.Api.IApiServicesFolder;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.FolderLink;
+import com.ensim.mic.slink.Table.LinkOfFolder;
 
 import java.util.List;
 
@@ -29,14 +29,21 @@ import retrofit2.Response;
 
 public class LinksActivity extends AppCompatActivity {
 
-    List<FolderLink> links;
-    FolderApiServices folderApiServices;
+    //List of likns to display
+    List<LinkOfFolder> links;
 
+    //services
+    IApiServicesFolder IApiServicesFolder;
+
+    //income information -> folder selected & current user
     String idFolder;
     String nameFolder;
     String idUser;
+
+    //search text
     String searchText;
 
+    //components
     ImageView ivBack, ivMenu;
     TextView FolderLink;
     private EditText etSearch;
@@ -53,7 +60,7 @@ public class LinksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_links);
 
         //get services
-        folderApiServices = RetrofitFactory.getINSTANCE().getRetrofit().create(FolderApiServices.class);
+        IApiServicesFolder = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesFolder.class);
 
 
         //get id folder and id user
@@ -62,7 +69,6 @@ public class LinksActivity extends AppCompatActivity {
         nameFolder = intent.getStringExtra("nameFolder");
         idUser = FoldersFragment.userId + "";
 
-
         //init views
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -70,7 +76,8 @@ public class LinksActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_circular);
         tvTitle = findViewById(R.id.FolderLink);
         tvTitle.setText(nameFolder);
-        
+
+        // set on action listener to search compoment
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -101,13 +108,13 @@ public class LinksActivity extends AppCompatActivity {
 
 
         // etablish the request
-        Call<List<FolderLink>> call = folderApiServices.getFolderLinks(idFolder, idUser, searchText);
+        Call<List<LinkOfFolder>> call = IApiServicesFolder.getFolderLinks(idFolder, idUser, searchText);
 
         //fill the folder list
-        call.enqueue(new Callback<List<FolderLink>>() {
+        call.enqueue(new Callback<List<LinkOfFolder>>() {
 
             @Override
-            public void onResponse(Call<List<FolderLink>> call, Response<List<FolderLink>> response) {
+            public void onResponse(Call<List<LinkOfFolder>> call, Response<List<LinkOfFolder>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
@@ -118,7 +125,7 @@ public class LinksActivity extends AppCompatActivity {
                 links = response.body();
                 //set sort
                 if (!links.isEmpty())
-                    for (FolderLink link : links) {
+                    for (LinkOfFolder link : links) {
                         System.out.println(link.toString());
                     }
                 mAdapter = new DataAdapter_link(LinksActivity.this, links);
@@ -127,7 +134,7 @@ public class LinksActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<FolderLink>> call, Throwable t) {
+            public void onFailure(Call<List<LinkOfFolder>> call, Throwable t) {
                 System.out.println(t.getMessage());
                 hideProgress();
             }

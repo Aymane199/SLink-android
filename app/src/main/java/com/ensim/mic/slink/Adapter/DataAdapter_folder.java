@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.ensim.mic.slink.Activities.LinksActivity;
 import com.ensim.mic.slink.Listener.FolderMenuListener;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.UserFolder;
+import com.ensim.mic.slink.Table.FolderOfUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,10 +26,10 @@ public class DataAdapter_folder extends RecyclerView.Adapter<DataAdapter_folder.
     private static final String TAG = "DataAdapter_folder";
 
     Context mContext;
-    List<UserFolder> mData;
+    List<FolderOfUser> mData;
     private OnItemClickListener mListener;
 
-    public DataAdapter_folder(Context mContext, List<UserFolder> mData) {
+    public DataAdapter_folder(Context mContext, List<FolderOfUser> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -52,7 +52,7 @@ public class DataAdapter_folder extends RecyclerView.Adapter<DataAdapter_folder.
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
-        final UserFolder folderOutput = mData.get(i);
+        final FolderOfUser folderOutput = mData.get(i);
 
         //set default image
         myViewHolder.im_folder.setImageResource(R.drawable.ic_folder);

@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.ensim.mic.slink.Api.ApiUserImpl;
-import com.ensim.mic.slink.Fragment.ExploreFragment;
 import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Fragment.PreferencesFragment;
 import com.ensim.mic.slink.R;
@@ -40,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        currentFragementTag = ExploreFragment.class.getName();
         transaction.add(R.id.fragment_container, fragmentFolders, FoldersFragment.class.getName());
         transaction.show(fragmentFolders);
+        currentFragementTag = FoldersFragment.class.getName();
 
         transaction.commit();
 

@@ -1,4 +1,4 @@
-package com.ensim.mic.slink.BottomSheet;
+package com.ensim.mic.slink.Component;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,20 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.utils.FolderFilter;
 
 public class BottomSheetFilter extends BottomSheetDialogFragment implements View.OnClickListener {
 
-    static final public int FILTER_ANYONE = 0;
-    static final public int FILTER_OWNED_BY_ME = 1;
-    static final public int FILTER_SHARED_WITH_ME = 2;
-    static final public int FILTER_SUBSCRIPTION = 3;
-
-    private int choosen_filter = FILTER_ANYONE;
+    private FolderFilter choosen_filter = FolderFilter.FILTER_ANYONE;
 
     RadioGroup radioGroup;
     RadioButton radioButton, rbAnyone, rbOwnerMe, rbshare, rbsSubscriptions;
@@ -56,31 +50,31 @@ public class BottomSheetFilter extends BottomSheetDialogFragment implements View
         radioButton = v.findViewById(radioId);
         switch(radioButton.getId()) {
             case R.id.filter_anyone:
-                setChoosen_filter(FILTER_ANYONE);
+                setChoosen_filter(FolderFilter.FILTER_ANYONE);
                 Toast.makeText(getActivity(), "Filter : Anyone applied !", Toast.LENGTH_LONG).show();
                 break;
             case R.id.filter_ownedByme:
-                setChoosen_filter(FILTER_OWNED_BY_ME);
+                setChoosen_filter(FolderFilter.FILTER_OWNED_BY_ME);
                 Toast.makeText(getActivity(), "Filter : Owned by me applied !", Toast.LENGTH_LONG).show();
                 break;
             case R.id.filter_sharedWithMe:
-                setChoosen_filter(FILTER_SHARED_WITH_ME);
+                setChoosen_filter(FolderFilter.FILTER_SHARED_WITH_ME);
                 Toast.makeText(getActivity(), "Filter : Shared with me applied !", Toast.LENGTH_LONG).show();
                 break;
             case R.id.filter_subscription:
-                setChoosen_filter(FILTER_SUBSCRIPTION);
+                setChoosen_filter(FolderFilter.FILTER_SUBSCRIPTION);
                 Toast.makeText(getActivity(), "Filter : Subscriptions applied !", Toast.LENGTH_LONG).show();
                 break;
             default:
-                setChoosen_filter(FILTER_ANYONE);
+                setChoosen_filter(FolderFilter.FILTER_ANYONE);
         }
     }
 
-    public int getChoosen_filter() {
+    public FolderFilter getChoosen_filter() {
         return choosen_filter;
     }
 
-    public void setChoosen_filter(int choosen_filter) {
+    public void setChoosen_filter(FolderFilter choosen_filter) {
         this.choosen_filter = choosen_filter;
         if (mlistener != null) mlistener.onChange();
 

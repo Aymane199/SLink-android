@@ -3,7 +3,7 @@ package com.ensim.mic.slink.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FolderLink {
+public class LinkOfFolder {
 
     @SerializedName("id")
     @Expose
@@ -31,7 +31,7 @@ public class FolderLink {
      * No args constructor for use in serialization
      *
      */
-    public FolderLink() {
+    public LinkOfFolder() {
     }
 
     /**
@@ -44,7 +44,7 @@ public class FolderLink {
      * @param picture
      * @param url
      */
-    public FolderLink(String id, String name, String picture, String url, String description, Object like, String save) {
+    public LinkOfFolder(String id, String name, String picture, String url, String description, Object like, String save) {
         super();
         this.id = id;
         this.name = name;

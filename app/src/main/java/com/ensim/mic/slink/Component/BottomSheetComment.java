@@ -1,5 +1,6 @@
-package com.ensim.mic.slink.BottomSheet;
+package com.ensim.mic.slink.Component;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,4 +19,6 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
         View v = inflater.inflate(R.layout.bottom_sheet_layout_comment,container,false);
         return v;
     }
+
+
 }

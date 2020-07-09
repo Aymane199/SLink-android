@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ensim.mic.slink.Component.BottomSheetComment;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.FolderLink;
+import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,10 +25,10 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
     private static final String TAG = "DataAdapter_link";
 
     Context mContext;
-    List<FolderLink> mData;
+    List<LinkOfFolder> mData;
     private OnItemClickListener mListener;
 
-    public DataAdapter_link(Context mContext, List<FolderLink> mData) {
+    public DataAdapter_link(Context mContext, List<LinkOfFolder> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -46,7 +48,7 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
-        final FolderLink link = mData.get(i);
+        final LinkOfFolder link = mData.get(i);
 
         //set default image
         myViewHolder.ivPicture.setImageResource(R.drawable.youtube);
@@ -60,6 +62,16 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
 
         myViewHolder.tvTitle.setText(link.getName());
         myViewHolder.tvDescription.setText(link.getDescription());
+        final BottomSheetComment bottomSheetComment = new BottomSheetComment();
+        myViewHolder.ivComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                bottomSheetComment.show(((FragmentActivity)mContext).getSupportFragmentManager(), "bottomSheetComment");
+
+            }
+        });
+
         myViewHolder.ivMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

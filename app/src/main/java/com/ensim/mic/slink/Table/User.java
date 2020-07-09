@@ -120,3 +120,11 @@ public class User {
                 '}';
     }
 }
+class Folders {
+}
+
+class Subscribes {
+}
+
+class Shares {
+}
