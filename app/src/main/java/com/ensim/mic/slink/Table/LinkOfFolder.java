@@ -3,6 +3,8 @@ package com.ensim.mic.slink.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class LinkOfFolder {
 
     @SerializedName("id")
@@ -26,6 +28,9 @@ public class LinkOfFolder {
     @SerializedName("save")
     @Expose
     private String save;
+    @SerializedName("comments")
+    @Expose
+    private List<Comment> comments;
 
     /**
      * No args constructor for use in serialization
@@ -35,16 +40,16 @@ public class LinkOfFolder {
     }
 
     /**
-     *
-     * @param like
+     *  @param id
      * @param name
-     * @param save
-     * @param description
-     * @param id
      * @param picture
      * @param url
+     * @param description
+     * @param like
+     * @param save
+     * @param comments
      */
-    public LinkOfFolder(String id, String name, String picture, String url, String description, Object like, String save) {
+    public LinkOfFolder(String id, String name, String picture, String url, String description, Object like, String save, List<Comment> comments) {
         super();
         this.id = id;
         this.name = name;
@@ -53,6 +58,7 @@ public class LinkOfFolder {
         this.description = description;
         this.like = like;
         this.save = save;
+        this.comments = comments;
     }
 
     public String getId() {
@@ -122,5 +128,13 @@ public class LinkOfFolder {
                 ", like=" + like +
                 ", save='" + save + '\'' +
                 '}';
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

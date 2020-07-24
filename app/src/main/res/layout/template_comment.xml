@@ -24,13 +24,20 @@
 
         <TextView
             android:id="@+id/tvText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="10dp"
-            android:text="Cuisine"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="8dp"
+            android:text="text "
+            android:textAlignment="viewStart"
+            android:textColor="@color/grey_900"
+            android:textSize="13sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.181"
             card_view:layout_constraintStart_toEndOf="@id/cv_folder"
             card_view:layout_constraintTop_toBottomOf="@id/tvUserName" />
 
@@ -38,34 +45,35 @@
             android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:text="Title"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:text="UserName"
+            android:textColor="@color/colorPrimary"
             android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintStart_toEndOf="@id/cv_folder"
             card_view:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_folder"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="10dp"
-            android:elevation="0dp"
-            app:cardBackgroundColor="@color/colorAccentGrey"
-            app:cardCornerRadius="7dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:text="Date"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccentGrey"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/tvUserName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/im_folder"
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_round_outline"
-                android:scaleType="centerCrop" />
-
-        </android.support.v7.widget.CardView>
+            card_view:srcCompat="@drawable/ic_pointsmenu" />
 
 
     </android.support.constraint.ConstraintLayout>

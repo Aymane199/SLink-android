@@ -14,18 +14,16 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Adapter.DataAdapter_link;
+import com.ensim.mic.slink.Adapter.DataAdapterLink;
 import com.ensim.mic.slink.Api.IApiServicesFolder;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.Fragment.FoldersFragment;
+import com.ensim.mic.slink.Operations.OperationsOnLink;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LinksActivity extends AppCompatActivity {
 
@@ -77,6 +75,10 @@ public class LinksActivity extends AppCompatActivity {
         tvTitle = findViewById(R.id.FolderLink);
         tvTitle.setText(nameFolder);
 
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
         // set on action listener to search compoment
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -87,58 +89,38 @@ public class LinksActivity extends AppCompatActivity {
                             .INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
                     searchText = etSearch.getText().toString();
-                    displayLinks(searchText);
+                    new OperationsOnLink().displayLinks(searchText, idFolder, idUser);
                     return true;
                 }
                 return false;
             }
         });
 
-        displayLinks(searchText);
-
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-
-    }
-
-    private void displayLinks(String searchText) {
-        showProgress();
-
-
-        // etablish the request
-        Call<List<LinkOfFolder>> call = IApiServicesFolder.getFolderLinks(idFolder, idUser, searchText);
-
-        //fill the folder list
-        call.enqueue(new Callback<List<LinkOfFolder>>() {
-
+        //add behavior when "List Links State" changes
+        State.getInstance().setOnChangeLinksListner(new State.OnChangeLinks(){
             @Override
-            public void onResponse(Call<List<LinkOfFolder>> call, Response<List<LinkOfFolder>> response) {
-                if (!response.isSuccessful()) {
-                    System.out.println("Code: " + response.code());
-                    System.out.println("message: " + response.message());
-                    System.out.println("error: " + response.errorBody());
-                    hideProgress();
-                    return;
+            public void onChange() {
+                switch (State.getInstance().getLinks().getState()){
+                    case LOADING:
+                        showProgress();
+                        break;
+                    case SUCCESSFUL:
+                        hideProgress();
+                        mAdapter = new DataAdapterLink(LinksActivity.this, State.getInstance().getLinks().getListLinks());
+                        recyclerView.setAdapter(mAdapter);
+                        break;
+                    case FAILED:
+                        hideProgress();
+                        break;
+                    default:
+                        //show fail msg
+                        hideProgress();
                 }
-                links = response.body();
-                //set sort
-                if (!links.isEmpty())
-                    for (LinkOfFolder link : links) {
-                        System.out.println(link.toString());
-                    }
-                mAdapter = new DataAdapter_link(LinksActivity.this, links);
-                recyclerView.setAdapter(mAdapter);
-                hideProgress();
-            }
-
-            @Override
-            public void onFailure(Call<List<LinkOfFolder>> call, Throwable t) {
-                System.out.println(t.getMessage());
-                hideProgress();
             }
         });
+
+        new OperationsOnLink().displayLinks(searchText, idFolder, idUser);
+
     }
 
     public void showProgress() {

@@ -1,5 +1,8 @@
-package com.ensim.mic.slink.Api;
+package com.ensim.mic.slink.Operations;
 
+import com.ensim.mic.slink.Api.IApiServicesFolder;
+import com.ensim.mic.slink.Api.IApiServicesUser;
+import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.State.StateListFolders;
 import com.ensim.mic.slink.Table.Folder;
@@ -7,6 +10,7 @@ import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.utils.FolderFilter;
 import com.ensim.mic.slink.utils.RequestState;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +38,7 @@ public class OperationsOnFolder {
     //call user folder and update the state
     public void displayFolders(FolderFilter filter, String searchText) {
 
-        state.setUserFoldersState(RequestState.LOADING);
+        state.setFoldersState(RequestState.LOADING);
         System.out.println("display folder");
         // etablish the request
         Call<List<FolderOfUser>> call;
@@ -64,24 +68,25 @@ public class OperationsOnFolder {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setUserFoldersState(RequestState.FAILED);
+                    state.setFoldersState(RequestState.FAILED);
                     return;
                 }
                 //update state
-                state.setUserFolders(new StateListFolders(response.body(), RequestState.SUCCESSFUL));
+                state.setFolders(new StateListFolders(response.body(), RequestState.SUCCESSFUL));
 
             }
 
             @Override
             public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.setUserFoldersState(RequestState.FAILED);
+                state.setFoldersState(RequestState.FAILED);
             }
         });
     }
 
     public void displayEditableFolders(String searchText) {
-        state.setUserFoldersState(RequestState.LOADING);
+        state.setFoldersState(RequestState.LOADING);
+        state.setFoldersList(new ArrayList<FolderOfUser>());
         System.out.println("display folder");
         // etablish the request
         Call<List<FolderOfUser>> call = iApiServicesUser.getUserFolders(userId, searchText);
@@ -94,22 +99,22 @@ public class OperationsOnFolder {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setUserFoldersState(RequestState.FAILED);
+                    state.setFoldersState(RequestState.FAILED);
                     return;
                 }
                 //update state
-                List<FolderOfUser> foldersOfUserTemp =  state.getUserFolders().getListFolder();
+                List<FolderOfUser> foldersOfUserTemp =  state.getFolders().getListFolder();
                 foldersOfUserTemp.addAll(response.body());
-                state.setUserFoldersList(foldersOfUserTemp);
+                state.setFoldersList(foldersOfUserTemp);
 
-                state.setUserFoldersState(RequestState.SUCCESSFUL);
+                state.setFoldersState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
 
-                state.setUserFoldersState(RequestState.FAILED);
+                state.setFoldersState(RequestState.FAILED);
             }
         });
 
@@ -121,20 +126,20 @@ public class OperationsOnFolder {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setUserFoldersState(RequestState.FAILED);
+                    state.setFoldersState(RequestState.FAILED);
                     return;
                 }
                 //update state
-                List<FolderOfUser> foldersOfUserTemp =  state.getUserFolders().getListFolder();
+                List<FolderOfUser> foldersOfUserTemp =  state.getFolders().getListFolder();
                 foldersOfUserTemp.addAll(response.body());
-                state.setUserFoldersList(foldersOfUserTemp);
+                state.setFoldersList(foldersOfUserTemp);
 
-                state.setUserFoldersState(RequestState.SUCCESSFUL);
+                state.setFoldersState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
-                state.setUserFoldersState(RequestState.FAILED);            }
+                state.setFoldersState(RequestState.FAILED);            }
         });
     }
 
@@ -142,8 +147,7 @@ public class OperationsOnFolder {
     public void createFolder(String name,int owner) {
         System.out.println("create folder ------------------------------------- ");
 
-        state.setUserFoldersState(RequestState.LOADING);
-        // TODO U CAN CHANGE THE STATE FROM JUST A LIST OF FOLDER TO FOLDER AND RESPONSE MESSAGE. UR LISTNE ON BOTH IF GOOD DISPLAY LIST ELSE DESPLAY MESSAGE
+        state.setFoldersState(RequestState.LOADING);
         //create body
         HashMap<String, Object> body = new HashMap<>();
         body.put("name",name);
@@ -158,7 +162,7 @@ public class OperationsOnFolder {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setUserFoldersState(RequestState.FAILED);
+                    state.setFoldersState(RequestState.FAILED);
                     return ;
 
                 }
@@ -171,23 +175,23 @@ public class OperationsOnFolder {
                 folderOfUser.setId(folder.getId()+"");
 
                 //update state
-                List<FolderOfUser> foldersOfUserTemp = state.getUserFolders().getListFolder();
+                List<FolderOfUser> foldersOfUserTemp = state.getFolders().getListFolder();
                 foldersOfUserTemp.add(folderOfUser);
-                state.setUserFoldersList(foldersOfUserTemp);
-                state.setUserFoldersState(RequestState.SUCCESSFUL);
+                state.setFoldersList(foldersOfUserTemp);
+                state.setFoldersState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<Folder> call, Throwable t) {
-                state.setUserFoldersState(RequestState.FAILED);
+                state.setFoldersState(RequestState.FAILED);
                 return;
             }
         });
     }
 
     public void deleteFolder(final FolderOfUser folderOutput){
-        state.setUserFoldersState(RequestState.LOADING);
+        state.setFoldersState(RequestState.LOADING);
         final int folderid = Integer.parseInt(folderOutput.getId());
         Call<Folder> call = iApiServicesFolder.deleteFolder(folderid);
         call.enqueue(new Callback<Folder>() {
@@ -197,18 +201,18 @@ public class OperationsOnFolder {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setUserFoldersState(RequestState.FAILED);
+                    state.setFoldersState(RequestState.FAILED);
                     return;
                 }
-                List<FolderOfUser> folders = state.getUserFolders().getListFolder();
+                List<FolderOfUser> folders = state.getFolders().getListFolder();
                 folders.remove(folderOutput);
-                state.setUserFoldersList(folders);
-                state.setUserFoldersState(RequestState.SUCCESSFUL);
+                state.setFoldersList(folders);
+                state.setFoldersState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<Folder> call, Throwable t) {
-                state.setUserFoldersState(RequestState.FAILED);
+                state.setFoldersState(RequestState.FAILED);
             }
         });
     }

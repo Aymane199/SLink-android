@@ -1,5 +1,6 @@
-package com.ensim.mic.slink.Api;
+package com.ensim.mic.slink.Operations;
 
+import com.ensim.mic.slink.Api.IApiServicesUser;
 import com.ensim.mic.slink.Table.User;
 import com.ensim.mic.slink.Table.FolderOfUser;
 
@@ -17,7 +18,7 @@ it won't be user anywhere
 we ll deleted it at the end
  */
 public class OperationsOnUser {
-    IApiServicesUser IApiServicesUser;
+    com.ensim.mic.slink.Api.IApiServicesUser IApiServicesUser;
 
     public OperationsOnUser() {
         Retrofit retrofit = new Retrofit.Builder()

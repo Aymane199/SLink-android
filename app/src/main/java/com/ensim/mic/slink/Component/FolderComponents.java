@@ -14,7 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ensim.mic.slink.Api.OperationsOnFolder;
+import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.FolderOfUser;
@@ -26,9 +26,7 @@ import io.github.ponnamkarthik.richlinkpreview.MetaData;
 import io.github.ponnamkarthik.richlinkpreview.ResponseListener;
 import io.github.ponnamkarthik.richlinkpreview.RichPreview;
 
-/*
-TODO folder componenets isolate creation of dialogs, popups ... from the "end class", so it can be used many times
-  */
+
 public class FolderComponents {
 
 

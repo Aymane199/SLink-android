@@ -21,15 +21,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class DataAdapter_folder extends RecyclerView.Adapter<DataAdapter_folder.myViewHolder> {
+public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.myViewHolder> {
 
     private static final String TAG = "DataAdapter_folder";
 
     Context mContext;
-    List<FolderOfUser> mData;
+    public List<FolderOfUser> mData;
     private OnItemClickListener mListener;
 
-    public DataAdapter_folder(Context mContext, List<FolderOfUser> mData) {
+    public DataAdapterFolder(Context mContext, List<FolderOfUser> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -114,8 +114,8 @@ public class DataAdapter_folder extends RecyclerView.Adapter<DataAdapter_folder.
             super(itemView);
             im_folder = itemView.findViewById(R.id.im_folder);
             cv_folder = itemView.findViewById(R.id.cv_folder);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOwner = itemView.findViewById(R.id.tvOwner);
+            tvTitle = itemView.findViewById(R.id.tvUserName);
+            tvOwner = itemView.findViewById(R.id.tvText);
             tvLike = itemView.findViewById(R.id.tvLike);
             tvLink = itemView.findViewById(R.id.tvLink);
             ivMenu = itemView.findViewById(R.id.ivMenu);

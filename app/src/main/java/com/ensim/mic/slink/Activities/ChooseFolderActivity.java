@@ -14,8 +14,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Adapter.DataAdapter_chooseFolder;
-import com.ensim.mic.slink.Api.OperationsOnFolder;
+import com.ensim.mic.slink.Adapter.DataAdapterChooseFolder;
+import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.State;
@@ -126,11 +126,11 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         //set listener
         cardViewAdd.setOnClickListener(this);
 
-        State.getInstance().setOnChangeUserFoldersListner(new State.OnChangeUserFolders() {
+        State.getInstance().setOnChangeFoldersListner(new State.OnChangeUserFolders() {
             @Override
             public void onChange() {
                 System.out.println("ChoosenFolderActivity Listener");
-                mAdapter = new DataAdapter_chooseFolder(ChooseFolderActivity.this, State.getInstance().getUserFolders().getListFolder(),linkToPut);
+                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, State.getInstance().getFolders().getListFolder(),linkToPut);
                 recyclerView.setAdapter(mAdapter);
                 hideProgress();
             }

@@ -47,7 +47,7 @@ public interface IApiServicesUser {
     Call<List<FolderOfUser>> getUserSubscribe(@Path("id") int id,
                                               @Query("search") String search );
 
-    @GET("user/{id}/save")
+    @GET("user/{id}/button_save")
     Call<List<FolderOfUser>> getUserSave(@Path("id") int id,
                                          @Query("search") String search);
 

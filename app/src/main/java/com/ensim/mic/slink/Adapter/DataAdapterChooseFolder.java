@@ -28,22 +28,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DataAdapter_chooseFolder extends RecyclerView.Adapter<DataAdapter_chooseFolder.myViewHolder> {
+public class DataAdapterChooseFolder extends RecyclerView.Adapter<DataAdapterChooseFolder.myViewHolder> {
 
     private static final String TAG = "DataAdapter_chooseFolder";
 
     Context mContext;
     List<FolderOfUser> mData;
     LinkOfFolder linkToput;
-    IApiServicesLink IApiServicesLink;
+    IApiServicesLink iApiServicesLink;
     private OnItemClickListener mListener;
 
 
-    public DataAdapter_chooseFolder(Context mContext, List<FolderOfUser> mData, LinkOfFolder linkToput) {
+    public DataAdapterChooseFolder(Context mContext, List<FolderOfUser> mData, LinkOfFolder linkToput) {
         this.mContext = mContext;
         this.mData = mData;
         this.linkToput = linkToput;
-        IApiServicesLink = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesLink.class);
+        iApiServicesLink = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesLink.class);
 
     }
 
@@ -111,8 +111,8 @@ public class DataAdapter_chooseFolder extends RecyclerView.Adapter<DataAdapter_c
             body.put("name", link.getName());
         body.put("folder", folderOutput.getId());
         // TODO add link description
-
-        Call<Object> call = IApiServicesLink.createLink(body);
+        //TODO Copy it to OperationsOnLink
+        Call<Object> call = iApiServicesLink.createLink(body);
         call.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
@@ -151,8 +151,8 @@ public class DataAdapter_chooseFolder extends RecyclerView.Adapter<DataAdapter_c
             super(itemView);
             im_folder = itemView.findViewById(R.id.im_folder);
             cv_folder = itemView.findViewById(R.id.cv_folder);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOwner = itemView.findViewById(R.id.tvOwner);
+            tvTitle = itemView.findViewById(R.id.tvUserName);
+            tvOwner = itemView.findViewById(R.id.tvText);
         }
 
     }

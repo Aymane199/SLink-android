@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/ivMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="26dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -32,32 +32,34 @@
             card_view:srcCompat="@drawable/ic_parametre"
             tools:srcCompat="@drawable/ic_parametre" />
 
-        <ImageView
+        <CheckBox
             android:id="@+id/ivSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="22dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="5dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/button_save"
+            android:button="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivMenu"
-            card_view:srcCompat="@drawable/ic_bookmark" />
+            app:layout_constraintEnd_toStartOf="@+id/ivMenu" />
 
-        <ImageView
+        <CheckBox
             android:id="@+id/ivLike"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="7dp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/button_heart"
+            android:button="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivSave"
-            card_view:srcCompat="@drawable/ic_link_empty" />
+            app:layout_constraintEnd_toStartOf="@+id/ivSave" />
 
         <ImageView
             android:id="@+id/ivComment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="28dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivLike"
             card_view:srcCompat="@drawable/ic_comment" />
@@ -71,7 +73,7 @@
             app:layout_constraintBottom_toTopOf="@+id/ivComment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
         <TextView
             android:id="@+id/tvDescription"
@@ -84,7 +86,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

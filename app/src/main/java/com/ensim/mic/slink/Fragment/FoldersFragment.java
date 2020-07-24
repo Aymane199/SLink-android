@@ -18,8 +18,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Adapter.DataAdapter_folder;
-import com.ensim.mic.slink.Api.OperationsOnFolder;
+import com.ensim.mic.slink.Adapter.DataAdapterFolder;
+import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.Component.BottomSheetFilter;
 import com.ensim.mic.slink.Component.BottomSheetSort;
 import com.ensim.mic.slink.Component.FolderComponents;
@@ -47,7 +47,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
     ImageView img;
     EditText etSearch;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private DataAdapterFolder mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private CardView cardViewFilter, cardViewAdd, cardViewSort;
     private ProgressBar progressBar;
@@ -91,6 +91,9 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        mAdapter = new DataAdapterFolder(getActivity(), State.getInstance().getFolders().getListFolder());
+        recyclerView.setAdapter(mAdapter);
+
         //add action on click search
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -116,17 +119,18 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         });
 
         //add behavier when "List Folder State" changes
-        State.getInstance().setOnChangeUserFoldersListner(new State.OnChangeUserFolders() {
+        State.getInstance().setOnChangeFoldersListner(new State.OnChangeUserFolders() {
             @Override
             public void onChange() {
-                switch (State.getInstance().getUserFolders().getState()){
+                switch (State.getInstance().getFolders().getState()){
                     case LOADING:
                         showProgress();
                         break;
                     case SUCCESSFUL:
                         hideProgress();
-                        mAdapter = new DataAdapter_folder(getActivity(), State.getInstance().getUserFolders().getListFolder());
-                        recyclerView.setAdapter(mAdapter);
+                        System.out.println("change list");
+                        mAdapter.mData = State.getInstance().getFolders().getListFolder();
+                        mAdapter.notifyDataSetChanged();
                         break;
                     case FAILED:
                         //show fail msg
@@ -140,6 +144,12 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         });
         new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
     }
 
     /*

@@ -10,17 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Component.BottomSheetComment;
+import com.ensim.mic.slink.Listener.LinkMenuListener;
+import com.ensim.mic.slink.Operations.OperationsOnLike;
+import com.ensim.mic.slink.Operations.OperationsOnSave;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myViewHolder> {
+public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myViewHolder> {
 
     private static final String TAG = "DataAdapter_link";
 
@@ -28,7 +33,9 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
     List<LinkOfFolder> mData;
     private OnItemClickListener mListener;
 
-    public DataAdapter_link(Context mContext, List<LinkOfFolder> mData) {
+
+
+    public DataAdapterLink(Context mContext, List<LinkOfFolder> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -62,22 +69,42 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
 
         myViewHolder.tvTitle.setText(link.getName());
         myViewHolder.tvDescription.setText(link.getDescription());
+        if (link.getLike() != null)
+            myViewHolder.ivLike.setChecked(true);
+        if (link.getSave() != null)
+            myViewHolder.ivSave.setChecked(true);
+
+
+        myViewHolder.ivLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("myViewHolder.ivLike.isChecked() : " + myViewHolder.ivLike.isChecked() );
+                if(myViewHolder.ivLike.isChecked()) new OperationsOnLike().setLike(Integer.parseInt(link.getId()));
+                else new OperationsOnLike().deleteLike(State.idUser,Integer.parseInt(link.getId()));
+            }
+        });
+        myViewHolder.ivSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("myViewHolder.ivSave.isChecked() : " + myViewHolder.ivSave.isChecked() );
+                    if(myViewHolder.ivSave.isChecked()) new OperationsOnSave().setSave(Integer.parseInt(link.getId()));
+                    else new OperationsOnSave().deleteSave(State.idUser,Integer.parseInt(link.getId()));
+                }
+            });
         final BottomSheetComment bottomSheetComment = new BottomSheetComment();
+
+
         myViewHolder.ivComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                bottomSheetComment.show(((FragmentActivity)mContext).getSupportFragmentManager(), "bottomSheetComment");
-
-            }
-        });
-
-        myViewHolder.ivMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                System.out.println("Comment Clicked");
+                bottomSheetComment.setIdLink(Integer.parseInt(link.getId()));
+                bottomSheetComment.show(((FragmentActivity) mContext).getSupportFragmentManager(), "bottomSheetComment");
 
             }
         });
+
+        myViewHolder.ivMenu.setOnClickListener(new LinkMenuListener(mContext,myViewHolder.ivMenu,link));
 
         // open link in browser
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +137,8 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView ivPicture, ivMenu, ivComment, ivLike, ivSave;
+        ImageView ivPicture, ivMenu, ivComment;
+        CheckBox ivLike, ivSave;
         TextView tvTitle, tvDescription;
 
         public myViewHolder(@NonNull View itemView) {
@@ -120,7 +148,7 @@ public class DataAdapter_link extends RecyclerView.Adapter<DataAdapter_link.myVi
             ivLike = itemView.findViewById(R.id.ivLike);
             ivSave = itemView.findViewById(R.id.ivSave);
             ivMenu = itemView.findViewById(R.id.ivMenu);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvTitle = itemView.findViewById(R.id.tvUserName);
             tvDescription = itemView.findViewById(R.id.tvDescription);
         }
 

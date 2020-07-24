@@ -45,7 +45,7 @@
 
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -56,14 +56,14 @@
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvOwner"
+            android:id="@+id/tvText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Cuisine"
             android:textStyle="normal"
             card_view:layout_constraintStart_toEndOf="@id/cv_folder"
-            card_view:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            card_view:layout_constraintTop_toBottomOf="@id/tvUserName" />
 
         <ImageView
             android:id="@+id/imageView3"
