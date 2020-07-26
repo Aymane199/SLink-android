@@ -10,10 +10,10 @@
         android:id="@+id/menuShare"
         android:icon="@drawable/ic_man_share"
         android:title="Share" />
-    <item
+   <!-- <item
         android:id="@+id/menuGet_link"
         android:icon="@drawable/ic_link_grey"
-        android:title="Get link" />
+        android:title="Get link" /> -->
     <item
         android:id="@+id/menuRename"
         android:icon="@drawable/ic_mode_edit"
@@ -26,10 +26,10 @@
         android:id="@+id/menuAdd_link"
         android:icon="@drawable/ic_copy"
         android:title="Add link from clipboard " />
-    <item
+   <!-- <item
         android:id="@+id/menuMake_public"
         android:icon="@drawable/ic_public"
-        android:title="Make it public" />
+        android:title="Make it public" /> -->
     <item
         android:id="@+id/menuChange_picture"
         android:icon="@drawable/ic_change_pic"

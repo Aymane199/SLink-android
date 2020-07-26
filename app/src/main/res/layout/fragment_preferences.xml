@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/ivSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -54,7 +54,7 @@
         android:layout_marginTop="35dp"
         android:src="@drawable/ic_activities_preferences"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSave" />
 
     <ImageView
         android:id="@+id/imageView11"
@@ -111,7 +111,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

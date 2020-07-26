@@ -9,6 +9,7 @@ import com.ensim.mic.slink.Api.IApiServicesUser;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.State.StateListLinks;
+import com.ensim.mic.slink.State.StateListSavedLinks;
 import com.ensim.mic.slink.Table.Folder;
 import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
@@ -69,6 +70,35 @@ public class OperationsOnLink {
             }
         });
     }
+    public void displaySavedLinks(String searchText, String idUser) {
+        state.setSavedLinksState(RequestState.LOADING);
+
+        // etablish the request
+        Call<List<LinkOfFolder>> call = iApiServicesUser.getFolderSaved(idUser, searchText);
+
+        //fill the folder list
+        call.enqueue(new Callback<List<LinkOfFolder>>() {
+
+            @Override
+            public void onResponse(Call<List<LinkOfFolder>> call, Response<List<LinkOfFolder>> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    state.setSavedLinksState(RequestState.FAILED);
+                    return;
+                }
+                System.out.println("body" + response.body());
+                state.setSavedLinks(new StateListSavedLinks(response.body(), RequestState.SUCCESSFUL));
+            }
+
+            @Override
+            public void onFailure(Call<List<LinkOfFolder>> call, Throwable t) {
+                System.out.println(t.getMessage());
+                state.setSavedLinksState(RequestState.FAILED);
+            }
+        });
+    }
 
 
 
@@ -102,5 +132,6 @@ public class OperationsOnLink {
             }
         });
     }
+
 
 }

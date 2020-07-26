@@ -1,5 +1,6 @@
 package com.ensim.mic.slink.Api;
 
+import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.User;
 import com.ensim.mic.slink.Table.FolderOfUser;
 
@@ -47,11 +48,7 @@ public interface IApiServicesUser {
     Call<List<FolderOfUser>> getUserSubscribe(@Path("id") int id,
                                               @Query("search") String search );
 
-    @GET("user/{id}/button_save")
-    Call<List<FolderOfUser>> getUserSave(@Path("id") int id,
-                                         @Query("search") String search);
-
-
-
-
+    @GET("user/{id}/save")
+    Call<List<LinkOfFolder>> getFolderSaved(@Path("id") String idUser,
+                                            @Query("search") String searchText);
 }

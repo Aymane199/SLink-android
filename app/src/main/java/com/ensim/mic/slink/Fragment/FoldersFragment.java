@@ -119,7 +119,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         });
 
         //add behavier when "List Folder State" changes
-        State.getInstance().setOnChangeFoldersListner(new State.OnChangeUserFolders() {
+        State.getInstance().setOnChangeFoldersListner(new State.OnChangeObject() {
             @Override
             public void onChange() {
                 switch (State.getInstance().getFolders().getState()){

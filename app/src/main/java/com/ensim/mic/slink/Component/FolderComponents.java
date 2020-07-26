@@ -329,9 +329,11 @@ public class FolderComponents {
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                Toast.makeText(mContext, input.getText() + folderOutput.getName(),
-                        Toast.LENGTH_LONG).show();
+                String newName = input.getText().toString();
+                if(!newName.isEmpty()) {
+                    folderOutput.setName(newName);
+                    new OperationsOnFolder().updateFolder(folderOutput);
+                }
             }
         });
 

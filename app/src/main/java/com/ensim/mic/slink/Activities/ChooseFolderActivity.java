@@ -10,9 +10,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ensim.mic.slink.Adapter.DataAdapterChooseFolder;
 import com.ensim.mic.slink.Operations.OperationsOnFolder;
@@ -58,7 +60,6 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
     * get the link preview (picture, title ...)
     * listner for search Edittext
     * add lisnter to State on change FolderList
-    * TODO I don't like rich preview to be there :)
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,11 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
                         .getStringExtra(Intent.EXTRA_TEXT);
                 String title =  receiverdIntent
                         .getStringExtra(Intent.EXTRA_TITLE);
+                if( !URLUtil.isValidUrl(url)){
+                    Toast.makeText(this,"This is not a Url",Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
                 linkToPut.setUrl(url);
 
                 RichPreview richPreview = new RichPreview(new ResponseListener() {
@@ -126,7 +132,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         //set listener
         cardViewAdd.setOnClickListener(this);
 
-        State.getInstance().setOnChangeFoldersListner(new State.OnChangeUserFolders() {
+        State.getInstance().setOnChangeFoldersListner(new State.OnChangeObject() {
             @Override
             public void onChange() {
                 System.out.println("ChoosenFolderActivity Listener");

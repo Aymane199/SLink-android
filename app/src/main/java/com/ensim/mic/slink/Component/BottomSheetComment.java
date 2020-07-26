@@ -59,7 +59,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
             }
         });
 
-        State.getInstance().setOnChangeCommentsListner(new State.OnChangeComments() {
+        State.getInstance().setOnChangeCommentsListner(new State.OnChangeObject() {
             @Override
             public void onChange() {
                 switch (State.getInstance().getComments().getState()) {

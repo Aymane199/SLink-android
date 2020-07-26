@@ -30,7 +30,7 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
     private static final String TAG = "DataAdapter_link";
 
     Context mContext;
-    List<LinkOfFolder> mData;
+    public List<LinkOfFolder> mData;
     private OnItemClickListener mListener;
 
 

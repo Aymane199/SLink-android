@@ -1,5 +1,7 @@
 package com.ensim.mic.slink.Operations;
 
+import android.widget.Toast;
+
 import com.ensim.mic.slink.Api.IApiServicesFolder;
 import com.ensim.mic.slink.Api.IApiServicesUser;
 import com.ensim.mic.slink.Api.RetrofitFactory;
@@ -217,4 +219,49 @@ public class OperationsOnFolder {
         });
     }
 
+    public void updateFolder(final FolderOfUser folder){
+        state.setFoldersState(RequestState.LOADING);
+
+        System.out.println("update folder :"+folder);
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("name",folder.getName());
+        body.put("description",folder.getDescription());
+        body.put("picture",folder.getPicture());
+        body.put("public",folder.getPublic());
+
+
+        Call<Folder> call = iApiServicesFolder.updateFolder(Integer.parseInt(folder.getId()),body);
+        call.enqueue(new Callback<Folder>() {
+            @Override
+            public void onResponse(Call<Folder> call, Response<Folder> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    state.setFoldersState(RequestState.FAILED);
+                    return;
+                }
+                List<FolderOfUser> folders = state.getFolders().getListFolder();
+                System.out.println("folders : "+folders);
+                int indexFolder = state.getFolders().findIndexFolderById(Integer.parseInt(folder.getId()));
+                if(indexFolder ==-1) {
+                    System.out.println("folder id = -1");
+                    state.setFoldersState(RequestState.FAILED);
+                    return;
+                }
+                folders.set(indexFolder,folder);
+                state.setFoldersList(folders);
+                state.setFoldersState(RequestState.SUCCESSFUL);
+                System.out.println("update successful");
+            }
+
+            @Override
+            public void onFailure(Call<Folder> call, Throwable t) {
+                state.setFoldersState(RequestState.FAILED);
+                System.out.println("update failed");
+
+            }
+        });
+    }
 }

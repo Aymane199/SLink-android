@@ -19,14 +19,16 @@ public class State {
     }
 
     private StateListFolders folders;
-    private List<State.OnChangeUserFolders> onChangeFoldersListner;
+    private List<OnChangeObject> onChangeFoldersListner;
 
     private StateListLinks links;
-    private List<OnChangeLinks> onChangeLinksListner;
+    private List<OnChangeObject> onChangeLinksListner;
 
     private StateListComments comments;
-    private List<OnChangeComments> onChangeCommentsListner;
+    private List<OnChangeObject> onChangeCommentsListner;
 
+    StateListSavedLinks savedLinks;
+    private List<OnChangeObject> onChangeSavedLinksListner;
 
     private State(){
         folders = new StateListFolders();
@@ -35,6 +37,8 @@ public class State {
         onChangeLinksListner = new ArrayList<>();
         comments = new StateListComments();
         onChangeCommentsListner = new ArrayList<>();
+        savedLinks = new StateListSavedLinks();
+        onChangeSavedLinksListner = new ArrayList<>();
     }
 
     /*
@@ -51,30 +55,31 @@ public class State {
             System.out.println(folderOfUser.toString());
         }
         this.folders = folders;
-        for (State.OnChangeUserFolders listner : onChangeFoldersListner) {
+        for (OnChangeObject listner : onChangeFoldersListner) {
             listner.onChange();
         }
     }
 
     public void setFoldersState(RequestState state) {
         folders.setState(state) ;
-        for (State.OnChangeUserFolders listner : onChangeFoldersListner) {
+        for (OnChangeObject listner : onChangeFoldersListner) {
             listner.onChange();
         }
     }
 
     public void setFoldersList(List<FolderOfUser> foldersOfUser) {
         this.folders.setFolders(foldersOfUser); ;
-        for (State.OnChangeUserFolders listner : onChangeFoldersListner) {
+        for (OnChangeObject listner : onChangeFoldersListner) {
             listner.onChange();
         }
     }
 
-    public void setOnChangeFoldersListner(OnChangeUserFolders onChangeFoldersListner) {
+    public void setOnChangeFoldersListner(OnChangeObject onChangeFoldersListner) {
         this.onChangeFoldersListner.add(onChangeFoldersListner);
     }
 
-    public interface OnChangeUserFolders{
+    public interface
+    OnChangeObject{
         void onChange();
     }
 
@@ -92,31 +97,27 @@ public class State {
             System.out.println(comment.toString());
         }
         this.comments = comments;
-        for (OnChangeComments listner : onChangeCommentsListner) {
+        for (OnChangeObject listner : onChangeCommentsListner) {
             listner.onChange();
         }
     }
 
     public void setCommentsState(RequestState state) {
         folders.setState(state) ;
-        for (OnChangeComments listner : onChangeCommentsListner) {
+        for (OnChangeObject listner : onChangeCommentsListner) {
             listner.onChange();
         }
     }
 
     public void setCommentsList(List<Comment> comments) {
         this.comments.setComments(comments); ;
-        for (OnChangeComments listner : onChangeCommentsListner) {
+        for (OnChangeObject listner : onChangeCommentsListner) {
             listner.onChange();
         }
     }
 
-    public void setOnChangeCommentsListner(OnChangeComments onChangeUserFoldersListner) {
+    public void setOnChangeCommentsListner(OnChangeObject onChangeUserFoldersListner) {
         this.onChangeCommentsListner.add(onChangeUserFoldersListner);
-    }
-
-    public interface OnChangeComments {
-        void onChange();
     }
 
     /*
@@ -133,38 +134,64 @@ public class State {
             System.out.println(link.toString());
         }
         this.links = links;
-        for (OnChangeLinks listner : onChangeLinksListner) {
+        for (OnChangeObject listner : onChangeLinksListner) {
             listner.onChange();
         }
     }
 
     public void setLinksState(RequestState state) {
         folders.setState(state) ;
-        for (OnChangeLinks listner : onChangeLinksListner) {
+        for (OnChangeObject listner : onChangeLinksListner) {
             listner.onChange();
         }
     }
 
     public void setLinksList(List<LinkOfFolder> links) {
         this.links.setLinks(links); ;
-        for (OnChangeLinks listner : onChangeLinksListner) {
+        for (OnChangeObject listner : onChangeLinksListner) {
             listner.onChange();
         }
     }
 
-    public void setOnChangeLinksListner(OnChangeLinks onChangeUserFoldersListner) {
+    public void setOnChangeLinksListner(OnChangeObject onChangeUserFoldersListner) {
         this.onChangeLinksListner.add(onChangeUserFoldersListner);
     }
-
-    public interface OnChangeLinks {
-        void onChange();
-    }
-
 
     /*
     * State of the list of saved links
      */
+    public StateListSavedLinks getSavedLinks() {
+        return savedLinks;
+    }
 
+    public void setSavedLinks(StateListSavedLinks savedLinks) {
+        for (LinkOfFolder link :
+                savedLinks.getListLinks()) {
+            System.out.println(link.toString());
+        }
+        this.savedLinks = savedLinks;
+        for (OnChangeObject listner : onChangeSavedLinksListner) {
+            listner.onChange();
+        }
+    }
+
+    public void setSavedLinksState(RequestState state) {
+        folders.setState(state) ;
+        for (OnChangeObject listner : onChangeSavedLinksListner) {
+            listner.onChange();
+        }
+    }
+
+    public void setSavedLinksList(List<LinkOfFolder> savedLinks) {
+        this.savedLinks.setLinks(savedLinks); ;
+        for (OnChangeObject listner : onChangeSavedLinksListner) {
+            listner.onChange();
+        }
+    }
+
+    public void setOnChangeSavedLinksListner(OnChangeObject onChangeSavedLinksListner) {
+        this.onChangeSavedLinksListner.add(onChangeSavedLinksListner);
+    }
     /*
     * State of members of a folder
      */

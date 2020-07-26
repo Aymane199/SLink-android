@@ -31,7 +31,7 @@ public interface IApiServicesFolder {
     Call<Folder> getFolder(@Path("id") int id);
 
     @PATCH("folder/{id}")
-    Call<Folder> updateFolder(@Path("id") int id,@Body Folder folder);
+    Call<Folder> updateFolder(@Path("id") int id,@Body HashMap<String, Object> body);
 
     @DELETE("folder/{id}")
     Call<Folder> deleteFolder(@Path("id") int id);

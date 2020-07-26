@@ -33,7 +33,7 @@ public class LinkComponents {
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new OperationsOnLink().deleteLink(link);
+                new OperationsOnLink(). deleteLink(link);
 
             }
         });

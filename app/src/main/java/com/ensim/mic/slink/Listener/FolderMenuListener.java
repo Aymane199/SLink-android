@@ -53,9 +53,9 @@ public class FolderMenuListener implements View.OnClickListener {
                 break;
             case R.id.menuShare:
                 break;
-            case R.id.menuGet_link:
+            /*case R.id.menuGet_link:
                 //Toast.makeText(mContext, "Link copied to clipboard", Toast.LENGTH_LONG).show();
-                break;
+                break;*/
             case R.id.menuRename:
                 new FolderComponents().showRenameDialog(mContext,folderOutput);
                 break;
@@ -65,9 +65,9 @@ public class FolderMenuListener implements View.OnClickListener {
             case R.id.menuAdd_link:
                 new FolderComponents().showLinkAddedDialog(mContext,folderOutput);
                 break;
-            case R.id.menuMake_public:
+           /* case R.id.menuMake_public:
                 new FolderComponents().showMakeItPublicDialog(mContext,folderOutput);
-                break;
+                break;*/
             case R.id.menuChange_picture:
                 new FolderComponents().showChangePictureDialog(mContext,folderOutput);
                 break;

@@ -5,6 +5,7 @@ import com.ensim.mic.slink.utils.RequestState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class StateListFolders {
 
@@ -39,7 +40,7 @@ public class StateListFolders {
 
     public int findIndexFolderById(int id) {
         for (int i = 0; i < folders.size(); i++) {
-            if (folders.get(i).getId().equals(id)) return i;
+            if (Integer.parseInt(folders.get(i).getId())==id) return i;
         }
         return -1;
     }
@@ -48,7 +49,11 @@ public class StateListFolders {
         int index = findIndexFolderById(id);
         if (index != -1) {
             FolderOfUser folder = folders.get(index);
-            int nbLikes = Integer.parseInt(folder.getLikes());
+            int nbLikes;
+            if(folder.getLikes() == null)
+                nbLikes = 0;
+            else
+                nbLikes = Integer.parseInt(folder.getLikes());
             nbLikes += likes;
             folder.setLikes(String.format("%d", nbLikes));
             if(nbLikes>=0)

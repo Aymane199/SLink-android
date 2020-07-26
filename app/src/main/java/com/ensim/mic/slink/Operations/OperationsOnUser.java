@@ -268,32 +268,5 @@ public class OperationsOnUser {
         });
     }
 
-    public void getUserSave(int id , String search) {
-        System.out.println("getUserSave ------------------------------------- ");
-
-        Call<List<FolderOfUser>> call = IApiServicesUser.getUserSave(id, search);
-        call.enqueue(new Callback<List<FolderOfUser>>() {
-            @Override
-            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
-                if (!response.isSuccessful()) {
-                    System.out.println("Code: " + response.code());
-                    System.out.println("message: " + response.message());
-                    System.out.println("error: " + response.errorBody());
-                    return;
-                }
-                List<FolderOfUser> folders = response.body();
-                for ( FolderOfUser folder: folders ) {
-                    System.out.println("folder : "+folder.toString());
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
-                System.out.println(t.getMessage());
-            }
-        });
-    }
 
 }

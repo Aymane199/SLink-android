@@ -1,8 +1,7 @@
 package com.ensim.mic.slink.Activities;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -25,7 +24,7 @@ import com.ensim.mic.slink.Table.LinkOfFolder;
 
 import java.util.List;
 
-public class LinksActivity extends AppCompatActivity {
+public class SavedLinksActivity extends AppCompatActivity {
 
     //List of likns to display
     List<LinkOfFolder> links;
@@ -33,9 +32,7 @@ public class LinksActivity extends AppCompatActivity {
     //services
     IApiServicesFolder IApiServicesFolder;
 
-    //income information -> folder selected & current user
-    String idFolder;
-    String nameFolder;
+    //income information -> current user
     String idUser;
 
     //search text
@@ -47,24 +44,22 @@ public class LinksActivity extends AppCompatActivity {
     private EditText etSearch;
     private TextView tvTitle;
     private RecyclerView recyclerView;
-    private DataAdapterLink mAdapter;
+    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ProgressBar progressBar;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_links);
+        setContentView(R.layout.activity_save);
 
         //get services
         IApiServicesFolder = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesFolder.class);
 
 
-        //get id folder and id user
-        Intent intent = getIntent();
-        idFolder = intent.getStringExtra("idFolder");
-        nameFolder = intent.getStringExtra("nameFolder");
+        //get id user
         idUser = FoldersFragment.userId + "";
 
         //init views
@@ -72,14 +67,10 @@ public class LinksActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         etSearch = findViewById(R.id.etSearchLinks);
         progressBar = findViewById(R.id.progress_circular);
-        tvTitle = findViewById(R.id.FolderLink);
-        tvTitle.setText(nameFolder);
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new DataAdapterLink(LinksActivity.this, State.getInstance().getSavedLinks().getListLinks());
-        recyclerView.setAdapter(mAdapter);
 
         // set on action listener to search compoment
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -87,11 +78,12 @@ public class LinksActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     etSearch.clearFocus();
-                    InputMethodManager in = (InputMethodManager) LinksActivity.this.getSystemService(LinksActivity.this
+                    InputMethodManager in = (InputMethodManager) SavedLinksActivity.
+                            this.getSystemService(SavedLinksActivity.this
                             .INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
                     searchText = etSearch.getText().toString();
-                    new OperationsOnLink().displayLinks(searchText, idFolder, idUser);
+                    new OperationsOnLink().displaySavedLinks(searchText, idUser);
                     return true;
                 }
                 return false;
@@ -99,17 +91,17 @@ public class LinksActivity extends AppCompatActivity {
         });
 
         //add behavior when "List Links State" changes
-        State.getInstance().setOnChangeLinksListner(new State.OnChangeObject(){
+        State.getInstance().setOnChangeSavedLinksListner(new State.OnChangeObject(){
             @Override
             public void onChange() {
-                switch (State.getInstance().getLinks().getState()){
+                switch (State.getInstance().getSavedLinks().getState()){
                     case LOADING:
                         showProgress();
                         break;
                     case SUCCESSFUL:
                         hideProgress();
-                        mAdapter.mData = State.getInstance().getLinks().getListLinks();
-                        mAdapter.notifyDataSetChanged();
+                        mAdapter = new DataAdapterLink(SavedLinksActivity.this, State.getInstance().getSavedLinks().getListLinks());
+                        recyclerView.setAdapter(mAdapter);
                         break;
                     case FAILED:
                         hideProgress();
@@ -121,8 +113,7 @@ public class LinksActivity extends AppCompatActivity {
             }
         });
 
-        new OperationsOnLink().displayLinks(searchText, idFolder, idUser);
-
+        new OperationsOnLink().displaySavedLinks(searchText, idUser);
     }
 
     public void showProgress() {
