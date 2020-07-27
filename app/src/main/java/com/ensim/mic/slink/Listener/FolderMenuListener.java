@@ -1,19 +1,25 @@
 package com.ensim.mic.slink.Listener;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
+import com.ensim.mic.slink.Activities.FolderDetailsActivity;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.FolderOfUser;
 
+import java.io.Serializable;
+
 /*
 *   Clean
  */
-public class FolderMenuListener implements View.OnClickListener {
+public class FolderMenuListener implements View.OnClickListener  {
 
     ImageView imageView;
     Context mContext;
@@ -49,7 +55,12 @@ public class FolderMenuListener implements View.OnClickListener {
     private void manageMenu(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuDetails:
-                //go to intent details
+                Intent intent = new Intent(mContext, FolderDetailsActivity.class);
+                intent.putExtra("idFolder",Integer.parseInt(folderOutput.getId()));
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("folder", folderOutput);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
                 break;
             case R.id.menuShare:
                 break;

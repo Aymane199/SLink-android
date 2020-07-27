@@ -3,7 +3,9 @@ package com.ensim.mic.slink.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FolderOfUser {
+import java.io.Serializable;
+
+public class FolderOfUser implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;

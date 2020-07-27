@@ -264,4 +264,36 @@ public class OperationsOnFolder {
             }
         });
     }
+
+    public void getFolder(int id){
+        state.setFolderState(RequestState.LOADING);
+
+        System.out.println("get folder :"+id);
+
+
+        Call<Folder> call = iApiServicesFolder.getFolder(id);
+        call.enqueue(new Callback<Folder>() {
+            @Override
+            public void onResponse(Call<Folder> call, Response<Folder> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    state.setFolderState(RequestState.FAILED);
+                    return;
+                }
+                System.out.println("folder : "+response.body());
+
+                state.setFolderState(RequestState.SUCCESSFUL);
+                System.out.println("get folder successful");
+            }
+
+            @Override
+            public void onFailure(Call<Folder> call, Throwable t) {
+                state.setFolderState(RequestState.FAILED);
+                System.out.println("get folder failed");
+
+            }
+        });
+    }
 }

@@ -15,8 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Adapter.DataAdapterLink;
-import com.ensim.mic.slink.Api.IApiServicesFolder;
-import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Operations.OperationsOnLink;
 import com.ensim.mic.slink.R;
@@ -29,9 +27,6 @@ public class LinksActivity extends AppCompatActivity {
 
     //List of likns to display
     List<LinkOfFolder> links;
-
-    //services
-    IApiServicesFolder IApiServicesFolder;
 
     //income information -> folder selected & current user
     String idFolder;
@@ -57,10 +52,6 @@ public class LinksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_links);
 
-        //get services
-        IApiServicesFolder = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesFolder.class);
-
-
         //get id folder and id user
         Intent intent = getIntent();
         idFolder = intent.getStringExtra("idFolder");
@@ -72,7 +63,7 @@ public class LinksActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         etSearch = findViewById(R.id.etSearchLinks);
         progressBar = findViewById(R.id.progress_circular);
-        tvTitle = findViewById(R.id.FolderLink);
+        tvTitle = findViewById(R.id.tvName);
         tvTitle.setText(nameFolder);
 
         // use a linear layout manager

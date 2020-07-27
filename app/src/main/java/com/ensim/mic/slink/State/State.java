@@ -30,6 +30,10 @@ public class State {
     StateListSavedLinks savedLinks;
     private List<OnChangeObject> onChangeSavedLinksListner;
 
+    private StateFolder folder;
+    private List<OnChangeObject> onChangeFolderListner;
+
+
     private State(){
         folders = new StateListFolders();
         onChangeFoldersListner = new ArrayList<>();
@@ -39,6 +43,13 @@ public class State {
         onChangeCommentsListner = new ArrayList<>();
         savedLinks = new StateListSavedLinks();
         onChangeSavedLinksListner = new ArrayList<>();
+        folder = new StateFolder();
+        onChangeFolderListner =new ArrayList<>();
+    }
+
+    public interface
+    OnChangeObject{
+        void onChange();
     }
 
     /*
@@ -76,11 +87,6 @@ public class State {
 
     public void setOnChangeFoldersListner(OnChangeObject onChangeFoldersListner) {
         this.onChangeFoldersListner.add(onChangeFoldersListner);
-    }
-
-    public interface
-    OnChangeObject{
-        void onChange();
     }
 
     /*
@@ -192,6 +198,40 @@ public class State {
     public void setOnChangeSavedLinksListner(OnChangeObject onChangeSavedLinksListner) {
         this.onChangeSavedLinksListner.add(onChangeSavedLinksListner);
     }
+    /*
+    *   State of folder details
+     */
+
+    public StateFolder getFolder() {
+        return folder;
+    }
+
+    public void setFolder(StateFolder stateFolder) {
+
+        this.folder = stateFolder;
+        for (OnChangeObject listner : onChangeFolderListner) {
+            listner.onChange();
+        }
+    }
+
+    public void setFolderState(RequestState state) {
+        folders.setState(state) ;
+        for (OnChangeObject listner : onChangeFolderListner) {
+            listner.onChange();
+        }
+    }
+
+    public void setFolderList(List<LinkOfFolder> savedLinks) {
+        this.savedLinks.setLinks(savedLinks);
+        for (OnChangeObject listner : onChangeFolderListner) {
+            listner.onChange();
+        }
+    }
+
+    public void setOnChangeFolderListner(OnChangeObject onChangeSavedLinksListner) {
+        this.onChangeFolderListner.add(onChangeSavedLinksListner);
+    }
+
     /*
     * State of members of a folder
      */
