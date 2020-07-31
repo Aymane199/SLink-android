@@ -18,6 +18,7 @@ import com.ensim.mic.slink.Adapter.DataAdapterLink;
 import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Operations.OperationsOnLink;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 
@@ -69,7 +70,7 @@ public class LinksActivity extends AppCompatActivity {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new DataAdapterLink(LinksActivity.this, State.getInstance().getSavedLinks().getListLinks());
+        mAdapter = new DataAdapterLink(LinksActivity.this, State.getInstance().getSavedLinksList().getObject());
         recyclerView.setAdapter(mAdapter);
 
         // set on action listener to search compoment
@@ -90,25 +91,23 @@ public class LinksActivity extends AppCompatActivity {
         });
 
         //add behavior when "List Links State" changes
-        State.getInstance().setOnChangeLinksListner(new State.OnChangeObject(){
+        State.getInstance().getLinksList().setOnChangeObjectListeners(new OnChangeObject() {
             @Override
-            public void onChange() {
-                switch (State.getInstance().getLinks().getState()){
-                    case LOADING:
-                        showProgress();
-                        break;
-                    case SUCCESSFUL:
-                        hideProgress();
-                        mAdapter.mData = State.getInstance().getLinks().getListLinks();
-                        mAdapter.notifyDataSetChanged();
-                        break;
-                    case FAILED:
-                        hideProgress();
-                        break;
-                    default:
-                        //show fail msg
-                        hideProgress();
-                }
+            public void onLoading() {
+                showProgress();
+            }
+
+            @Override
+            public void onDataReady() {
+                hideProgress();
+                mAdapter.mData = State.getInstance().getLinksList().getObject();
+                System.out.println("SUCCESSFUL onDataReady sssss");
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailed() {
+                hideProgress();
             }
         });
 

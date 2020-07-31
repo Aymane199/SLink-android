@@ -19,6 +19,7 @@ import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Operations.OperationsOnLink;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 
@@ -91,25 +92,22 @@ public class SavedLinksActivity extends AppCompatActivity {
         });
 
         //add behavior when "List Links State" changes
-        State.getInstance().setOnChangeSavedLinksListner(new State.OnChangeObject(){
+        State.getInstance().getSavedLinksList().setOnChangeObjectListeners(new OnChangeObject() {
             @Override
-            public void onChange() {
-                switch (State.getInstance().getSavedLinks().getState()){
-                    case LOADING:
-                        showProgress();
-                        break;
-                    case SUCCESSFUL:
-                        hideProgress();
-                        mAdapter = new DataAdapterLink(SavedLinksActivity.this, State.getInstance().getSavedLinks().getListLinks());
-                        recyclerView.setAdapter(mAdapter);
-                        break;
-                    case FAILED:
-                        hideProgress();
-                        break;
-                    default:
-                        //show fail msg
-                        hideProgress();
-                }
+            public void onLoading() {
+                showProgress();
+            }
+
+            @Override
+            public void onDataReady() {
+                hideProgress();
+                mAdapter = new DataAdapterLink(SavedLinksActivity.this, State.getInstance().getSavedLinksList().getObject());
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onFailed() {
+                hideProgress();
             }
         });
 

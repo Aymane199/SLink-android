@@ -115,7 +115,7 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
             im_folder = itemView.findViewById(R.id.ivImage);
             cv_folder = itemView.findViewById(R.id.cvImage);
             tvTitle = itemView.findViewById(R.id.tvUserName);
-            tvOwner = itemView.findViewById(R.id.tvText);
+            tvOwner = itemView.findViewById(R.id.tvMail);
             tvLike = itemView.findViewById(R.id.tvLike);
             tvLink = itemView.findViewById(R.id.tvLink);
             ivMenu = itemView.findViewById(R.id.ivMenu);

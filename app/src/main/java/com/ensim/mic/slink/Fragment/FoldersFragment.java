@@ -24,6 +24,7 @@ import com.ensim.mic.slink.Component.BottomSheetFilter;
 import com.ensim.mic.slink.Component.BottomSheetSort;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 
 /*
@@ -75,7 +76,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         bottomSheetFilter = new BottomSheetFilter();
         bottomSheetSort = new BottomSheetSort();
 
-        progressBar = view.findViewById(R.id.progress_circular_album);
+        progressBar = view.findViewById(R.id.progress_circular);
 
         cardViewFilter = view.findViewById(R.id.card_view_filters);
         cardViewAdd = view.findViewById(R.id.card_view_add);
@@ -91,7 +92,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new DataAdapterFolder(getActivity(), State.getInstance().getFolders().getListFolder());
+        mAdapter = new DataAdapterFolder(getActivity(), State.getInstance().getFoldersList().getObject());
         recyclerView.setAdapter(mAdapter);
 
         //add action on click search
@@ -119,27 +120,24 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         });
 
         //add behavier when "List Folder State" changes
-        State.getInstance().setOnChangeFoldersListner(new State.OnChangeObject() {
+        State.getInstance().getFoldersList().setOnChangeObjectListeners(new OnChangeObject() {
             @Override
-            public void onChange() {
-                switch (State.getInstance().getFolders().getState()){
-                    case LOADING:
-                        showProgress();
-                        break;
-                    case SUCCESSFUL:
-                        hideProgress();
-                        System.out.println("change list");
-                        mAdapter.mData = State.getInstance().getFolders().getListFolder();
-                        mAdapter.notifyDataSetChanged();
-                        break;
-                    case FAILED:
-                        //show fail msg
-                        hideProgress();
-                        break;
-                    default:
-                        //show fail msg
-                        hideProgress();
-                }
+            public void onLoading() {
+                showProgress();
+            }
+
+            @Override
+            public void onDataReady() {
+                hideProgress();
+                System.out.println("change list");
+                mAdapter.mData = State.getInstance().getFoldersList().getObject();
+                mAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onFailed() {
+                hideProgress();
             }
         });
         new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);

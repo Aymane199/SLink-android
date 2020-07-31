@@ -72,21 +72,21 @@ public class BottomSheetSort extends BottomSheetDialogFragment implements View.O
             this.choosen_sort = choosen_sort;
   //          if (mlistener != null) mlistener.onChange();
         }
-        List<FolderOfUser> foldersOfUser = State.getInstance().getFolders().getListFolder();
+        List<FolderOfUser> foldersOfUser = State.getInstance().getFoldersList().getObject();
         switch (choosen_sort) {
             case BottomSheetSort.SORT_MOST_RECENT:
                 if (Integer.parseInt(foldersOfUser.get(0).getId()) <
                         Integer.parseInt(foldersOfUser.get(foldersOfUser.size() - 1).getId())) {
                     Collections.reverse(foldersOfUser);
                     System.err.println("testttttttttttttt");
-                    State.getInstance().setFoldersList(foldersOfUser);
+                    State.getInstance().getFoldersList().setObject(foldersOfUser);
                 }
                 break;
             case BottomSheetSort.SORT_OLDEST:
                 if (Integer.parseInt(foldersOfUser.get(0).getId()) >
                         Integer.parseInt(foldersOfUser.get(foldersOfUser.size() - 1).getId())) {
                     Collections.reverse(foldersOfUser);
-                    State.getInstance().setFoldersList(foldersOfUser);
+                    State.getInstance().getFoldersList().setObject(foldersOfUser);
                 }
                 break;
         }

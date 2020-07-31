@@ -79,11 +79,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTintMode="src_atop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/myRecycleView" />
 
     <TextView
         android:id="@+id/textView5"
@@ -92,6 +94,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="44dp"
         android:text="description"
+        android:textSize="15sp"
         android:textColor="#000000"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
+        android:textSize="14sp"
         android:text="TextView"
         android:textColor="#423F3F"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,5 +158,18 @@
         app:layout_constraintStart_toEndOf="@+id/imageView12"
         app:layout_constraintTop_toBottomOf="@+id/tvLikes" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/myRecycleView"
+        android:layout_width="match_parent"
+        android:scrollbarTrackVertical="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLinks">
+
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>

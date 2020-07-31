@@ -7,6 +7,7 @@ import com.ensim.mic.slink.Api.IApiServicesFolder;
 import com.ensim.mic.slink.Api.IApiServicesLink;
 import com.ensim.mic.slink.Api.IApiServicesUser;
 import com.ensim.mic.slink.Api.RetrofitFactory;
+import com.ensim.mic.slink.State.LinksState;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.State.StateListLinks;
 import com.ensim.mic.slink.State.StateListSavedLinks;
@@ -42,7 +43,7 @@ public class OperationsOnLink {
     }
 
     public void displayLinks(String searchText, final String idFolder, String idUser) {
-        state.setLinksState(RequestState.LOADING);
+        state.getLinksList().setState(RequestState.LOADING);
 
         // etablish the request
         Call<List<LinkOfFolder>> call = iApiServicesFolder.getFolderLinks(idFolder, idUser, searchText);
@@ -56,22 +57,24 @@ public class OperationsOnLink {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setLinksState(RequestState.FAILED);
+                    state.getLinksList().setState(RequestState.FAILED);
                     return;
                 }
                 System.out.println("body" + response.body());
-                state.setLinks(new StateListLinks(Integer.parseInt(idFolder),response.body(), RequestState.SUCCESSFUL));
+                state.getLinksList().setObject(response.body());
+                state.getLinksList().setFolderId(Integer.parseInt(idFolder));
+                state.getLinksList().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<List<LinkOfFolder>> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.setLinksState(RequestState.FAILED);
+                state.getLinksList().setState(RequestState.FAILED);
             }
         });
     }
     public void displaySavedLinks(String searchText, String idUser) {
-        state.setSavedLinksState(RequestState.LOADING);
+        state.getSavedLinksList().setState(RequestState.LOADING);
 
         // etablish the request
         Call<List<LinkOfFolder>> call = iApiServicesUser.getFolderSaved(idUser, searchText);
@@ -85,17 +88,18 @@ public class OperationsOnLink {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setSavedLinksState(RequestState.FAILED);
+                    state.getSavedLinksList().setState(RequestState.FAILED);
                     return;
                 }
                 System.out.println("body" + response.body());
-                state.setSavedLinks(new StateListSavedLinks(response.body(), RequestState.SUCCESSFUL));
+                state.getSavedLinksList().setObject(response.body());
+                state.getSavedLinksList().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<List<LinkOfFolder>> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.setSavedLinksState(RequestState.FAILED);
+                state.getSavedLinksList().setState(RequestState.FAILED);
             }
         });
     }
@@ -103,7 +107,7 @@ public class OperationsOnLink {
 
 
     public void deleteLink(final LinkOfFolder link){
-        state.setLinksState(RequestState.LOADING);
+        state.getLinksList().setState(RequestState.LOADING);
         final int linkid = Integer.parseInt(link.getId());
         Call<Object> call = iApiServicesLink.deleteLink(linkid);
         call.enqueue(new Callback<Object>() {
@@ -113,22 +117,22 @@ public class OperationsOnLink {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setLinksState(RequestState.FAILED);
+                    state.getLinksList().setState(RequestState.FAILED);
                     return;
                 }
-                List<LinkOfFolder> links = state.getLinks().getListLinks();
+                List<LinkOfFolder> links = state.getLinksList().getObject();
                 links.remove(link);
-                state.setLinksList(links);
+                state.getLinksList().setObject(links);
                 //update folder state, delete one link
-                state.getFolders().deletelink(state.getLinks().getFolderId());
-                state.setLinksState(RequestState.SUCCESSFUL);
-                state.setFoldersState(RequestState.SUCCESSFUL);
+                state.getFoldersList().deletelink(state.getLinksList().getFolderId());
+                state.getLinksList().setState(RequestState.SUCCESSFUL);
+                state.getFoldersList().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
-                state.setLinksState(RequestState.FAILED);
+                state.getLinksList().setState(RequestState.FAILED);
             }
         });
     }

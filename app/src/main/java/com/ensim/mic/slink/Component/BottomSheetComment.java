@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import com.ensim.mic.slink.Adapter.DataAdapterComment;
 import com.ensim.mic.slink.Operations.OperationsOnComment;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 
 public class BottomSheetComment extends BottomSheetDialogFragment {
@@ -59,28 +60,25 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
             }
         });
 
-        State.getInstance().setOnChangeCommentsListner(new State.OnChangeObject() {
+        State.getInstance().getCommentsList().setOnChangeObjectListeners(new OnChangeObject() {
             @Override
-            public void onChange() {
-                switch (State.getInstance().getComments().getState()) {
-                    case FAILED:
-                        hideProgress();
-                        System.out.println("failed request");
-                        break;
-                    case SUCCESSFUL:
-                        hideProgress();
-                        System.out.println("successful request");
-                        mAdapter = new DataAdapterComment(getActivity(), State.getInstance().getComments().getListComments());
-                        recyclerView.setAdapter(mAdapter);
-                        break;
-                    case LOADING:
-                        showProgress();
-                        System.out.println("loading request");
-                        break;
-
-                }
+            public void onLoading() {
+                showProgress();
             }
+
+            @Override
+            public void onDataReady() {
+                mAdapter = new DataAdapterComment(getActivity(), State.getInstance().getCommentsList().getObject());
+                recyclerView.setAdapter(mAdapter);
+                hideProgress();
+            }
+
+            @Override
+            public void onFailed() {
+                hideProgress();
+                }
         });
+
         return v;
     }
 

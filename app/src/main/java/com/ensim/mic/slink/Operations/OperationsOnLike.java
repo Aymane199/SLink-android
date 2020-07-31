@@ -48,9 +48,9 @@ public class OperationsOnLike {
                     return;
                 }
                 //update folder state, delete one like
-                state.getFolders().addlike(state.getLinks().getFolderId());
+                state.getFoldersList().addlike(state.getLinksList().getFolderId());
                 //state.setFoldersState(RequestState.LOADING);
-                state.setFoldersState(RequestState.SUCCESSFUL);
+                state.getFoldersList().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
@@ -76,9 +76,9 @@ public class OperationsOnLike {
                     return;
                 }
                 //update folder state, delete one like
-                state.getFolders().deletelike(state.getLinks().getFolderId());
+                state.getFoldersList().deletelike(state.getLinksList().getFolderId());
                 //state.setFoldersState(RequestState.LOADING);
-                state.setFoldersState(RequestState.SUCCESSFUL);
+                state.getFoldersList().setState(RequestState.SUCCESSFUL);
 
             }
 

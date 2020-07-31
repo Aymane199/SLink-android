@@ -20,6 +20,7 @@ import com.ensim.mic.slink.Adapter.DataAdapterChooseFolder;
 import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.FolderOfUser;
@@ -67,7 +68,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_choose_folder);
 
 
-        progressBar = findViewById(R.id.progress_circular_album);
+        progressBar = findViewById(R.id.progress_circular);
         hideProgress();
 
 
@@ -132,13 +133,23 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         //set listener
         cardViewAdd.setOnClickListener(this);
 
-        State.getInstance().setOnChangeFoldersListner(new State.OnChangeObject() {
+        State.getInstance().getFoldersList().setOnChangeObjectListeners(new OnChangeObject() {
             @Override
-            public void onChange() {
-                System.out.println("ChoosenFolderActivity Listener");
-                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, State.getInstance().getFolders().getListFolder(),linkToPut);
+            public void onLoading() {
+                showProgress();
+            }
+
+            @Override
+            public void onDataReady() {
+                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, State.getInstance().getFoldersList().getObject(),linkToPut);
                 recyclerView.setAdapter(mAdapter);
                 hideProgress();
+            }
+
+            @Override
+            public void onFailed() {
+                hideProgress();
+
             }
         });
 

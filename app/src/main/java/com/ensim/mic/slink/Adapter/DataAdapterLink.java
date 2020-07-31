@@ -58,8 +58,6 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
         final LinkOfFolder link = mData.get(i);
 
         //set default image
-        myViewHolder.ivPicture.setImageResource(R.drawable.youtube);
-
         try {
             String imgUrl = link.getPicture();
             Picasso.get().load(Uri.parse(imgUrl)).placeholder(R.drawable.ic_no_img).into(myViewHolder.ivPicture);

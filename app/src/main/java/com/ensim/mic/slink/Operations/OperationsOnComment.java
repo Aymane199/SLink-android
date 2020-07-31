@@ -10,6 +10,7 @@ import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.utils.RequestState;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class OperationsOnComment {
     //call links comments and update the state
     public void displayComments(int linkId) {
 
-        state.setCommentsState(RequestState.LOADING);
+        state.getCommentsList().setState(RequestState.LOADING);
         System.out.println("display Comments :"+linkId);
         // etablish the request
         //Call<List<Comment>> call;
@@ -53,20 +54,22 @@ public class OperationsOnComment {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setCommentsState(RequestState.FAILED);
+                    state.getCommentsList().setObject(new ArrayList<Comment>());
+                    state.getCommentsList().setState(RequestState.FAILED);
                     return;
                 }
                 System.out.println(response.body().toString());
                 //update state
-                state.setComments(new StateListComments(response.body().getComments(), RequestState.SUCCESSFUL));
-                state.setCommentsState(RequestState.SUCCESSFUL);
+                state.getCommentsList().setObject(response.body().getComments());
+                state.getCommentsList().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<LinkOfFolder> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.setCommentsState(RequestState.FAILED);
+                state.getCommentsList().setObject(new ArrayList<Comment>());
+                state.getCommentsList().setState(RequestState.FAILED);
             }
         });
     }
@@ -75,7 +78,7 @@ public class OperationsOnComment {
     public void createComment(int linkId,int userId,String text) {
         System.out.println("create comment ------------------------------------- ");
 
-        state.setCommentsState(RequestState.LOADING);
+        state.getCommentsList().setState(RequestState.LOADING);
         //create body
         HashMap<String, Object> body = new HashMap<>();
         body.put("link",linkId);
@@ -91,30 +94,30 @@ public class OperationsOnComment {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setCommentsState(RequestState.FAILED);
+                    state.getCommentsList().setState(RequestState.FAILED);
                     return ;
 
                 }
                 Comment comment = response.body();
 
                 //update state
-                List<Comment> commentListTemp = state.getComments().getListComments();
+                List<Comment> commentListTemp = state.getCommentsList().getObject();
                 commentListTemp.add(comment);
-                state.setCommentsList(commentListTemp);
-                state.setCommentsState(RequestState.SUCCESSFUL);
+                state.getCommentsList().setObject(commentListTemp);
+                state.getCommentsList().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<Comment> call, Throwable t) {
-                state.setCommentsState(RequestState.FAILED);
+                state.getCommentsList().setState(RequestState.FAILED);
                 return;
             }
         });
     }
 
     public void deleteComment(final Comment comment){
-        state.setCommentsState(RequestState.LOADING);
+        state.getCommentsList().setState(RequestState.LOADING);
         final int commmentId = comment.getId();
         Call<Void> call = iApiServicesComment.deleteComment(commmentId);
         call.enqueue(new Callback<Void>() {
@@ -124,18 +127,18 @@ public class OperationsOnComment {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.setCommentsState(RequestState.FAILED);
+                    state.getCommentsList().setState(RequestState.FAILED);
                     return;
                 }
-                List<Comment> comments = state.getComments().getListComments();
+                List<Comment> comments = state.getCommentsList().getObject();
                 comments.remove(comment);
-                state.setCommentsList(comments);
-                state.setCommentsState(RequestState.SUCCESSFUL);
+                state.getCommentsList().setObject(comments);
+                state.getCommentsList().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                state.setCommentsState(RequestState.FAILED);
+                state.getCommentsList().setState(RequestState.FAILED);
             }
         });
     }

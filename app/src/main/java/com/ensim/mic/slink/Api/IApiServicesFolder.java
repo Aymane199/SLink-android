@@ -2,6 +2,7 @@ package com.ensim.mic.slink.Api;
 
 import com.ensim.mic.slink.Table.Folder;
 import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Table.SharePersonne;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,5 +44,6 @@ public interface IApiServicesFolder {
                                             @Query("search") String search);
 
 
-
+    @GET("folder/{id}/share")
+    Call<List<SharePersonne>> getSharePersonnes(@Path("id") int id);
 }

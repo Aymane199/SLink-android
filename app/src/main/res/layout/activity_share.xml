@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".Activities.ChooseFolderActivity">
 
 
         <ImageView
             android:id="@+id/view"
-            android:layout_width="405dp"
-            android:layout_height="178dp"
-            android:background="@drawable/ic_folders_top_design"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@drawable/shape_activity_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,13 +26,14 @@ android:layout_height="match_parent">
             android:id="@+id/progress_circular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateTint="@color/colorPrimary"
-            android:indeterminateTintMode="src_atop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/my_recycler_view" />
+            app:layout_constraintTop_toTopOf="@+id/my_recycler_view"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/colorPrimary"
+            />
 
         <TextView
             android:id="@+id/tvUserName"
@@ -40,7 +41,7 @@ android:layout_height="match_parent">
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="28dp"
-            android:text="Choose a folder"
+            android:text="Share"
             android:textColor="@color/colorStrokeComment"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/etSearchLinks"
@@ -53,14 +54,14 @@ android:layout_height="match_parent">
             android:layout_height="50dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="90dp"
             android:background="@drawable/shape_tv_search"
-            android:drawableStart="@drawable/ic_explore_blue"
             android:drawablePadding="15dp"
-            android:hint="search"
+            android:hint="Add mail or userName"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1"
+            android:orientation="horizontal"
             android:padding="10dp"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHint="@color/colorHint"
@@ -70,47 +71,37 @@ android:layout_height="match_parent">
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view_add"
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="30dp"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            card_view:cardCornerRadius="6dp"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/view">
+            app:cardCornerRadius="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserName">
 
             <android.support.constraint.ConstraintLayout
-                android:layout_width="55dp"
-                android:layout_height="30dp"
-                android:background="@drawable/shape_bnt_filter"
-                android:padding="6dp">
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_tv_search"
+                android:padding="12dp">
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="2dp"
-                    android:background="@drawable/ic_add"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
+                    android:background="@drawable/ic_man_share"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/info_text_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:gravity="center_vertical"
-                    android:text="Add"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="11sp"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
 
@@ -118,13 +109,13 @@ android:layout_height="match_parent">
             android:id="@+id/my_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_view_add" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
 
     </android.support.constraint.ConstraintLayout>

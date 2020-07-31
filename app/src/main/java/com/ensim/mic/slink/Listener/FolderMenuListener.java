@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 
 import com.ensim.mic.slink.Activities.FolderDetailsActivity;
+import com.ensim.mic.slink.Activities.ShareActivity;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.FolderOfUser;
@@ -63,6 +64,11 @@ public class FolderMenuListener implements View.OnClickListener  {
                 mContext.startActivity(intent);
                 break;
             case R.id.menuShare:
+                Intent intent1 = new Intent(mContext, ShareActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("folder", folderOutput);
+                intent1.putExtras(bundle1);
+                mContext.startActivity(intent1);
                 break;
             /*case R.id.menuGet_link:
                 //Toast.makeText(mContext, "Link copied to clipboard", Toast.LENGTH_LONG).show();
