@@ -7,31 +7,31 @@ import java.util.List;
 
 public class BaseObjectState<T> {
 
-    private T object;
+    private T content;
     private RequestState state;
     private List<OnChangeObject> onChangeObjectListeners;
 
 
     public BaseObjectState(T t, RequestState state) {
-        this.object = t;
+        this.content = t;
         this.state = state;
         onChangeObjectListeners = new ArrayList<>();
         notifyListeners();
     }
 
     public BaseObjectState(T t) {
-        this.object = t;
+        this.content = t;
         state = RequestState.SUCCESSFUL;
         onChangeObjectListeners = new ArrayList<>();
         notifyListeners();
     }
 
-    public T getObject() {
-        return object;
+    public T getContent() {
+        return content;
     }
 
-    public void setObject(T object) {
-        this.object = object;
+    public void setContent(T content) {
+        this.content = content;
     }
 
     public RequestState getState() {
@@ -44,7 +44,7 @@ public class BaseObjectState<T> {
 
     }
 
-    public void setOnChangeObjectListeners(OnChangeObject onChangeObjectListners) {
+    public void addOnChangeObjectListener(OnChangeObject onChangeObjectListners) {
         this.onChangeObjectListeners.add(onChangeObjectListners);
     }
 
@@ -58,7 +58,6 @@ public class BaseObjectState<T> {
             case SUCCESSFUL:
                 for (OnChangeObject listner : onChangeObjectListeners) {
                     listner.onDataReady();
-                    System.out.println(object);
                 }
                 break;
             case FAILED:

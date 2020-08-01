@@ -1,7 +1,7 @@
 package com.ensim.mic.slink.Activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -80,8 +80,7 @@ public class SavedLinksActivity extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     etSearch.clearFocus();
                     InputMethodManager in = (InputMethodManager) SavedLinksActivity.
-                            this.getSystemService(SavedLinksActivity.this
-                            .INPUT_METHOD_SERVICE);
+                            this.getSystemService(INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
                     searchText = etSearch.getText().toString();
                     new OperationsOnLink().displaySavedLinks(searchText, idUser);
@@ -92,7 +91,7 @@ public class SavedLinksActivity extends AppCompatActivity {
         });
 
         //add behavior when "List Links State" changes
-        State.getInstance().getSavedLinksList().setOnChangeObjectListeners(new OnChangeObject() {
+        State.getInstance().getSavedLinks().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -101,7 +100,7 @@ public class SavedLinksActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                mAdapter = new DataAdapterLink(SavedLinksActivity.this, State.getInstance().getSavedLinksList().getObject());
+                mAdapter = new DataAdapterLink(SavedLinksActivity.this, State.getInstance().getSavedLinks().getContent());
                 recyclerView.setAdapter(mAdapter);
             }
 

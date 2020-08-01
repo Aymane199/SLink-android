@@ -1,9 +1,8 @@
 package com.ensim.mic.slink.Activities;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
-import com.squareup.picasso.Picasso;
 
 public class ShareActivity extends AppCompatActivity {
 
@@ -61,7 +59,7 @@ public class ShareActivity extends AppCompatActivity {
             }
         });
 
-        State.getInstance().getSharePersonnesList().setOnChangeObjectListeners(new OnChangeObject() {
+        State.getInstance().getSharePeople().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -70,7 +68,7 @@ public class ShareActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                mAdapter = new DataAdapterSharePersonnes(ShareActivity.this, State.getInstance().getSharePersonnesList().getObject());
+                mAdapter = new DataAdapterSharePersonnes(ShareActivity.this, State.getInstance().getSharePeople().getContent());
                 recyclerView.setAdapter(mAdapter);
             }
 
@@ -79,6 +77,7 @@ public class ShareActivity extends AppCompatActivity {
                 hideProgress();
             }
         });
+        assert folder != null;
         new OperationsOnShare().dispalySharePersonnes(Integer.parseInt(folder.getId()));
 
     }

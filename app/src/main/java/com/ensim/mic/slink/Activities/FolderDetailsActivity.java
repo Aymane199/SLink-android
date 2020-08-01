@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Adapter.DataAdapterChooseFolder;
 import com.ensim.mic.slink.Adapter.DataAdapterSharePersonnes;
 import com.ensim.mic.slink.Operations.OperationsOnShare;
 import com.ensim.mic.slink.R;
@@ -58,14 +57,15 @@ public class FolderDetailsActivity extends AppCompatActivity {
 
         hideProgress();
 
+        assert folder != null;
         tvName.setText(folder.getName());
         tvDescription.setText(folder.getDescription());
         if (folder.getLikes() == null)
-            tvLikes.setText(0+"");
+            tvLikes.setText("0");
         else
             tvLikes.setText(folder.getLikes());
         if (folder.getLinks() == null)
-            tvLinks.setText(0+"");
+            tvLinks.setText("0");
         else
             tvLinks.setText(folder.getLinks());
         try {
@@ -75,7 +75,7 @@ public class FolderDetailsActivity extends AppCompatActivity {
             System.out.println("error loading image");
         }
 
-        State.getInstance().getSharePersonnesList().setOnChangeObjectListeners(new OnChangeObject() {
+        State.getInstance().getSharePeople().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -84,7 +84,7 @@ public class FolderDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                mAdapter = new DataAdapterSharePersonnes(FolderDetailsActivity.this, State.getInstance().getSharePersonnesList().getObject());
+                mAdapter = new DataAdapterSharePersonnes(FolderDetailsActivity.this, State.getInstance().getSharePeople().getContent());
                 recyclerView.setAdapter(mAdapter);
             }
 

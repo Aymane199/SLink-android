@@ -17,13 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ensim.mic.slink.Adapter.DataAdapterChooseFolder;
-import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.Component.FolderComponents;
+import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Table.LinkOfFolder;
 
 import java.util.List;
 
@@ -79,9 +79,11 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         /*  if the action is a test -> url
             we will try to get the link preview
         */
+        assert receivedAction != null;
         if (receivedAction.equals(Intent.ACTION_SEND)) {
             showProgress();
             // check mime type
+            assert receivedType != null;
             if (receivedType.startsWith("text/")) {
 
                 linkToPut = new LinkOfFolder();
@@ -133,7 +135,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         //set listener
         cardViewAdd.setOnClickListener(this);
 
-        State.getInstance().getFoldersList().setOnChangeObjectListeners(new OnChangeObject() {
+        State.getInstance().getFolders().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -141,7 +143,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onDataReady() {
-                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, State.getInstance().getFoldersList().getObject(),linkToPut);
+                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, State.getInstance().getFolders().getContent(), linkToPut);
                 recyclerView.setAdapter(mAdapter);
                 hideProgress();
             }

@@ -70,7 +70,7 @@ public class LinksActivity extends AppCompatActivity {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new DataAdapterLink(LinksActivity.this, State.getInstance().getSavedLinksList().getObject());
+        mAdapter = new DataAdapterLink(LinksActivity.this, State.getInstance().getSavedLinks().getContent());
         recyclerView.setAdapter(mAdapter);
 
         // set on action listener to search compoment
@@ -79,8 +79,7 @@ public class LinksActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     etSearch.clearFocus();
-                    InputMethodManager in = (InputMethodManager) LinksActivity.this.getSystemService(LinksActivity.this
-                            .INPUT_METHOD_SERVICE);
+                    InputMethodManager in = (InputMethodManager) LinksActivity.this.getSystemService(INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
                     searchText = etSearch.getText().toString();
                     new OperationsOnLink().displayLinks(searchText, idFolder, idUser);
@@ -91,7 +90,7 @@ public class LinksActivity extends AppCompatActivity {
         });
 
         //add behavior when "List Links State" changes
-        State.getInstance().getLinksList().setOnChangeObjectListeners(new OnChangeObject() {
+        State.getInstance().getLinks().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -100,7 +99,7 @@ public class LinksActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                mAdapter.mData = State.getInstance().getLinksList().getObject();
+                mAdapter.mData = State.getInstance().getLinks().getContent();
                 System.out.println("SUCCESSFUL onDataReady sssss");
                 mAdapter.notifyDataSetChanged();
             }

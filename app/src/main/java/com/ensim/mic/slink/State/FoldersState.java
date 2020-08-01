@@ -17,8 +17,8 @@ public class FoldersState extends BaseObjectState<List<FolderOfUser>> {
     }
 
     public int findIndexFolderById(int id) {
-        for (int i = 0; i < getObject().size(); i++) {
-            if (Integer.parseInt(getObject().get(i).getId())==id) return i;
+        for (int i = 0; i < getContent().size(); i++) {
+            if (Integer.parseInt(getContent().get(i).getId()) == id) return i;
         }
         return -1;
     }
@@ -26,7 +26,7 @@ public class FoldersState extends BaseObjectState<List<FolderOfUser>> {
     public void setNbLikes(int id, int likes) {
         int index = findIndexFolderById(id);
         if (index != -1) {
-            FolderOfUser folder = getObject().get(index);
+            FolderOfUser folder = getContent().get(index);
             int nbLikes;
             if(folder.getLikes() == null)
                 nbLikes = 0;
@@ -35,19 +35,19 @@ public class FoldersState extends BaseObjectState<List<FolderOfUser>> {
             nbLikes += likes;
             folder.setLikes(String.format("%d", nbLikes));
             if(nbLikes>=0)
-                getObject().set(index, folder);
+                getContent().set(index, folder);
         }
     }
 
     public void setNbLink(int id, int link) {
         int index = findIndexFolderById(id);
         if (index != -1) {
-            FolderOfUser folder = getObject().get(index);
+            FolderOfUser folder = getContent().get(index);
             int nbLink = Integer.parseInt(folder.getLinks());
             nbLink += link;
             folder.setLinks(String.format("%d", nbLink));
             if(nbLink>=0)
-                getObject().set(index, folder);
+                getContent().set(index, folder);
         }
     }
 

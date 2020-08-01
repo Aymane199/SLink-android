@@ -26,6 +26,8 @@ import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 
+import java.util.Objects;
+
 public class BottomSheetComment extends BottomSheetDialogFragment {
 
     private int idLink;
@@ -60,7 +62,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
             }
         });
 
-        State.getInstance().getCommentsList().setOnChangeObjectListeners(new OnChangeObject() {
+        State.getInstance().getComments().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -68,7 +70,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
 
             @Override
             public void onDataReady() {
-                mAdapter = new DataAdapterComment(getActivity(), State.getInstance().getCommentsList().getObject());
+                mAdapter = new DataAdapterComment(getActivity(), State.getInstance().getComments().getContent());
                 recyclerView.setAdapter(mAdapter);
                 hideProgress();
             }
@@ -105,7 +107,8 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
 
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
-        FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+        FrameLayout bottomSheet = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+        assert bottomSheet != null;
         BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
         ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
 
@@ -120,7 +123,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
     private int getWindowHeight() {
         // Calculate window height for fullscreen use
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        ((Activity) Objects.requireNonNull(getContext())).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.heightPixels;
     }
 

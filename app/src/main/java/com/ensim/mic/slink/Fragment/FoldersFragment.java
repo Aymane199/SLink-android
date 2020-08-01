@@ -19,13 +19,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Adapter.DataAdapterFolder;
-import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.Component.BottomSheetFilter;
 import com.ensim.mic.slink.Component.BottomSheetSort;
 import com.ensim.mic.slink.Component.FolderComponents;
+import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
+
+import java.util.Objects;
 
 /*
     clean
@@ -92,7 +94,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new DataAdapterFolder(getActivity(), State.getInstance().getFoldersList().getObject());
+        mAdapter = new DataAdapterFolder(getActivity(), State.getInstance().getFolders().getContent());
         recyclerView.setAdapter(mAdapter);
 
         //add action on click search
@@ -101,7 +103,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     etSearch.clearFocus();
-                    InputMethodManager in = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    InputMethodManager in = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(getActivity().INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
                     searchText = etSearch.getText().toString();
                     new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
@@ -120,7 +122,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         });
 
         //add behavier when "List Folder State" changes
-        State.getInstance().getFoldersList().setOnChangeObjectListeners(new OnChangeObject() {
+        State.getInstance().getFolders().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -130,7 +132,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
             public void onDataReady() {
                 hideProgress();
                 System.out.println("change list");
-                mAdapter.mData = State.getInstance().getFoldersList().getObject();
+                mAdapter.mData = State.getInstance().getFolders().getContent();
                 mAdapter.notifyDataSetChanged();
 
             }
@@ -158,11 +160,11 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
      */
     public void onClick(View v) {
         if (v.getId() == R.id.card_view_filters) {
-            bottomSheetFilter.show(getActivity().getSupportFragmentManager(), "bottomSheetFilter");
+            bottomSheetFilter.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "bottomSheetFilter");
 
         }
         if (v.getId() == R.id.card_view_sort) {
-            bottomSheetSort.show(getActivity().getSupportFragmentManager(), "bottomSheetSort");
+            bottomSheetSort.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "bottomSheetSort");
         }
         if (v.getId() == R.id.card_view_add) {
             new FolderComponents().showAddFolderDialog(getActivity(),userId);

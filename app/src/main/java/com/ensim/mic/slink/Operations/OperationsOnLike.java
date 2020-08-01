@@ -3,7 +3,6 @@ package com.ensim.mic.slink.Operations;
 import com.ensim.mic.slink.Api.IApiServicesLike;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.utils.RequestState;
 
 import java.util.HashMap;
@@ -18,8 +17,8 @@ public class OperationsOnLike {
     static public int userId = 3;
     static public String userName = "Aymanerzk";
 
-    IApiServicesLike iApiServicesLike;
-    State state;
+    private IApiServicesLike iApiServicesLike;
+    private State state;
 
 
     public OperationsOnLike() {
@@ -48,9 +47,9 @@ public class OperationsOnLike {
                     return;
                 }
                 //update folder state, delete one like
-                state.getFoldersList().addlike(state.getLinksList().getFolderId());
+                state.getFolders().addlike(state.getLinks().getFolderId());
                 //state.setFoldersState(RequestState.LOADING);
-                state.getFoldersList().setState(RequestState.SUCCESSFUL);
+                state.getFolders().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
@@ -76,9 +75,9 @@ public class OperationsOnLike {
                     return;
                 }
                 //update folder state, delete one like
-                state.getFoldersList().deletelike(state.getLinksList().getFolderId());
+                state.getFolders().deletelike(state.getLinks().getFolderId());
                 //state.setFoldersState(RequestState.LOADING);
-                state.getFoldersList().setState(RequestState.SUCCESSFUL);
+                state.getFolders().setState(RequestState.SUCCESSFUL);
 
             }
 

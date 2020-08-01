@@ -4,9 +4,7 @@ import com.ensim.mic.slink.Api.IApiServicesComment;
 import com.ensim.mic.slink.Api.IApiServicesLink;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.State.StateListComments;
 import com.ensim.mic.slink.Table.Comment;
-import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.utils.RequestState;
 
@@ -24,9 +22,9 @@ public class OperationsOnComment {
     static public int userId = 3;
     static public String userName = "Aymanerzk";
 
-    IApiServicesComment iApiServicesComment;
-    IApiServicesLink iApiServicesLink;
-    State state;
+    private IApiServicesComment iApiServicesComment;
+    private IApiServicesLink iApiServicesLink;
+    private State state;
 
 
     public OperationsOnComment() {
@@ -38,7 +36,7 @@ public class OperationsOnComment {
     //call links comments and update the state
     public void displayComments(int linkId) {
 
-        state.getCommentsList().setState(RequestState.LOADING);
+        state.getComments().setState(RequestState.LOADING);
         System.out.println("display Comments :"+linkId);
         // etablish the request
         //Call<List<Comment>> call;
@@ -54,22 +52,23 @@ public class OperationsOnComment {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getCommentsList().setObject(new ArrayList<Comment>());
-                    state.getCommentsList().setState(RequestState.FAILED);
+                    state.getComments().setContent(new ArrayList<Comment>());
+                    state.getComments().setState(RequestState.FAILED);
                     return;
                 }
+                assert response.body() != null;
                 System.out.println(response.body().toString());
                 //update state
-                state.getCommentsList().setObject(response.body().getComments());
-                state.getCommentsList().setState(RequestState.SUCCESSFUL);
+                state.getComments().setContent(response.body().getComments());
+                state.getComments().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<LinkOfFolder> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.getCommentsList().setObject(new ArrayList<Comment>());
-                state.getCommentsList().setState(RequestState.FAILED);
+                state.getComments().setContent(new ArrayList<Comment>());
+                state.getComments().setState(RequestState.FAILED);
             }
         });
     }
@@ -78,7 +77,7 @@ public class OperationsOnComment {
     public void createComment(int linkId,int userId,String text) {
         System.out.println("create comment ------------------------------------- ");
 
-        state.getCommentsList().setState(RequestState.LOADING);
+        state.getComments().setState(RequestState.LOADING);
         //create body
         HashMap<String, Object> body = new HashMap<>();
         body.put("link",linkId);
@@ -94,30 +93,29 @@ public class OperationsOnComment {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getCommentsList().setState(RequestState.FAILED);
+                    state.getComments().setState(RequestState.FAILED);
                     return ;
 
                 }
                 Comment comment = response.body();
 
                 //update state
-                List<Comment> commentListTemp = state.getCommentsList().getObject();
+                List<Comment> commentListTemp = state.getComments().getContent();
                 commentListTemp.add(comment);
-                state.getCommentsList().setObject(commentListTemp);
-                state.getCommentsList().setState(RequestState.SUCCESSFUL);
+                state.getComments().setContent(commentListTemp);
+                state.getComments().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<Comment> call, Throwable t) {
-                state.getCommentsList().setState(RequestState.FAILED);
-                return;
+                state.getComments().setState(RequestState.FAILED);
             }
         });
     }
 
     public void deleteComment(final Comment comment){
-        state.getCommentsList().setState(RequestState.LOADING);
+        state.getComments().setState(RequestState.LOADING);
         final int commmentId = comment.getId();
         Call<Void> call = iApiServicesComment.deleteComment(commmentId);
         call.enqueue(new Callback<Void>() {
@@ -127,18 +125,18 @@ public class OperationsOnComment {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getCommentsList().setState(RequestState.FAILED);
+                    state.getComments().setState(RequestState.FAILED);
                     return;
                 }
-                List<Comment> comments = state.getCommentsList().getObject();
+                List<Comment> comments = state.getComments().getContent();
                 comments.remove(comment);
-                state.getCommentsList().setObject(comments);
-                state.getCommentsList().setState(RequestState.SUCCESSFUL);
+                state.getComments().setContent(comments);
+                state.getComments().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                state.getCommentsList().setState(RequestState.FAILED);
+                state.getComments().setState(RequestState.FAILED);
             }
         });
     }
