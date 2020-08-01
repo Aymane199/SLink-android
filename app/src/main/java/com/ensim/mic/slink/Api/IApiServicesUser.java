@@ -4,6 +4,8 @@ import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.User;
 import com.ensim.mic.slink.Table.FolderOfUser;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,6 +16,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface IApiServicesUser {
 
@@ -25,6 +28,16 @@ public interface IApiServicesUser {
 
     @GET("user/{id}")
     Call<User> getUser(@Path("id") int id);
+
+    /**
+     * route to get user using userName or Gmail
+     * @return
+     */
+    @GET("user/search")
+    Call<User> getUserByUserName(@Query("userName") String search);
+
+    @GET("user/search")
+    Call<User> getUserByGmail(@Query("Gmail") String search);
 
     @PATCH("user/{id}")
     Call<User> updateUser(@Path("id") int id,@Body User user);

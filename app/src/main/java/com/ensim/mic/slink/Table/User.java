@@ -3,6 +3,8 @@ package com.ensim.mic.slink.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class User {
 
     @SerializedName("id")
@@ -17,15 +19,6 @@ public class User {
     @SerializedName("date")
     @Expose
     private String date;
-    @SerializedName("folders")
-    @Expose
-    private Folders folders;
-    @SerializedName("subscribes")
-    @Expose
-    private Subscribes subscribes;
-    @SerializedName("shares")
-    @Expose
-    private Shares shares;
 
 
     public User() {
@@ -41,15 +34,12 @@ public class User {
      * @param id
      * @param userName
      */
-    public User(Integer id, String userName, String gmail, String date, Folders folders, Subscribes subscribes, Shares shares) {
+    public User(Integer id, String userName, String gmail, String date) {
         super();
         this.id = id;
         this.userName = userName;
         this.gmail = gmail;
         this.date = date;
-        this.folders = folders;
-        this.subscribes = subscribes;
-        this.shares = shares;
     }
     public Integer getId() {
         return id;
@@ -83,29 +73,6 @@ public class User {
         this.date = date;
     }
 
-    public Folders getFolders() {
-        return folders;
-    }
-
-    public void setFolders(Folders folders) {
-        this.folders = folders;
-    }
-
-    public Subscribes getSubscribes() {
-        return subscribes;
-    }
-
-    public void setSubscribes(Subscribes subscribes) {
-        this.subscribes = subscribes;
-    }
-
-    public Shares getShares() {
-        return shares;
-    }
-
-    public void setShares(Shares shares) {
-        this.shares = shares;
-    }
 
     @Override
     public String toString() {
@@ -114,17 +81,6 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", gmail='" + gmail + '\'' +
                 ", date='" + date + '\'' +
-                ", folders=" + folders +
-                ", subscribes=" + subscribes +
-                ", shares=" + shares +
                 '}';
     }
-}
-class Folders {
-}
-
-class Subscribes {
-}
-
-class Shares {
 }

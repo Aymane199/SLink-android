@@ -18,6 +18,9 @@ public class SharePersonne {
     @Expose
     private String accessRight;
 
+    @SerializedName("user")
+    @Expose
+    private User user;
     /**
      * No args constructor for use in serialization
      *
@@ -26,18 +29,19 @@ public class SharePersonne {
     }
 
     /**
-     *
+     *  @param id
+     * @param userName
      * @param gmail
      * @param accessRight
-     * @param id
-     * @param userName
+     * @param user
      */
-    public SharePersonne(String id, String userName, String gmail, String accessRight) {
+    public SharePersonne(String id, String userName, String gmail, String accessRight, User user) {
         super();
         this.id = id;
         this.userName = userName;
         this.gmail = gmail;
         this.accessRight = accessRight;
+        this.user = user;
     }
 
     public String getId() {
@@ -80,5 +84,13 @@ public class SharePersonne {
                 ", gmail='" + gmail + '\'' +
                 ", accessRight='" + accessRight + '\'' +
                 '}';
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

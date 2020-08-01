@@ -15,8 +15,10 @@ import retrofit2.http.Path;
 public interface IApiServicesShare {
 
     @POST("share")
-    Call<Object> createShare(@Body HashMap<String, Object> body);
+    Call<SharePersonne> createShare(@Body HashMap<String, Object> body);
 
+    @DELETE("share/{id}")
+    Call<Object> deleteShare(@Path("id")int id);
 
 
 }

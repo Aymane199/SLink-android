@@ -1,9 +1,13 @@
 package com.ensim.mic.slink.Operations;
 
 import com.ensim.mic.slink.Api.IApiServicesUser;
+import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.User;
 import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.utils.RequestState;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -105,6 +109,53 @@ public class OperationsOnUser {
                 System.out.println(t.getMessage());
             }
         });
+    }
+
+    /**
+     * @param mailOrUserName
+     * search user using mail or userName
+     */
+    public void getUser(String mailOrUserName ){
+
+        System.out.println("-------------- get user ");
+        State.getInstance().getSearchUser().setState(RequestState.LOADING);
+        HashMap<String,Object> body = new HashMap<>();
+
+        /*if(android.util.Patterns.EMAIL_ADDRESS.matcher(mailOrUserName).matches()){
+            body.put("Gmail",mailOrUserName);
+        }else {
+            body.put("userName",mailOrUserName);
+        }*/
+        //body.put("userName",mailOrUserName);
+
+        Call<User> call = IApiServicesUser.getUserByUserName(mailOrUserName);
+
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    State.getInstance().getSearchUser().setState(RequestState.FAILED);
+                    return;
+                }
+                System.out.println(response.toString());
+                assert response.body() != null;
+                User user = response.body();
+                State.getInstance().getSearchUser().setContent(user);
+                State.getInstance().getSearchUser().setState(RequestState.SUCCESSFUL);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println("--------- onfailure");
+                System.out.println(t.getMessage());
+                State.getInstance().getSearchUser().setState(RequestState.FAILED);
+            }
+        });
+
     }
 
     public void updateUser(int id, User user) {

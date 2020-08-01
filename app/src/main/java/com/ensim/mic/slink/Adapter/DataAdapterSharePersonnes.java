@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ensim.mic.slink.Listener.LinkMenuListener;
+import com.ensim.mic.slink.Listener.ShareMenuListener;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.SharePersonne;
 import com.ensim.mic.slink.Table.LinkOfFolder;
@@ -59,7 +61,7 @@ public class DataAdapterSharePersonnes extends RecyclerView.Adapter<DataAdapterS
         myViewHolder.tvUserName.setText(personne.getUserName());
         myViewHolder.tvMail.setText(personne.getGmail());
         myViewHolder.tvRight.setText(personne.getAccessRight());
-
+        myViewHolder.ivMenu.setOnClickListener(new ShareMenuListener(mContext,myViewHolder.ivMenu,personne));
 
     }
 
@@ -76,12 +78,14 @@ public class DataAdapterSharePersonnes extends RecyclerView.Adapter<DataAdapterS
     public class myViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvUserName,tvMail,tvRight;
+        ImageView ivMenu;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvMail = itemView.findViewById(R.id.tvMail);
             tvRight = itemView.findViewById(R.id.tvRight);
+            ivMenu = itemView.findViewById(R.id.ivMenu);
         }
 
     }

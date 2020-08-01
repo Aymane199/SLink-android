@@ -71,7 +71,7 @@ public class OperationsOnShare {
         state.getSharePeople().setState(RequestState.LOADING);
         System.out.println("add Personne");
         // etablish the request
-        Call<Object> call;
+        Call<SharePersonne> call;
         HashMap<String, Object> body = new HashMap<>();
         body.put("folder",idFolder);
         body.put("user",userId);
@@ -79,6 +79,40 @@ public class OperationsOnShare {
         call = iApiServicesShare.createShare(body);
 
         //fill the list
+        call.enqueue(new Callback<SharePersonne>() {
+            @Override
+            public void onResponse(Call<SharePersonne> call, Response<SharePersonne> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    state.getSharePeople().setState(RequestState.FAILED);
+                    return;
+                }
+                //update state
+                SharePersonne personne = response.body();
+                assert personne != null;
+                personne.setUserName(personne.getUser().getUserName());
+                personne.setGmail(personne.getUser().getGmail());
+                List<SharePersonne> listPersonnes = state.getSharePeople().getContent();
+                listPersonnes.add(personne);
+                state.getSharePeople().setContent(listPersonnes);
+                state.getSharePeople().setState(RequestState.SUCCESSFUL);
+
+            }
+
+            @Override
+            public void onFailure(Call<SharePersonne> call, Throwable t) {
+                System.out.println(t.getMessage());
+                state.getSharePeople().setState(RequestState.FAILED);
+            }
+        });
+    }
+
+    public void deleteShare(final SharePersonne sharePersonne){
+        state.getSharePeople().setState(RequestState.LOADING);
+        final int id = Integer.parseInt(sharePersonne.getId());
+        Call<Object> call = iApiServicesShare.deleteShare(id);
         call.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
@@ -89,18 +123,14 @@ public class OperationsOnShare {
                     state.getSharePeople().setState(RequestState.FAILED);
                     return;
                 }
-                //update state
-                //List<Object> listPersonnes = state.getSharePersonnes().getListPersonnes();
-                //listPersonnes.add(response.body());
-                System.out.println(response.body());
-                state.getSharePeople().setContent(new ArrayList<SharePersonne>());
+                List<SharePersonne> content = state.getSharePeople().getContent();
+                content.remove(sharePersonne);
+                state.getSharePeople().setContent(content);
                 state.getSharePeople().setState(RequestState.SUCCESSFUL);
-
             }
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
-                System.out.println(t.getMessage());
                 state.getSharePeople().setState(RequestState.FAILED);
             }
         });
