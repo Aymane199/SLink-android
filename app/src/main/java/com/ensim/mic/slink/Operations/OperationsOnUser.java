@@ -2,11 +2,10 @@ package com.ensim.mic.slink.Operations;
 
 import com.ensim.mic.slink.Api.IApiServicesUser;
 import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.User;
 import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Table.User;
 import com.ensim.mic.slink.utils.RequestState;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

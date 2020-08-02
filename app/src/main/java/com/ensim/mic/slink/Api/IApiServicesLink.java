@@ -1,6 +1,5 @@
 package com.ensim.mic.slink.Api;
 
-import com.ensim.mic.slink.Table.Folder;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 
 import java.util.HashMap;

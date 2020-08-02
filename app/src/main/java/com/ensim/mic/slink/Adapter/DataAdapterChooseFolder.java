@@ -3,9 +3,6 @@ package com.ensim.mic.slink.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +14,16 @@ import android.widget.Toast;
 import com.ensim.mic.slink.Api.IApiServicesLink;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

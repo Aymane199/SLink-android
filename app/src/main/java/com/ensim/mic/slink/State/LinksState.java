@@ -1,6 +1,5 @@
 package com.ensim.mic.slink.State;
 
-import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.utils.RequestState;
 

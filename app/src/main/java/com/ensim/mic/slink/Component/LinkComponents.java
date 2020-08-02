@@ -13,9 +13,6 @@ import com.ensim.mic.slink.Table.LinkOfFolder;
 
 public class LinkComponents {
 
-
-
-
     public void showDeleteDialog(final Context mContext, final LinkOfFolder link) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);

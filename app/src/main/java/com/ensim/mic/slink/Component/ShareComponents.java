@@ -6,16 +6,12 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Operations.OperationsOnLink;
 import com.ensim.mic.slink.Operations.OperationsOnShare;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.SharePersonne;
 
 
 public class ShareComponents {
-
-
 
 
     public void showDeleteDialog(final Context mContext, final SharePersonne sharePersonne) {

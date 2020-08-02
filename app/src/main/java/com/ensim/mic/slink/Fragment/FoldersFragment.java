@@ -1,12 +1,6 @@
 package com.ensim.mic.slink.Fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +22,13 @@ import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /*
     clean
@@ -103,7 +104,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     etSearch.clearFocus();
-                    InputMethodManager in = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    InputMethodManager in = (InputMethodManager) requireActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
                     searchText = etSearch.getText().toString();
                     new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
@@ -160,11 +161,11 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
      */
     public void onClick(View v) {
         if (v.getId() == R.id.card_view_filters) {
-            bottomSheetFilter.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "bottomSheetFilter");
+            bottomSheetFilter.show(requireActivity().getSupportFragmentManager(), "bottomSheetFilter");
 
         }
         if (v.getId() == R.id.card_view_sort) {
-            bottomSheetSort.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "bottomSheetSort");
+            bottomSheetSort.show(requireActivity().getSupportFragmentManager(), "bottomSheetSort");
         }
         if (v.getId() == R.id.card_view_add) {
             new FolderComponents().showAddFolderDialog(getActivity(),userId);

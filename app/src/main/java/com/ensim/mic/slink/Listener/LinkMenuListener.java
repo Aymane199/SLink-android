@@ -6,10 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
-import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.Component.LinkComponents;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 
 /*

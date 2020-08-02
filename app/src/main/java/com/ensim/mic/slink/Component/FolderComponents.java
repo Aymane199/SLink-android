@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -207,31 +207,6 @@ public class FolderComponents {
         }else{
 
         }
-        /*body.put("name", linkUrl);
-        body.put("URL", linkUrl);
-        body.put("picture", " ");
-        body.put("folder", folderOutput.getId());
-        Call<Object> call = iApiServicesLink.createLink(body);
-        call.enqueue(new Callback<Object>() {
-            @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
-                if (!response.isSuccessful()) {
-                    System.out.println("Code: " + response.code());
-                    System.out.println("message: " + response.message());
-                    System.out.println("error: " + response.errorBody());
-                    return;
-                }
-                Object links = response.body();
-                System.out.println(links.toString());
-            }
-
-            @Override
-            public void onFailure(Call<Object> call, Throwable t) {
-                System.out.println(t.getMessage());
-                return;
-            }
-        });
-*/
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
         TextView tvTitle = new TextView(mContext);

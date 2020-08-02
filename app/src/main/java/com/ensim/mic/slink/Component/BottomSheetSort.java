@@ -1,9 +1,6 @@
 package com.ensim.mic.slink.Component;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +11,13 @@ import android.widget.Toast;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class BottomSheetSort extends BottomSheetDialogFragment implements View.OnClickListener {
     
@@ -92,19 +93,6 @@ public class BottomSheetSort extends BottomSheetDialogFragment implements View.O
         }
 
     }
-/*
 
-    public BottomSheetFilter.ChangeListener getMlistener() {
-        return mlistener;
-    }
-
-    public void setMlistener(BottomSheetFilter.ChangeListener mlistener) {
-        this.mlistener = mlistener;
-    }
-
-    public interface ChangeListener {
-        void onChange();
-    }
-*/
 
 }

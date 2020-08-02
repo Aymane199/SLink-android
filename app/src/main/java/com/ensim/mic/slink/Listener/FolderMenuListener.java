@@ -3,7 +3,6 @@ package com.ensim.mic.slink.Listener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,8 +13,6 @@ import com.ensim.mic.slink.Activities.ShareActivity;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.FolderOfUser;
-
-import java.io.Serializable;
 
 /*
 *   Clean

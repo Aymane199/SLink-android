@@ -1,27 +1,20 @@
 package com.ensim.mic.slink.Adapter;
 
 import android.content.Context;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Listener.LinkMenuListener;
 import com.ensim.mic.slink.Listener.ShareMenuListener;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.SharePersonne;
-import com.ensim.mic.slink.Table.LinkOfFolder;
-import com.ensim.mic.slink.Table.SharePersonne;
-import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class DataAdapterSharePersonnes extends RecyclerView.Adapter<DataAdapterSharePersonnes.myViewHolder> {
 

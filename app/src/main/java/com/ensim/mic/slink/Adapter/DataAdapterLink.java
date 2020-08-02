@@ -3,9 +3,6 @@ package com.ensim.mic.slink.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +21,10 @@ import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myViewHolder> {
 

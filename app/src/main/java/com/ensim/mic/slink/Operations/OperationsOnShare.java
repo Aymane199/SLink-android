@@ -7,7 +7,6 @@ import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.SharePersonne;
 import com.ensim.mic.slink.utils.RequestState;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
