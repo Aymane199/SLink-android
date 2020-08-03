@@ -5,14 +5,6 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <ProgressBar
-        android:id="@+id/progress_circular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/frameLayout"
-        android:layout_centerHorizontal="true"
-        android:progressBackgroundTintMode="@color/colorPrimary" />
-
     <TextView
         android:id="@+id/bottomSheetSort_cancel"
         android:layout_width="wrap_content"
@@ -96,5 +88,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/frameLayout"
+            android:layout_centerHorizontal="true"
+            android:progressBackgroundTintMode="@color/colorPrimary" />
+
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

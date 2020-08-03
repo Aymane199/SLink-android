@@ -22,17 +22,7 @@ android:layout_height="match_parent">
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <ProgressBar
-            android:id="@+id/progress_circular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateTint="@color/colorPrimary"
-            android:indeterminateTintMode="src_atop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/my_recycler_view" />
+
 
         <TextView
             android:id="@+id/tvUserName"
@@ -127,6 +117,17 @@ android:layout_height="match_parent">
             app:layout_constraintTop_toBottomOf="@+id/card_view_add" />
 
 
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTintMode="src_atop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/my_recycler_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
