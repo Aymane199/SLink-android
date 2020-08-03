@@ -11,7 +11,7 @@
     card_view:cardCornerRadius="12dp"
     card_view:layout_constraintStart_toStartOf="parent"
     card_view:layout_constraintTop_toBottomOf="@+id/view">
-
+    
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
