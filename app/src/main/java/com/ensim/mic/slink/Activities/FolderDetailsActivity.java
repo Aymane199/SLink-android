@@ -44,7 +44,7 @@ public class FolderDetailsActivity extends AppCompatActivity {
                 (FolderOfUser) bundle.getSerializable("folder");
 
         progressBar = findViewById(R.id.progress_circular);
-        tvName = findViewById(R.id.tvName);
+        tvName = findViewById(R.id.tvUserName);
         tvDescription = findViewById(R.id.tvDescription);
         tvLikes = findViewById(R.id.tvLikes);
         tvLinks = findViewById(R.id.tvLinks);

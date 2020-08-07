@@ -14,8 +14,7 @@ import retrofit2.Response;
 public class OperationsOnLike {
 
     //user state
-    static public int userId = 3;
-    static public String userName = "Aymanerzk";
+    private int userId;
 
     private IApiServicesLike iApiServicesLike;
     private State state;
@@ -24,6 +23,7 @@ public class OperationsOnLike {
     public OperationsOnLike() {
         iApiServicesLike = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesLike.class);
         state = State.getInstance();
+        userId = State.getInstance().getCurrentUser().getContent().getId();
     }
 
     //call like and update links state

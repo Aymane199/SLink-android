@@ -1,6 +1,7 @@
 package com.ensim.mic.slink.Operations;
 
 import com.ensim.mic.slink.Api.IApiServicesUser;
+import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.User;
@@ -12,57 +13,25 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-/*
-test class
-designed to group methods
-it won't be user anywhere
-we ll deleted it at the end
- */
+
 public class OperationsOnUser {
-    com.ensim.mic.slink.Api.IApiServicesUser IApiServicesUser;
+
+    private IApiServicesUser iApiServicesUser;
 
     public OperationsOnUser() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://212.227.200.43/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        IApiServicesUser = retrofit.create(IApiServicesUser.class);
-    }
-
-    public void getUsers() {
-        System.out.println("getUsers ------------------------------------- ");
-
-        Call<List<User>> call = IApiServicesUser.getUsers();
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (!response.isSuccessful()) {
-                    System.out.println("Code: " + response.code());
-                    System.out.println("message: " + response.message());
-                    System.out.println("error: " + response.errorBody());
-                    return ;
-                }
-                List<User> users = response.body();
-                for (User user : users) {
-                   System.out.println(user.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                System.out.println(t.getMessage());
-                return;
-            }
-        });
+        iApiServicesUser = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesUser.class);
 
     }
 
-    public void createUser(User user) {
+    public void createCurrentUser(String userName,String mail) {
         System.out.println("createUser ------------------------------------- ");
+        State.getInstance().getCurrentUser().setState(RequestState.LOADING);
 
-        Call<User> call = IApiServicesUser.createUser(user);
+        HashMap<String,Object> body = new HashMap<>();
+        body.put("userName",userName);
+        body.put("Gmail",mail);
+
+        Call<User> call = iApiServicesUser.createUser(body);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -70,9 +39,13 @@ public class OperationsOnUser {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
+                    State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+
                     return ;
                 }
                 User user = response.body();
+                State.getInstance().getCurrentUser().setContent(user);
+                State.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
 
                 System.out.println(user.toString());
             }
@@ -80,32 +53,8 @@ public class OperationsOnUser {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 System.out.println(t.getMessage());
+                State.getInstance().getCurrentUser().setState(RequestState.FAILED);
                 return;
-            }
-        });
-    }
-
-    public void getUser(int id) {
-        System.out.println("getUser ------------------------------------- ");
-
-        Call<User> call = IApiServicesUser.getUser(id);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (!response.isSuccessful()) {
-                    System.out.println("Code: " + response.code());
-                    System.out.println("message: " + response.message());
-                    System.out.println("error: " + response.errorBody());
-                    return;
-                }
-                User user = response.body();
-                System.out.println(user.toString());
-
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                System.out.println(t.getMessage());
             }
         });
     }
@@ -114,21 +63,18 @@ public class OperationsOnUser {
      * @param mailOrUserName
      * search user using mail or userName
      */
-    public void getUser(String mailOrUserName ){
+    public void getSearchUser(String mailOrUserName ){
 
         System.out.println("-------------- get user ");
         State.getInstance().getSearchUser().setState(RequestState.LOADING);
         HashMap<String,Object> body = new HashMap<>();
+        Call<User> call;
 
-        /*if(android.util.Patterns.EMAIL_ADDRESS.matcher(mailOrUserName).matches()){
-            body.put("Gmail",mailOrUserName);
+        if(android.util.Patterns.EMAIL_ADDRESS.matcher(mailOrUserName).matches()){
+            call = iApiServicesUser.getUserByGmail(mailOrUserName);
         }else {
-            body.put("userName",mailOrUserName);
-        }*/
-        //body.put("userName",mailOrUserName);
-
-        Call<User> call = IApiServicesUser.getUserByUserName(mailOrUserName);
-
+            call = iApiServicesUser.getUserByUserName(mailOrUserName);
+        }
 
         call.enqueue(new Callback<User>() {
             @Override
@@ -157,10 +103,19 @@ public class OperationsOnUser {
 
     }
 
-    public void updateUser(int id, User user) {
-        System.out.println("updateUser ------------------------------------- ");
+    /**
+     * @param mailOrUserName
+     * search user using mail or userName
+     */
+    public void getCurrentUser(String mailOrUserName ){
 
-        Call<User> call = IApiServicesUser.updateUser(id, user);
+        System.out.println("-------------- get user ");
+        State.getInstance().getCurrentUser().setState(RequestState.LOADING);
+        HashMap<String,Object> body = new HashMap<>();
+        body.put("Gmail",mailOrUserName);
+        Call<User> call = iApiServicesUser.getUserByGmail(mailOrUserName);
+
+
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -168,16 +123,60 @@ public class OperationsOnUser {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
+                    State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+                    return;
+                }
+                System.out.println(response.toString());
+                assert response.body() != null;
+                User user = response.body();
+                State.getInstance().getCurrentUser().setContent(user);
+                State.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println("--------- onfailure");
+                System.out.println(t.getMessage());
+                State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+            }
+        });
+
+    }
+
+    public void     updateUser(int id, User user) {
+        System.out.println("updateUser ------------------------------------- ");
+
+        State.getInstance().getCurrentUser().setState(RequestState.LOADING);
+
+        HashMap<String,Object> body = new HashMap<>();
+        if(user.getGmail() != null)
+        body.put("Gmail",user.getGmail());
+        if(user.getUserName() != null)
+        body.put("userName",user.getUserName());
+
+
+        Call<User> call = iApiServicesUser.updateUser(id, body);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    State.getInstance().getCurrentUser().setState(RequestState.FAILED);
                     return;
                 }
                 User user = response.body();
-                System.out.println(user.toString());
-
+                assert user != null;
+                user.setGmail("");
+                State.getInstance().getCurrentUser().setContent(user);
+                State.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 System.out.println(t.getMessage());
+                State.getInstance().getCurrentUser().setState(RequestState.FAILED);
             }
         });
     }
@@ -185,7 +184,7 @@ public class OperationsOnUser {
     public void deleteUser(int id) {
         System.out.println("updateUser ------------------------------------- ");
 
-        Call<Void> call = IApiServicesUser.deleteUser(id);
+        Call<Void> call = iApiServicesUser.deleteUser(id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -209,7 +208,7 @@ public class OperationsOnUser {
     public void getUserAllFolders(int id , String search) {
         System.out.println("getUserAllFolders ------------------------------------- ");
 
-        Call<List<FolderOfUser>> call = IApiServicesUser.getUserAllFolders(id, search);
+        Call<List<FolderOfUser>> call = iApiServicesUser.getUserAllFolders(id, search);
         call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
             public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
@@ -237,7 +236,7 @@ public class OperationsOnUser {
     public void getUserFolders(int id , String search) {
         System.out.println("getUserFolders ------------------------------------- ");
 
-        Call<List<FolderOfUser>> call = IApiServicesUser.getUserFolders(id, search);
+        Call<List<FolderOfUser>> call = iApiServicesUser.getUserFolders(id, search);
         call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
             public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
@@ -265,7 +264,7 @@ public class OperationsOnUser {
     public void getUserShare(int id , String search) {
         System.out.println("getUserShare ------------------------------------- ");
 
-        Call<List<FolderOfUser>> call = IApiServicesUser.getUserShare(id, search);
+        Call<List<FolderOfUser>> call = iApiServicesUser.getUserShare(id, search);
         call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
             public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
@@ -293,7 +292,7 @@ public class OperationsOnUser {
     public void getUserSubscribe(int id , String search) {
         System.out.println("getUserSubscribe ------------------------------------- ");
 
-        Call<List<FolderOfUser>> call = IApiServicesUser.getUserSubscribe(id, search);
+        Call<List<FolderOfUser>> call = iApiServicesUser.getUserSubscribe(id, search);
         call.enqueue(new Callback<List<FolderOfUser>>() {
             @Override
             public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {

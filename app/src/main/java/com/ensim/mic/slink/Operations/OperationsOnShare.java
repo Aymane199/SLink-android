@@ -16,10 +16,6 @@ import retrofit2.Response;
 
 public class OperationsOnShare {
 
-    //user state
-    static public int userId = 3;
-    static public String userName = "Aymanerzk";
-
     private IApiServicesFolder iApiServicesFolder;
     private IApiServicesShare iApiServicesShare;
     private State state;

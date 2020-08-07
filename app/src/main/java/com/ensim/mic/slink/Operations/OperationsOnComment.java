@@ -18,10 +18,6 @@ import retrofit2.Response;
 
 public class OperationsOnComment {
 
-    //user state
-    static public int userId = 3;
-    static public String userName = "Aymanerzk";
-
     private IApiServicesComment iApiServicesComment;
     private IApiServicesLink iApiServicesLink;
     private State state;

@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Adapter.DataAdapterLink;
-import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Operations.OperationsOnLink;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
@@ -58,14 +57,14 @@ public class LinksActivity extends AppCompatActivity {
         Intent intent = getIntent();
         idFolder = intent.getStringExtra("idFolder");
         nameFolder = intent.getStringExtra("nameFolder");
-        idUser = FoldersFragment.userId + "";
+        idUser = State.getInstance().getCurrentUser().getContent().getId()+"";
 
         //init views
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         etSearch = findViewById(R.id.etSearchLinks);
         progressBar = findViewById(R.id.progress_circular);
-        tvTitle = findViewById(R.id.tvName);
+        tvTitle = findViewById(R.id.tvUserName);
         tvTitle.setText(nameFolder);
 
         // use a linear layout manager

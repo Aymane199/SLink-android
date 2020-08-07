@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.ensim.mic.slink.Adapter.DataAdapterLink;
 import com.ensim.mic.slink.Api.IApiServicesFolder;
 import com.ensim.mic.slink.Api.RetrofitFactory;
-import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Operations.OperationsOnLink;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
@@ -62,7 +61,7 @@ public class SavedLinksActivity extends AppCompatActivity {
 
 
         //get id user
-        idUser = FoldersFragment.userId + "";
+        idUser = State.getInstance().getCurrentUser().getContent().getId()+ "";
 
         //init views
         recyclerView = findViewById(R.id.my_recycler_view);

@@ -23,12 +23,13 @@ public class DataAdapterComment extends RecyclerView.Adapter<DataAdapterComment.
     Context mContext;
     List<Comment> mData;
     private OnItemClickListener mListener;
+    private int userId;
 
 
-    public DataAdapterComment(Context mContext, List<Comment> mData) {
+    public DataAdapterComment(Context mContext, List<Comment> mData, int userId) {
         this.mContext = mContext;
         this.mData = mData;
-
+        this.userId = userId;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -54,8 +55,7 @@ public class DataAdapterComment extends RecyclerView.Adapter<DataAdapterComment.
         myViewHolder.tvText.setText(comment.getText());
         myViewHolder.tvDate.setText(comment.getDate());
         myViewHolder.tvUserName.setText(comment.getUser().getUserName());
-        //TODO userid State = 3
-        if(3!=comment.getUser().getId())
+        if(userId!=comment.getUser().getId())
             myViewHolder.ivMenu.setVisibility(View.INVISIBLE);
 
         myViewHolder.ivMenu.setOnClickListener(new CommentMenuListener(mContext, myViewHolder.ivMenu, comment));

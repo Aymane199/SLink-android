@@ -20,8 +20,8 @@ import retrofit2.Response;
 public class OperationsOnFolder {
 
     //user state
-    static public int userId = 3;
-    static public String userName = "Aymanerzk";
+    private int userId;
+    private String userName;
 
     private IApiServicesUser iApiServicesUser;
     private IApiServicesFolder iApiServicesFolder;
@@ -32,6 +32,8 @@ public class OperationsOnFolder {
         iApiServicesFolder = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesFolder.class);
         iApiServicesUser = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesUser.class);
         state = State.getInstance();
+        userName = State.getInstance().getCurrentUser().getContent().getUserName();
+        userId = State.getInstance().getCurrentUser().getContent().getId();
     }
 
     //call user folder and update the state

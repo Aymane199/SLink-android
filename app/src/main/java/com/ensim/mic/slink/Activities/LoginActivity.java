@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ensim.mic.slink.Operations.OperationsOnUser;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.OnChangeObject;
+import com.ensim.mic.slink.State.State;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,8 +25,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "LoginActivity";
-    GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private Button btnSignIn;
+    String personName;
+    String personEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        State.getInstance().getCurrentUser().addOnChangeObjectListener(new OnChangeObject() {
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onDataReady() {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onFailed() {
+                if(State.getInstance().getCurrentUser().getContent().getGmail() == null && !personEmail.isEmpty() && !personName.isEmpty()) {
+                    Toast.makeText(getApplicationContext(),"Welcome "+personName,Toast.LENGTH_LONG).show();
+                    new OperationsOnUser().createCurrentUser(personName,personEmail);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -49,18 +76,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
         updateUI(account);
     }
 
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
             btnSignIn.setVisibility(View.INVISIBLE);
-            String personName = account.getDisplayName();
+
+            personEmail = account.getEmail();
+            personName = account.getDisplayName();
             String personGivenName = account.getGivenName();
             String personFamilyName = account.getFamilyName();
-            String personEmail = account.getEmail();
             String personId = account.getId();
             Uri personPhoto = account.getPhotoUrl();
+
             System.out.println("profile [ " +
                     ", Name :"+personName+"" +
                     ", personGivenName :"+personGivenName+"" +
@@ -69,10 +99,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     ", personId :"+personId+"" +
                     ", personPhoto :"+personPhoto+"" +
                     "]");
-            Toast.makeText(LoginActivity.this, "u are already signed : "+personName, Toast.LENGTH_SHORT).show();
+
+            new OperationsOnUser().getCurrentUser(personEmail);
+
+            System.out.println("u are already signed : "+personName);
 
 
-            startActivity(new Intent(this, MainActivity.class));
+
         } else {
             btnSignIn.setVisibility(View.VISIBLE);
             Toast.makeText(LoginActivity.this, "sign in bro", Toast.LENGTH_SHORT).show();

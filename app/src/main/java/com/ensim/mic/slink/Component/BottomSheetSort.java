@@ -26,7 +26,6 @@ public class BottomSheetSort extends BottomSheetDialogFragment implements View.O
     RadioGroup radioGroup;
     RadioButton radioButton, radioMostRecent, radioOldest;
     private int choosen_sort = SORT_MOST_RECENT;
-//    private BottomSheetFilter.ChangeListener mlistener;
 
 
     @Nullable

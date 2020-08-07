@@ -21,8 +21,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -36,12 +34,13 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ProgressBar progressBar;
+    private int userId;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_layout_comment, container, false);
-
+        userId = State.getInstance().getCurrentUser().getContent().getId();
         progressBar = v.findViewById(R.id.progress_circular);
         CardView btnComment = v.findViewById(R.id.cvComment);
         final EditText etText = v.findViewById(R.id.etText);
@@ -54,9 +53,8 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 String text = etText.getText().toString();
-                //TODO change userId
                 if (!text.isEmpty()) {
-                    new OperationsOnComment().createComment(idLink, 3, text);
+                    new OperationsOnComment().createComment(idLink, userId, text);
                     etText.setText("");
                 }
 
@@ -71,7 +69,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
 
             @Override
             public void onDataReady() {
-                mAdapter = new DataAdapterComment(getActivity(), State.getInstance().getComments().getContent());
+                mAdapter = new DataAdapterComment(getActivity(), State.getInstance().getComments().getContent(), userId);
                 recyclerView.setAdapter(mAdapter);
                 hideProgress();
             }

@@ -22,7 +22,6 @@ public class DataAdapterSharePersonnes extends RecyclerView.Adapter<DataAdapterS
 
     Context mContext;
     List<SharePersonne> mData;
-
     private OnItemClickListener mListener;
 
 

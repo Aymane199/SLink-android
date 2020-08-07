@@ -1,13 +1,16 @@
 package com.ensim.mic.slink.Activities;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Fragment.PreferencesFragment;
 import com.ensim.mic.slink.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,9 +26,12 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragmentFolders;
     Fragment fragmentPreferences;
 
-    FragmentManager fragmentManager;
 
     String currentFragementTag = "";
+    String fragmentFoldersTag = "fragmentFoldersTag";
+    String fragmentPreferencesTag = "fragmentPreferencesTag";
+
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +43,17 @@ public class MainActivity extends AppCompatActivity {
         fragmentPreferences = new PreferencesFragment();
 
         fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.fragment_container, fragmentFolders, fragmentFoldersTag);
+        transaction.add(R.id.fragment_container, fragmentPreferences, fragmentPreferencesTag);
+        //transaction.addToBackStack(null);
 
-        transaction.add(R.id.fragment_container, fragmentFolders, FoldersFragment.class.getName());
         transaction.show(fragmentFolders);
-        currentFragementTag = FoldersFragment.class.getName();
-
+        transaction.hide(fragmentPreferences);
         transaction.commit();
+        currentFragementTag = fragmentFoldersTag;
+
 
         BottomNavigationView bottomNav = findViewById(R.id.navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -57,12 +66,8 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                    FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    Fragment currentlyShown = fragmentManager.findFragmentByTag(currentFragementTag);
 
-                    Fragment dest;
                     switch (menuItem.getItemId()) {
                         // TODO add explore button (in the xml navigation too)
                  /*       case R.id.navigation_explore:
@@ -75,34 +80,55 @@ public class MainActivity extends AppCompatActivity {
                             }
                             break;*/
                         case R.id.navigation_folders:
-                            dest = fragmentManager.findFragmentByTag(FoldersFragment.class.getName());
-                            currentFragementTag = FoldersFragment.class.getName();
-                            if (dest == null) {
-                                Log.d("TRANSACTION", "instanciating new navigation_folders");
-                                dest = fragmentFolders;
-                                transaction.add(R.id.fragment_container, dest, FoldersFragment.class.getName());
+                            if(!currentFragementTag.equals(fragmentFoldersTag)){
+                                transaction.hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(currentFragementTag)));
+
+                                transaction.show(Objects.requireNonNull(fragmentManager.findFragmentByTag(fragmentFoldersTag)));
+
+                                transaction.commit();
+                                currentFragementTag = fragmentFoldersTag;
+                            }else {
+                                Toast.makeText(MainActivity.this,"already clicked"+currentFragementTag,Toast.LENGTH_LONG).show();
                             }
                             break;
                         case R.id.navigation_preferences:
-                            dest = fragmentManager.findFragmentByTag(PreferencesFragment.class.getName());
-                            currentFragementTag = PreferencesFragment.class.getName();
-                            if (dest == null) {
-                                Log.d("TRANSACTION", "instanciating new navigation_preferences");
-                                dest = fragmentPreferences;
-                                transaction.add(R.id.fragment_container, dest, PreferencesFragment.class.getName());
-                            }
+                            if(!currentFragementTag.equals(fragmentPreferencesTag)){
+                                transaction.hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(currentFragementTag)));
+
+                                transaction.show(Objects.requireNonNull(fragmentManager.findFragmentByTag(fragmentPreferencesTag)));
+
+                                transaction.commit();
+                                currentFragementTag = fragmentPreferencesTag;
+                            }else
+                                Toast.makeText(MainActivity.this,"already clicked"+currentFragementTag,Toast.LENGTH_LONG).show();
                             break;
 
-                        default:
-                            throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
                     }
 
-                    if(currentlyShown != null)
-                        transaction.hide(currentlyShown);
-                    transaction.show(dest);
-                    transaction.commit();
                 return true;
                 }
             };
 
+    boolean doubleBackToExitPressedOnce = false;
+
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            //super.onBackPressed();
+            finishAffinity();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 }

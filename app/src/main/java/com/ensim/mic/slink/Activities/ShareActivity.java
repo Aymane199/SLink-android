@@ -61,7 +61,7 @@ public class ShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String userName = etSearch.getText().toString();
                 if(userName.isEmpty()) return;
-                new OperationsOnUser().getUser(userName);
+                new OperationsOnUser().getSearchUser(userName);
 
             }
         });

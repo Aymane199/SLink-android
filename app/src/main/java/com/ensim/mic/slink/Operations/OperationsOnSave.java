@@ -13,16 +13,16 @@ import retrofit2.Response;
 public class OperationsOnSave {
 
     //user state
-    static public int userId = 3;
-    static public String userName = "Aymanerzk";
+    private int userId;
 
-    IApiServicesSave iApiServicesSave;
-    State state;
+    private IApiServicesSave iApiServicesSave;
+    private State state;
 
 
     public OperationsOnSave() {
         iApiServicesSave = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesSave.class);
         state = State.getInstance();
+        userId = State.getInstance().getCurrentUser().getContent().getId();
     }
 
     //call like and update links state

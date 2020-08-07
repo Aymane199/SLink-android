@@ -7,7 +7,7 @@
     tools:context=".Fragment.PreferencesFragment">
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/ivUserName"
         android:layout_width="match_parent"
         android:layout_height="135dp"
         android:background="@drawable/ic_preferences_top_design"
@@ -27,14 +27,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/ivChangeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="35dp"
         android:src="@drawable/ic_man_preferences"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintTop_toBottomOf="@+id/ivUserName" />
 
     <ImageView
         android:id="@+id/ivSave"
@@ -44,7 +44,7 @@
         android:layout_marginTop="35dp"
         android:src="@drawable/ic_bookmark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+        app:layout_constraintTop_toBottomOf="@+id/ivChangeName" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -77,7 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -89,7 +89,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tvMail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -98,17 +98,17 @@
         android:textColor="@color/colorStrokeComment"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvChangeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="35dp"
         android:text="Change name"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintStart_toEndOf="@+id/ivChangeName"
+        app:layout_constraintTop_toBottomOf="@+id/ivUserName" />
 
     <TextView
         android:id="@+id/tvSave"
@@ -117,8 +117,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="88dp"
         android:text="Saved"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintStart_toEndOf="@+id/ivChangeName"
+        app:layout_constraintTop_toBottomOf="@+id/ivUserName" />
 
     <TextView
         android:id="@+id/textView6"
@@ -127,8 +127,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="140dp"
         android:text="Notification setting"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintStart_toEndOf="@+id/ivChangeName"
+        app:layout_constraintTop_toBottomOf="@+id/ivUserName" />
 
     <TextView
         android:id="@+id/textView7"
@@ -137,8 +137,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="196dp"
         android:text="Rate  us"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintStart_toEndOf="@+id/ivChangeName"
+        app:layout_constraintTop_toBottomOf="@+id/ivUserName" />
 
     <TextView
         android:id="@+id/textView8"
@@ -147,8 +147,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="248dp"
         android:text="Share the app"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintStart_toEndOf="@+id/ivChangeName"
+        app:layout_constraintTop_toBottomOf="@+id/ivUserName" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cdDisconnect"

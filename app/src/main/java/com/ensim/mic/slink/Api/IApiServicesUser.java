@@ -4,6 +4,7 @@ import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,13 +22,15 @@ public interface IApiServicesUser {
     Call<List<User>> getUsers();
 
     @POST("user")
-    Call<User> createUser(@Body User user);
+    Call<User> createUser(@Body HashMap<String, Object> body
+    );
 
     @GET("user/{id}")
     Call<User> getUser(@Path("id") int id);
 
     /**
      * route to get user using userName or Gmail
+     *
      * @return
      */
     @GET("user/search")
@@ -37,7 +40,7 @@ public interface IApiServicesUser {
     Call<User> getUserByGmail(@Query("Gmail") String search);
 
     @PATCH("user/{id}")
-    Call<User> updateUser(@Path("id") int id,@Body User user);
+    Call<User> updateUser(@Path("id") int id, @Body HashMap<String, Object> body);
 
     @DELETE("user/{id}")
     Call<Void> deleteUser(@Path("id") int id);
@@ -51,12 +54,12 @@ public interface IApiServicesUser {
                                             @Query("search") String search);
 
     @GET("user/{id}/share")
-    Call<List<FolderOfUser>> getUserShare(@Path("id") int id ,
-                                          @Query("search") String search );
+    Call<List<FolderOfUser>> getUserShare(@Path("id") int id,
+                                          @Query("search") String search);
 
     @GET("user/{id}/subscribe")
     Call<List<FolderOfUser>> getUserSubscribe(@Path("id") int id,
-                                              @Query("search") String search );
+                                              @Query("search") String search);
 
     @GET("user/{id}/save")
     Call<List<LinkOfFolder>> getFolderSaved(@Path("id") String idUser,

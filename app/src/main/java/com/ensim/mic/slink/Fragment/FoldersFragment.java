@@ -21,8 +21,6 @@ import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -36,8 +34,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FoldersFragment extends Fragment implements View.OnClickListener{
 
     //State of the user
-    static public int userId = 3;
-    static public String userName = "Aymanerzk";
+    static public int userId = State.getInstance().getCurrentUser().getContent().getId();
+
+    static public String userName = State.getInstance().getCurrentUser().getContent().getUserName();
 
     //BottomSheetView
     private BottomSheetFilter bottomSheetFilter;

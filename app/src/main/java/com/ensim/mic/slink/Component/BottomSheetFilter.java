@@ -9,6 +9,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.utils.FolderFilter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -23,12 +24,15 @@ public class BottomSheetFilter extends BottomSheetDialogFragment implements View
     RadioButton radioButton, rbAnyone, rbOwnerMe, rbshare, rbsSubscriptions;
 
     private ChangeListener mlistener;
+    private int userId;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_layout_filters, container, false);
+
+        userId = State.getInstance().getCurrentUser().getContent().getId();
 
         radioGroup = v.findViewById(R.id.radioGroup);
 

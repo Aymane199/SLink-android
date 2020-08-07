@@ -34,8 +34,8 @@ import io.github.ponnamkarthik.richlinkpreview.RichPreview;
 public class ChooseFolderActivity extends AppCompatActivity implements View.OnClickListener {
 
     //user state information
-    static public int userId = 3;
-    static public String  userName = "Aymanerzk";
+    public int userId;
+    public String  userName;
 
     List<FolderOfUser> folderOutputList;
 
@@ -52,6 +52,11 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView.LayoutManager layoutManager;
     private CardView cardViewAdd;
     private ProgressBar progressBar;
+
+    public ChooseFolderActivity() {
+        userId = State.getInstance().getCurrentUser().getContent().getId();
+        userName = State.getInstance().getCurrentUser().getContent().getUserName();
+    }
 
 
     /*

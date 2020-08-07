@@ -16,10 +16,6 @@ import retrofit2.Response;
 
 public class OperationsOnLink {
 
-    //user state
-    static public int userId = 3;
-    static public String userName = "Aymanerzk";
-
     private IApiServicesUser iApiServicesUser;
     private IApiServicesFolder iApiServicesFolder;
     private IApiServicesLink iApiServicesLink;
