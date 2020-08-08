@@ -29,10 +29,12 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
     Context mContext;
     public List<FolderOfUser> mData;
     private OnItemClickListener mListener;
+    private int userId;
 
-    public DataAdapterFolder(Context mContext, List<FolderOfUser> mData) {
+    public DataAdapterFolder(Context mContext, List<FolderOfUser> mData, int userId) {
         this.mContext = mContext;
         this.mData = mData;
+        this.userId = userId;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -60,6 +62,9 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
 
         try {
             String imgUrl = folderOutput.getPicture();
+            if(folderOutput.getType().equals("share")){
+                Picasso.get().load(Uri.parse(imgUrl)).placeholder(R.drawable.ic_folder_publiv).error(R.drawable.ic_folder_publiv).into(myViewHolder.im_folder);
+            }else
             Picasso.get().load(Uri.parse(imgUrl)).placeholder(R.drawable.ic_folder).error(R.drawable.ic_folder).into(myViewHolder.im_folder);
         } catch (Exception e) {
             Log.e(TAG, "error on loading image <" + folderOutput.getName() + ">");
@@ -68,6 +73,12 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
 
         myViewHolder.tvTitle.setText(folderOutput.getName());
         myViewHolder.tvOwner.setText(folderOutput.getOwner());
+
+
+
+        //TODO SHOW OTHER MENU EITHER THAN SETVISIBLITY TO INVISIBLE
+        if (Integer.parseInt(folderOutput.getOwnerId()) != userId)
+            myViewHolder.ivMenu.setVisibility(View.INVISIBLE);
 
         if (folderOutput.getLikes()==null)
             myViewHolder.tvLike.setText("0");

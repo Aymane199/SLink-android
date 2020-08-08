@@ -65,6 +65,13 @@ public class OperationsOnShare {
     public void addPersonne(int idFolder, int userId){
         state.getSharePeople().setState(RequestState.LOADING);
         System.out.println("add Personne");
+
+        if(State.getInstance().getCurrentUser().getContent().getId() == userId){
+            state.getSharePeople().setState(RequestState.FAILED);
+            return ;
+        }
+
+
         // etablish the request
         Call<SharePersonne> call;
         HashMap<String, Object> body = new HashMap<>();

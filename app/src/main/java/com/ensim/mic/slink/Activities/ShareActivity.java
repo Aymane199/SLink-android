@@ -2,10 +2,14 @@ package com.ensim.mic.slink.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ensim.mic.slink.Adapter.DataAdapterSharePersonnes;
@@ -31,6 +35,7 @@ public class ShareActivity extends AppCompatActivity {
     private CardView cvAdd;
     private ProgressBar progressBar;
     private ImageView ivRefresh;
+    private String searchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,25 @@ public class ShareActivity extends AppCompatActivity {
 
         hideProgress();
 
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    etSearch.clearFocus();
+                    InputMethodManager in = (InputMethodManager) ShareActivity.this.getSystemService(ChooseFolderActivity.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+                    searchText = etSearch.getText().toString();
+                    String userName = etSearch.getText().toString();
+                    if(!userName.isEmpty())  {
+                        new OperationsOnUser().getSearchUser(userName);
+                        etSearch.setText("");
+                        etSearch.clearFocus();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         cvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +88,8 @@ public class ShareActivity extends AppCompatActivity {
                 String userName = etSearch.getText().toString();
                 if(userName.isEmpty()) return;
                 new OperationsOnUser().getSearchUser(userName);
+                etSearch.clearFocus();
+                etSearch.setText("");
 
             }
         });
@@ -78,8 +104,8 @@ public class ShareActivity extends AppCompatActivity {
         State.getInstance().getSearchUser().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
-                Toast.makeText(ShareActivity.this,"onLoading",Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(ShareActivity.this,"onLoading",Toast.LENGTH_SHORT).show();
+                showProgress();
             }
 
             @Override
@@ -88,12 +114,16 @@ public class ShareActivity extends AppCompatActivity {
                 assert user.getId()!=null;
                 new OperationsOnShare().addPersonne(Integer.parseInt(folder.getId()),user.getId());
                 System.out.println("add personne "+State.getInstance().getSearchUser().getContent());
+                hideProgress();
+
 
             }
 
             @Override
             public void onFailed() {
-                Toast.makeText(ShareActivity.this,"Do u want to send him an invitation ?",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShareActivity.this,"User do not exist, do u want to send him an invitation ?",Toast.LENGTH_LONG).show();
+                hideProgress();
+
             }
         });
 
@@ -127,5 +157,6 @@ public class ShareActivity extends AppCompatActivity {
     public void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
     }
+
 
 }

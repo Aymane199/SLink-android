@@ -52,7 +52,7 @@
             android:background="@drawable/shape_tv_search"
             android:drawablePadding="15dp"
             android:hint="Add mail or userName"
-            android:imeOptions="actionSearch"
+            android:imeOptions="actionSend"
             android:inputType="text"
             android:maxLines="1"
             android:orientation="horizontal"

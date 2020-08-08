@@ -97,7 +97,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new DataAdapterFolder(getActivity(), State.getInstance().getFolders().getContent());
+        mAdapter = new DataAdapterFolder(getActivity(), State.getInstance().getFolders().getContent(), userId);
         recyclerView.setAdapter(mAdapter);
 
         //add action on click search
