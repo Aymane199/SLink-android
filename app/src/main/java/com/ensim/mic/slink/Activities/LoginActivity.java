@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.ensim.mic.slink.Operations.OperationsOnUser;
@@ -20,13 +19,14 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "LoginActivity";
     private GoogleSignInClient mGoogleSignInClient;
-    private Button btnSignIn;
+    private CardView btnSignIn;
     String personName;
     String personEmail;
 
@@ -108,7 +108,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         } else {
             btnSignIn.setVisibility(View.VISIBLE);
-            Toast.makeText(LoginActivity.this, "sign in bro", Toast.LENGTH_SHORT).show();
         }
 
 

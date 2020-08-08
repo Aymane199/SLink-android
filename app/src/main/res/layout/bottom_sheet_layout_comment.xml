@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/bottomSheetSort_cancel"
@@ -61,14 +62,16 @@
         android:id="@+id/cvComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/frameLayout"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="25dp"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="center"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="25dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="6dp"
-        >
+        app:cardCornerRadius="6dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -89,13 +92,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_circular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/frameLayout"
-            android:layout_centerHorizontal="true"
-            android:progressBackgroundTintMode="@color/colorPrimary" />
 
     </androidx.cardview.widget.CardView>
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/frameLayout"
+        android:layout_centerHorizontal="true"
+        android:progressBackgroundTintMode="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimary"/>
+
 </RelativeLayout>

@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_logo_slink_with_background"
+        android:icon="@drawable/ic_logo_slink_without_background"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_logo_slink_without_background"
         android:supportsRtl="true"
@@ -36,7 +36,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>
