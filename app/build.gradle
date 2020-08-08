@@ -53,5 +53,7 @@ dependencies {
     //sign in with google account
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
+    //add pull refreshing
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
 }

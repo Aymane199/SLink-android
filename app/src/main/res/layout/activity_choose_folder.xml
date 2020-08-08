@@ -12,6 +12,15 @@
         tools:context=".Activities.ChooseFolderActivity">
 
 
+        <ImageView
+            android:id="@+id/view"
+            android:layout_width="405dp"
+            android:layout_height="178dp"
+            android:background="@drawable/ic_folders_top_design"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
@@ -37,14 +46,12 @@
 
 
         <ImageView
-            android:id="@+id/view"
-            android:layout_width="405dp"
-            android:layout_height="178dp"
-            android:background="@drawable/ic_folders_top_design"
+            android:id="@+id/ivRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_refresh"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/my_recycler_view" />
 
         <ProgressBar
             android:id="@+id/progress_circular"
