@@ -46,7 +46,7 @@ public class LinksActivity extends AppCompatActivity {
     private DataAdapterLink mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ProgressBar progressBar;
-
+    private ImageView ivRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,7 @@ public class LinksActivity extends AppCompatActivity {
         idUser = State.getInstance().getCurrentUser().getContent().getId()+"";
 
         //init views
+        ivRefresh = findViewById(R.id.ivRefresh);
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         etSearch = findViewById(R.id.etSearchLinks);
@@ -88,6 +89,14 @@ public class LinksActivity extends AppCompatActivity {
                 return false;
             }
         });
+        //add behavior to refresh
+        ivRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new OperationsOnLink().displayLinks(searchText, idFolder, idUser);
+            }
+        });
+
 
         //add behavior when "List Links State" changes
         State.getInstance().getLinks().addOnChangeObjectListener(new OnChangeObject() {

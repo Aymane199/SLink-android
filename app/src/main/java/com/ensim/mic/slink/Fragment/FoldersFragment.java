@@ -54,6 +54,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
     private RecyclerView.LayoutManager layoutManager;
     private CardView cardViewFilter, cardViewAdd, cardViewSort;
     private ProgressBar progressBar;
+    private ImageView ivRefresh;
 
 
     @Nullable
@@ -75,6 +76,8 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         super.onViewCreated(view, savedInstanceState);
 
         //init views
+        ivRefresh = view.findViewById(R.id.ivRefresh);
+
         bottomSheetFilter = new BottomSheetFilter();
         bottomSheetSort = new BottomSheetSort();
 
@@ -110,6 +113,14 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
                     return true;
                 }
                 return false;
+            }
+        });
+
+        //add behavior to refresh button
+        ivRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new OperationsOnFolder().displayEditableFolders(searchText);
             }
         });
 

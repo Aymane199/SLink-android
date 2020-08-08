@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.ensim.mic.slink.Adapter.DataAdapterComment;
@@ -35,12 +36,15 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
     private RecyclerView.LayoutManager layoutManager;
     private ProgressBar progressBar;
     private int userId;
+    private ImageView ivRefresh;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_layout_comment, container, false);
         userId = State.getInstance().getCurrentUser().getContent().getId();
+
+        //init views
         progressBar = v.findViewById(R.id.progress_circular);
         CardView btnComment = v.findViewById(R.id.cvComment);
         final EditText etText = v.findViewById(R.id.etText);
@@ -48,6 +52,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        ivRefresh = v.findViewById(R.id.ivRefresh);
 
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +63,13 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
                     etText.setText("");
                 }
 
+            }
+        });
+
+        ivRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new OperationsOnComment().displayComments(idLink);
             }
         });
 

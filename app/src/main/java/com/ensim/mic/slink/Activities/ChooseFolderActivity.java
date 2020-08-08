@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -130,6 +131,15 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
 
 
         //init views
+
+        ImageView ivRefresh;
+        ivRefresh = findViewById(R.id.ivRefresh);
+        ivRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new OperationsOnFolder().displayEditableFolders(searchText);
+            }
+        });
         cardViewAdd = findViewById(R.id.card_view_add);
         etSearch = findViewById(R.id.etSearch);
         recyclerView = findViewById(R.id.my_recycler_view);

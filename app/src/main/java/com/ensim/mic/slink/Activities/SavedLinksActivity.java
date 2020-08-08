@@ -48,7 +48,7 @@ public class SavedLinksActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ProgressBar progressBar;
-
+    private ImageView ivRefresh;
 
 
     @Override
@@ -64,6 +64,7 @@ public class SavedLinksActivity extends AppCompatActivity {
         idUser = State.getInstance().getCurrentUser().getContent().getId()+ "";
 
         //init views
+        ivRefresh = findViewById(R.id.ivRefresh);
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         etSearch = findViewById(R.id.etSearchLinks);
@@ -87,6 +88,14 @@ public class SavedLinksActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        //set behavior to refresh
+        ivRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new OperationsOnLink().displaySavedLinks(searchText, idUser);
             }
         });
 

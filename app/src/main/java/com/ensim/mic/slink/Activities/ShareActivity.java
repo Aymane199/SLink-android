@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class ShareActivity extends AppCompatActivity {
     private EditText etSearch;
     private CardView cvAdd;
     private ProgressBar progressBar;
+    private ImageView ivRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class ShareActivity extends AppCompatActivity {
                 (FolderOfUser) bundle.getSerializable("folder");
 
 
-
+        ivRefresh = findViewById(R.id.ivRefresh);
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(ShareActivity.this);
@@ -63,6 +65,13 @@ public class ShareActivity extends AppCompatActivity {
                 if(userName.isEmpty()) return;
                 new OperationsOnUser().getSearchUser(userName);
 
+            }
+        });
+
+        ivRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new OperationsOnShare().dispalySharePersonnes(Integer.parseInt(folder.getId()));
             }
         });
 
