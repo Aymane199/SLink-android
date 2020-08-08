@@ -99,6 +99,13 @@ public class SavedLinksActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         //add behavior when "List Links State" changes
         State.getInstance().getSavedLinks().addOnChangeObjectListener(new OnChangeObject() {
             @Override

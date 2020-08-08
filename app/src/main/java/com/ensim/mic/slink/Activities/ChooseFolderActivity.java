@@ -186,6 +186,12 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
+        findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /*

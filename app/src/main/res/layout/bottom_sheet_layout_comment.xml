@@ -13,6 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"/>
     <TextView
+        android:visibility="invisible"
         android:id="@+id/bottomSheetSort_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +33,7 @@
         android:paddingEnd="15dp"
         android:paddingBottom="10dp"
         android:layout_marginTop="5dp"
-        android:text="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..." />
+        android:text="" />
 
     <TextView
         android:id="@+id/textView9"

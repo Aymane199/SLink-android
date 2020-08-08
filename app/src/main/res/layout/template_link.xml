@@ -34,9 +34,9 @@
 
         <CheckBox
             android:id="@+id/ivSave"
-            android:layout_width="22dp"
+            android:layout_width="20dp"
             android:layout_height="25dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="6dp"
             android:background="@drawable/button_save"
             android:button="@null"
@@ -47,7 +47,7 @@
             android:id="@+id/ivLike"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="6dp"
             android:background="@drawable/button_heart"
             android:button="@null"
@@ -58,11 +58,21 @@
             android:id="@+id/ivComment"
             android:layout_width="28dp"
             android:layout_height="25dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivLike"
             card_view:srcCompat="@drawable/ic_comment" />
+
+        <ImageView
+            android:id="@+id/ivgoToBrowser"
+            android:layout_width="28dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivComment"
+            card_view:srcCompat="@drawable/ic_open_in_browser" />
 
         <ImageView
             android:id="@+id/ivPicture"

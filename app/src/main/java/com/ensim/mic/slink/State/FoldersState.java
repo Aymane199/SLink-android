@@ -43,7 +43,13 @@ public class FoldersState extends BaseObjectState<List<FolderOfUser>> {
         int index = findIndexFolderById(id);
         if (index != -1) {
             FolderOfUser folder = getContent().get(index);
-            int nbLink = Integer.parseInt(folder.getLinks());
+            int nbLink;
+            if(folder.getLinks() == null) {
+                nbLink = 0;
+            }
+            else {
+                nbLink = Integer.parseInt(folder.getLinks());
+            }
             nbLink += link;
             folder.setLinks(String.format("%d", nbLink));
             if(nbLink>=0)

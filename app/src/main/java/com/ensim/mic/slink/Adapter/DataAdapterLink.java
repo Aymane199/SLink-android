@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ensim.mic.slink.Activities.BrowserActivity;
 import com.ensim.mic.slink.Component.BottomSheetComment;
 import com.ensim.mic.slink.Listener.LinkMenuListener;
 import com.ensim.mic.slink.Operations.OperationsOnLike;
@@ -103,10 +104,11 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
             }
         });
 
+
         myViewHolder.ivMenu.setOnClickListener(new LinkMenuListener(mContext,myViewHolder.ivMenu,link));
 
         // open link in browser
-        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        myViewHolder.ivGoToBrowser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -123,6 +125,15 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
             }
         });
 
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, BrowserActivity.class);
+                intent.putExtra("url",link.getUrl());
+                mContext.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -136,7 +147,7 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView ivPicture, ivMenu, ivComment;
+        ImageView ivPicture, ivMenu, ivComment,ivGoToBrowser;
         CheckBox ivLike, ivSave;
         TextView tvTitle, tvDescription;
 
@@ -146,6 +157,7 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
             ivComment = itemView.findViewById(R.id.ivComment);
             ivLike = itemView.findViewById(R.id.ivLike);
             ivSave = itemView.findViewById(R.id.ivSave);
+            ivGoToBrowser = itemView.findViewById(R.id.ivgoToBrowser);
             ivMenu = itemView.findViewById(R.id.ivMenu);
             tvTitle = itemView.findViewById(R.id.tvUserName);
             tvDescription = itemView.findViewById(R.id.tvDescription);

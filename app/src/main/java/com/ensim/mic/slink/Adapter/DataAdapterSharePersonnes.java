@@ -49,7 +49,7 @@ public class DataAdapterSharePersonnes extends RecyclerView.Adapter<DataAdapterS
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
         final SharePersonne personne = mData.get(i);
-
+        System.out.println("------------->"+personne);
         myViewHolder.tvUserName.setText(personne.getUserName());
         myViewHolder.tvMail.setText(personne.getGmail());
         myViewHolder.tvRight.setText(personne.getAccessRight());

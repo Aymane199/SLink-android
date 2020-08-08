@@ -61,6 +61,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mview = inflater.inflate(R.layout.fragment_folders, container, false);
+
         return mview;
     }
 

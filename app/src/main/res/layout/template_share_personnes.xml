@@ -35,6 +35,7 @@
         card_view:layout_constraintTop_toBottomOf="@id/tvUserName" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/tvRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -184,6 +184,7 @@
             android:background="@drawable/shape_tv_search"
             android:drawableStart="@drawable/ic_explore_blue"
             android:drawablePadding="15dp"
+            android:selectAllOnFocus="true"
             android:hint="search"
             android:inputType="text"
             android:maxLines="1"

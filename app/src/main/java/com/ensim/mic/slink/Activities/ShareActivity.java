@@ -101,6 +101,13 @@ public class ShareActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         State.getInstance().getSearchUser().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {

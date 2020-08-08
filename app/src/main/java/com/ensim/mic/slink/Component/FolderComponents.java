@@ -15,12 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ensim.mic.slink.Operations.OperationsOnFolder;
+import com.ensim.mic.slink.Operations.OperationsOnLink;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.squareup.picasso.Picasso;
-
-import java.util.HashMap;
 
 import io.github.ponnamkarthik.richlinkpreview.MetaData;
 import io.github.ponnamkarthik.richlinkpreview.ResponseListener;
@@ -168,46 +167,8 @@ public class FolderComponents {
     }
 
     public void showLinkAddedDialog(final Context mContext, final FolderOfUser folderOutput) {
-        //TODO clean it ! & xheck if the link is URL
 
-        ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-        String linkUrl = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
-        System.out.println("clipboard link "+linkUrl);
-        final LinkOfFolder linkToPut = new LinkOfFolder();
-        RichPreview richPreview = new RichPreview(new ResponseListener() {
-            @Override
-            public void onData(MetaData metaData) {
-                linkToPut.setPicture(metaData.getImageurl());
-                linkToPut.setName(metaData.getTitle());
-                linkToPut.setDescription(metaData.getDescription());
-            }
-
-            @Override
-            public void onError(Exception e) {
-            }
-
-        });
-
-        Boolean previewDone = false;
-        try{
-            richPreview.getPreview(linkUrl);
-            previewDone = true;
-
-        }catch (Exception e){
-            previewDone = false;
-
-        }
-        HashMap<String, Object> body = new HashMap<>();
-        if(previewDone) {
-            body.put("name", linkToPut.getName());
-            body.put("URL", linkUrl);
-            body.put("picture", linkToPut.getPicture());
-            body.put("folder", folderOutput.getId());
-            System.out.println("------------"+linkToPut.toString());
-        }else{
-
-        }
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
         TextView tvTitle = new TextView(mContext);
         tvTitle.setText("Link added successfully");
@@ -238,7 +199,34 @@ public class FolderComponents {
             }
         });
 
-        alertDialogBuilder.show();
+        RichPreview richPreview = new RichPreview(new ResponseListener() {
+            @Override
+            public void onData(MetaData metaData) {
+
+                LinkOfFolder link =new LinkOfFolder();
+                link.setName(metaData.getTitle());
+                link.setPicture(metaData.getImageurl());
+                link.setUrl(metaData.getUrl());
+
+                new OperationsOnLink().addLinktoFolder(folderOutput,link);
+                alertDialogBuilder.show();
+
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+            }
+
+        });
+
+        ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        String linkUrl = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
+        System.out.println("clipboard link "+linkUrl);
+
+        richPreview.getPreview(linkUrl);
+
+
     }
 
     public void showDeleteDialog(final Context mContext, final FolderOfUser folderOutput) {

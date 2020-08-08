@@ -5,9 +5,11 @@ import com.ensim.mic.slink.Api.IApiServicesLink;
 import com.ensim.mic.slink.Api.IApiServicesUser;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.utils.RequestState;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -60,6 +62,7 @@ public class OperationsOnLink {
             }
         });
     }
+
     public void displaySavedLinks(String searchText, String idUser) {
         state.getSavedLinks().setState(RequestState.LOADING);
 
@@ -91,7 +94,55 @@ public class OperationsOnLink {
         });
     }
 
+    public void addLinktoFolder(final FolderOfUser folderOutput, LinkOfFolder link) {
+        state.getLinks().setState(RequestState.LOADING);
+        state.getFolders().setState(RequestState.LOADING);
 
+        HashMap<String, Object> body = new HashMap<>();
+        if (link.getUrl() != null)
+            body.put("URL", link.getUrl());
+        else
+            return;
+        if (link.getPicture() != null)
+            body.put("picture", link.getPicture());
+        if (link.getName() != null)
+            body.put("name", link.getName());
+        body.put("folder", folderOutput.getId());
+
+        Call<Object> call = iApiServicesLink.createLink(body);
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    state.getLinks().setState(RequestState.FAILED);
+                    state.getFolders().setState(RequestState.FAILED);
+
+                    return;
+                }
+                /*LinkOfFolder link = response.body();
+                System.out.println(link.toString());
+                List<LinkOfFolder> links = state.getLinks().getContent();
+                links.add(link);
+                state.getLinks().setContent(links);*/
+                state.getFolders().addlink(Integer.parseInt(folderOutput.getId()));
+                state.getFolders().setState(RequestState.SUCCESSFUL);
+                state.getLinks().setState(RequestState.SUCCESSFUL);
+
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                System.out.println(t.getMessage());
+                state.getLinks().setState(RequestState.FAILED);
+                state.getFolders().setState(RequestState.FAILED);
+
+            }
+        });
+
+    }
 
     public void deleteLink(final LinkOfFolder link){
         state.getLinks().setState(RequestState.LOADING);

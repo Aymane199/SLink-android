@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ensim.mic.slink.Operations.OperationsOnUser;
@@ -27,14 +28,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = "LoginActivity";
     private GoogleSignInClient mGoogleSignInClient;
     private CardView btnSignIn;
-    String personName;
-    String personEmail;
+    private String personName;
+    private String personEmail;
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        progress = findViewById(R.id.progress_circular);
         btnSignIn = findViewById(R.id.btnSignIn);
         btnSignIn.setOnClickListener(this);
 
@@ -83,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
             btnSignIn.setVisibility(View.INVISIBLE);
-
+            showProgress();
             personEmail = account.getEmail();
             personName = account.getDisplayName();
             String personGivenName = account.getGivenName();
@@ -107,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         } else {
+            hideProgress();
             btnSignIn.setVisibility(View.VISIBLE);
         }
 
@@ -153,4 +157,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             updateUI(null);
         }
     }
+
+    void showProgress(){
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    void hideProgress(){
+        progress.setVisibility(View.INVISIBLE);
+    }
+
 }

@@ -16,7 +16,7 @@ public interface IApiServicesShare {
     Call<SharePersonne> createShare(@Body HashMap<String, Object> body);
 
     @DELETE("share/{id}")
-    Call<Object> deleteShare(@Path("id")int id);
+Call<Object> deleteShare(@Path("id")int id);
 
 
 }

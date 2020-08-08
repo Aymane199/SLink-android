@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                                 transaction.commit();
                                 currentFragementTag = fragmentFoldersTag;
                             }else {
-                                Toast.makeText(MainActivity.this,"already clicked"+currentFragementTag,Toast.LENGTH_LONG).show();
+                               // Toast.makeText(MainActivity.this,"already clicked"+currentFragementTag,Toast.LENGTH_LONG).show();
                             }
                             break;
                         case R.id.navigation_preferences:
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                                 transaction.commit();
                                 currentFragementTag = fragmentPreferencesTag;
                             }else
-                                Toast.makeText(MainActivity.this,"already clicked"+currentFragementTag,Toast.LENGTH_LONG).show();
+                                //Toast.makeText(MainActivity.this,"already clicked"+currentFragementTag,Toast.LENGTH_LONG).show();
                             break;
 
                     }

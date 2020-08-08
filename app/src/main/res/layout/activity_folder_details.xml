@@ -30,6 +30,7 @@
         app:srcCompat="@drawable/ic_back" />
 
     <ImageView
+        android:visibility="invisible"
         android:id="@+id/ivMenu"
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -77,6 +78,7 @@
 
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

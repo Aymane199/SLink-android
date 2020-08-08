@@ -110,8 +110,6 @@ public class DataAdapterChooseFolder extends RecyclerView.Adapter<DataAdapterCho
         if (link.getName() != null)
             body.put("name", link.getName());
         body.put("folder", folderOutput.getId());
-        // TODO add link description
-        //TODO Copy it to OperationsOnLink
         Call<Object> call = iApiServicesLink.createLink(body);
         call.enqueue(new Callback<Object>() {
             @Override
