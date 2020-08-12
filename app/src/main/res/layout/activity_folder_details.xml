@@ -148,10 +148,23 @@
         app:layout_constraintStart_toEndOf="@+id/imageView12"
         app:layout_constraintTop_toBottomOf="@+id/tvLikes" />
 
+    <TextView
+        android:text="The list is empty"
+        android:gravity="center"
+        android:id="@+id/tvEmptyList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLinks" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myRecycleView"
-        android:layout_width="match_parent"
         android:scrollbarTrackVertical="@color/colorPrimary"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"

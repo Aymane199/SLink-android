@@ -68,7 +68,7 @@ public class FolderComponents {
             }
         });
 
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -266,7 +266,7 @@ public class FolderComponents {
             }
         });
 
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -276,6 +276,40 @@ public class FolderComponents {
 
         alertDialogBuilder.show();
     }
+
+    public void showQuitFolderDialog(final Context mContext, final FolderOfUser folderOutput) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
+
+        TextView tvTitle = new TextView(mContext);
+        tvTitle.setText("Quit the folder");
+        tvTitle.setPadding(20, 30, 20, 30);
+        tvTitle.setTextSize(20F);
+        tvTitle.setTextColor(Color.BLACK);
+
+        alertDialogBuilder.setMessage("Are you sure you want to leave this folder ?")
+                .setCustomTitle(tvTitle)
+                .setCancelable(true);
+
+        alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new OperationsOnFolder().QuitFolder(folderOutput);
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+
+        });
+
+        alertDialogBuilder.show();
+    }
+
 
     public void showRenameDialog(final Context mContext, final FolderOfUser folderOutput) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
@@ -315,7 +349,7 @@ public class FolderComponents {
             }
         });
 
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

@@ -12,15 +12,19 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.ensim.mic.slink.Adapter.DataAdapterComment;
 import com.ensim.mic.slink.Operations.OperationsOnComment;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Table.Comment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +41,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
     private ProgressBar progressBar;
     private int userId;
     private ImageView ivRefresh;
+    private TextView tvEmptyList;
 
     @Nullable
     @Override
@@ -53,6 +58,9 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         ivRefresh = v.findViewById(R.id.ivRefresh);
+        tvEmptyList = v.findViewById(R.id.tvEmptyList);
+        hideTvEmptyList();
+
 
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,9 +89,15 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
 
             @Override
             public void onDataReady() {
-                mAdapter = new DataAdapterComment(getActivity(), State.getInstance().getComments().getContent(), userId);
-                recyclerView.setAdapter(mAdapter);
                 hideProgress();
+                List<Comment> content = State.getInstance().getComments().getContent();
+
+                mAdapter = new DataAdapterComment(getActivity(), content, userId);
+                recyclerView.setAdapter(mAdapter);
+
+                if(content.isEmpty()) showTvEmptyList();
+                else hideTvEmptyList();
+
             }
 
             @Override
@@ -138,12 +152,18 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
         return displayMetrics.heightPixels;
     }
 
-    public void showProgress() {
+    private void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgress() {
+    private void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
     }
+
+    private void showTvEmptyList(){
+        tvEmptyList.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
 
 }

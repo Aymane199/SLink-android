@@ -20,6 +20,9 @@ import com.ensim.mic.slink.Operations.OperationsOnFolder;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Table.FolderOfUser;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +58,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
     private CardView cardViewFilter, cardViewAdd, cardViewSort;
     private ProgressBar progressBar;
     private ImageView ivRefresh;
-
+    private TextView tvEmptyList;
 
     @Nullable
     @Override
@@ -90,6 +93,9 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         cardViewAdd = view.findViewById(R.id.card_view_add);
         cardViewSort = view.findViewById(R.id.card_view_sort);
         etSearch = view.findViewById(R.id.etSearch);
+        tvEmptyList = view.findViewById(R.id.tvEmptyList);
+        hideTvEmptyList();
+        hideProgress();
 
         cardViewFilter.setOnClickListener(this);
         cardViewAdd.setOnClickListener(this);
@@ -145,10 +151,13 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onDataReady() {
                 hideProgress();
-                System.out.println("change list");
-                mAdapter.mData = State.getInstance().getFolders().getContent();
+                List<FolderOfUser> content = State.getInstance().getFolders().getContent();
+
+                mAdapter.mData = content;
                 mAdapter.notifyDataSetChanged();
 
+                if(content.isEmpty()) showTvEmptyList();
+                else hideTvEmptyList();
             }
 
             @Override
@@ -185,13 +194,18 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void showProgress() {
+    private void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgress() {
+    private void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
+    private void showTvEmptyList(){
+        tvEmptyList.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
 
 }

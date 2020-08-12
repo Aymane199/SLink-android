@@ -1,6 +1,7 @@
 package com.ensim.mic.slink.Operations;
 
 import com.ensim.mic.slink.Api.IApiServicesFolder;
+import com.ensim.mic.slink.Api.IApiServicesShare;
 import com.ensim.mic.slink.Api.IApiServicesUser;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.State.State;
@@ -24,6 +25,7 @@ public class OperationsOnFolder {
     private int userId;
     private String userName;
 
+    private IApiServicesShare iApiServicesShare;
     private IApiServicesUser iApiServicesUser;
     private IApiServicesFolder iApiServicesFolder;
     private State state;
@@ -32,6 +34,7 @@ public class OperationsOnFolder {
     public OperationsOnFolder() {
         iApiServicesFolder = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesFolder.class);
         iApiServicesUser = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesUser.class);
+        iApiServicesShare = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesShare.class);
         state = State.getInstance();
         userName = State.getInstance().getCurrentUser().getContent().getUserName();
         userId = State.getInstance().getCurrentUser().getContent().getId();
@@ -219,6 +222,36 @@ public class OperationsOnFolder {
 
             @Override
             public void onFailure(Call<Folder> call, Throwable t) {
+                state.getFolders().setState(RequestState.FAILED);
+            }
+        });
+    }
+
+    public void QuitFolder(final FolderOfUser folderOutput){
+        state.getFolders().setState(RequestState.LOADING);
+        final int folderid = Integer.parseInt(folderOutput.getId());
+        HashMap<String,Object> body=new HashMap<>();
+        body.put("userId",userId);
+        body.put("folderId",folderid);
+        Call<Void> call = iApiServicesShare.deleteShare(body);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    state.getFolders().setState(RequestState.FAILED);
+                    return;
+                }
+                List<FolderOfUser> folders = state.getFolders().getContent();
+                folders.remove(folderOutput);
+                state.getFolders().setContent(folders);
+                state.getFolders().setState(RequestState.SUCCESSFUL);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 state.getFolders().setState(RequestState.FAILED);
             }
         });

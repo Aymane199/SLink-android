@@ -17,14 +17,14 @@ import com.ensim.mic.slink.Table.FolderOfUser;
 /*
 *   Clean
  */
-public class FolderMenuListener implements View.OnClickListener  {
+public class FolderMenuOwnerListener implements View.OnClickListener  {
 
     ImageView imageView;
     Context mContext;
     FolderOfUser folderOutput;
 
 
-    public FolderMenuListener(Context mContext, ImageView imageView, FolderOfUser folderOutput) {
+    public FolderMenuOwnerListener(Context mContext, ImageView imageView, FolderOfUser folderOutput) {
         this.mContext = mContext;
         this.imageView = imageView;
         this.folderOutput = folderOutput;
@@ -35,8 +35,9 @@ public class FolderMenuListener implements View.OnClickListener  {
 
         //creating a popup menu
         PopupMenu popup = new PopupMenu(mContext, imageView);
+
         //inflating menu from xml resource
-        popup.inflate(R.menu.folder_menu);
+        popup.inflate(R.menu.folder_menu_owner);
         //adding click listener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override

@@ -47,6 +47,7 @@ public class LinksActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ProgressBar progressBar;
     private ImageView ivRefresh;
+    private TextView tvEmptyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,8 @@ public class LinksActivity extends AppCompatActivity {
         etSearch = findViewById(R.id.etSearchLinks);
         progressBar = findViewById(R.id.progress_circular);
         tvTitle = findViewById(R.id.tvUserName);
+        tvEmptyList = findViewById(R.id.tvEmptyList);
+        hideTvEmptyList();
         tvTitle.setText(nameFolder);
 
         // use a linear layout manager
@@ -116,8 +119,10 @@ public class LinksActivity extends AppCompatActivity {
             public void onDataReady() {
                 hideProgress();
                 mAdapter.mData = State.getInstance().getLinks().getContent();
-                System.out.println("SUCCESSFUL onDataReady sssss");
                 mAdapter.notifyDataSetChanged();
+                if(mAdapter.mData.isEmpty()) showTvEmptyList();
+                else hideTvEmptyList();
+
             }
 
             @Override
@@ -130,12 +135,19 @@ public class LinksActivity extends AppCompatActivity {
 
     }
 
-    public void showProgress() {
+    private void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgress() {
+    private void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
     }
+
+    private void showTvEmptyList(){
+        tvEmptyList.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
+
 
 }

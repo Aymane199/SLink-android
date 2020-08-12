@@ -49,7 +49,7 @@ public class SavedLinksActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ProgressBar progressBar;
     private ImageView ivRefresh;
-
+    private TextView tvEmptyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,8 @@ public class SavedLinksActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         etSearch = findViewById(R.id.etSearchLinks);
         progressBar = findViewById(R.id.progress_circular);
+        tvEmptyList =findViewById(R.id.tvEmptyList);
+        hideTvEmptyList();
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
@@ -116,8 +118,13 @@ public class SavedLinksActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                mAdapter = new DataAdapterLink(SavedLinksActivity.this, State.getInstance().getSavedLinks().getContent());
+                List<LinkOfFolder> content = State.getInstance().getSavedLinks().getContent();
+
+                mAdapter = new DataAdapterLink(SavedLinksActivity.this, content);
                 recyclerView.setAdapter(mAdapter);
+
+                if(content.isEmpty()) showTvEmptyList();
+                else hideTvEmptyList();
             }
 
             @Override
@@ -129,12 +136,18 @@ public class SavedLinksActivity extends AppCompatActivity {
         new OperationsOnLink().displaySavedLinks(searchText, idUser);
     }
 
-    public void showProgress() {
+    private void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgress() {
+    private void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
     }
+
+    private void showTvEmptyList(){
+        tvEmptyList.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
 
 }

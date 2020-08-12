@@ -53,6 +53,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView.LayoutManager layoutManager;
     private CardView cardViewAdd;
     private ProgressBar progressBar;
+    private TextView tvEmptyList;
 
     public ChooseFolderActivity() {
         userId = State.getInstance().getCurrentUser().getContent().getId();
@@ -73,8 +74,9 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_folder);
 
-
+        tvEmptyList = findViewById(R.id.tvEmptyList);
         progressBar = findViewById(R.id.progress_circular);
+        hideTvEmptyList();
         hideProgress();
 
 
@@ -158,9 +160,14 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onDataReady() {
-                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, State.getInstance().getFolders().getContent(), linkToPut);
-                recyclerView.setAdapter(mAdapter);
                 hideProgress();
+                List<FolderOfUser> content = State.getInstance().getFolders().getContent();
+
+                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, content, linkToPut);
+                recyclerView.setAdapter(mAdapter);
+                
+                if(content.isEmpty()) showTvEmptyList();
+                else hideTvEmptyList();
             }
 
             @Override
@@ -204,13 +211,20 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    public void showProgress() {
+    private void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgress() {
+    private void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
     }
+
+    private void showTvEmptyList(){
+        tvEmptyList.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
+
 
 
 }

@@ -52,6 +52,13 @@
         android:layout_above="@+id/etText"
         android:layout_below="@+id/textView9">
 
+        <TextView
+            android:text="The list is empty"
+            android:gravity="center"
+            android:id="@+id/tvEmptyList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/my_recycler_view"
             android:layout_width="match_parent"

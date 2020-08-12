@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.BrowserActivity"></activity>
+        <activity android:name=".Activities.BrowserActivity"/>
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.ShareActivity" />
         <activity android:name=".Activities.FolderDetailsActivity" />

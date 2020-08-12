@@ -18,5 +18,6 @@ public interface IApiServicesShare {
     @DELETE("share/{id}")
 Call<Object> deleteShare(@Path("id")int id);
 
-
+    @DELETE("share")
+    Call<Void> deleteShare(HashMap<String ,Object> body);
 }

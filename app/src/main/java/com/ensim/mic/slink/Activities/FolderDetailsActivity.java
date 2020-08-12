@@ -14,7 +14,10 @@ import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Table.SharePersonne;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +31,7 @@ public class FolderDetailsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private TextView tvEmptyList ;
 
 
     @Override
@@ -50,13 +54,15 @@ public class FolderDetailsActivity extends AppCompatActivity {
         tvLinks = findViewById(R.id.tvLinks);
         ivImage = findViewById(R.id.ivImage);
         recyclerView = findViewById(R.id.myRecycleView);
+        tvEmptyList = findViewById(R.id.tvEmptyList);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(FolderDetailsActivity.this);
         recyclerView.setLayoutManager(layoutManager);
+        hideTvEmptyList();
+        hideProgress();
 
         System.out.println("get extra :" + folder);
 
-        hideProgress();
 
         assert folder != null;
         tvName.setText(folder.getName());
@@ -85,8 +91,13 @@ public class FolderDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                mAdapter = new DataAdapterSharePersonnes(FolderDetailsActivity.this, State.getInstance().getSharePeople().getContent());
+                List<SharePersonne> content = State.getInstance().getSharePeople().getContent();
+
+                mAdapter = new DataAdapterSharePersonnes(FolderDetailsActivity.this, content);
                 recyclerView.setAdapter(mAdapter);
+
+                if(content.isEmpty()) showTvEmptyList();
+                else hideTvEmptyList();
             }
 
             @Override
@@ -98,12 +109,18 @@ public class FolderDetailsActivity extends AppCompatActivity {
 
     }
 
-    public void showProgress() {
+    private void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgress() {
+    private void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
     }
+
+    private void showTvEmptyList(){
+        tvEmptyList.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
 
 }

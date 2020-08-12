@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuDetails"
+        android:icon="@drawable/ic_details"
+        android:title="Details" />
+
+    <item
+        android:id="@+id/menuAdd_link"
+        android:icon="@drawable/ic_copy"
+        android:title="Add link from clipboard " />
+
+    <item
+        android:id="@+id/menuQuit"
+        android:title="Quit this folder" />
+</menu>

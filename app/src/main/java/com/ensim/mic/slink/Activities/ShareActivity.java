@@ -19,7 +19,10 @@ import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Table.SharePersonne;
 import com.ensim.mic.slink.Table.User;
+
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -36,6 +39,7 @@ public class ShareActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private ImageView ivRefresh;
     private String searchText;
+    private TextView tvEmptyList ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +62,8 @@ public class ShareActivity extends AppCompatActivity {
         etSearch = findViewById(R.id.etSearch);
         cvAdd = findViewById(R.id.cvAdd);
         progressBar = findViewById(R.id.progress_circular);
-
-
+        tvEmptyList = findViewById(R.id.tvEmptyList);
+        hideTvEmptyList();
         hideProgress();
 
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -143,8 +147,13 @@ public class ShareActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                mAdapter = new DataAdapterSharePersonnes(ShareActivity.this, State.getInstance().getSharePeople().getContent());
+                List<SharePersonne> content = State.getInstance().getSharePeople().getContent();
+
+                mAdapter = new DataAdapterSharePersonnes(ShareActivity.this, content);
                 recyclerView.setAdapter(mAdapter);
+
+                if(content.isEmpty()) showTvEmptyList();
+                else hideTvEmptyList();
             }
 
             @Override
@@ -157,13 +166,18 @@ public class ShareActivity extends AppCompatActivity {
 
     }
 
-    public void showProgress() {
+    private void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgress() {
+    private void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
+    private void showTvEmptyList(){
+        tvEmptyList.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
 
 }

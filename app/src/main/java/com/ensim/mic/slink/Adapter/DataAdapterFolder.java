@@ -11,7 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Activities.LinksActivity;
-import com.ensim.mic.slink.Listener.FolderMenuListener;
+import com.ensim.mic.slink.Listener.FolderMenuOtherUserListener;
+import com.ensim.mic.slink.Listener.FolderMenuOwnerListener;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.FolderOfUser;
 import com.squareup.picasso.Picasso;
@@ -77,11 +78,10 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
 
 
 
-        //TODO SHOW OTHER MENU EITHER THAN SET VISIBLITY TO INVISIBLE
         if (Integer.parseInt(folderOutput.getOwnerId()) != userId)
-            myViewHolder.ivMenu.setVisibility(View.INVISIBLE);
+            myViewHolder.ivMenu.setOnClickListener(new FolderMenuOwnerListener(mContext, myViewHolder.ivMenu, folderOutput));
         else
-            myViewHolder.ivMenu.setVisibility(View.VISIBLE);
+            myViewHolder.ivMenu.setOnClickListener(new FolderMenuOtherUserListener(mContext, myViewHolder.ivMenu, folderOutput));
 
         if (folderOutput.getLikes()==null)
             myViewHolder.tvLike.setText("0");
@@ -93,7 +93,6 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
         else
             myViewHolder.tvLink.setText(folderOutput.getLinks());
 
-        myViewHolder.ivMenu.setOnClickListener(new FolderMenuListener(mContext, myViewHolder.ivMenu, folderOutput));
 
         // open
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
