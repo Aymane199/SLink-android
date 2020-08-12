@@ -75,7 +75,6 @@
             android:text="Choose a folder"
             android:textColor="@color/colorStrokeComment"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/etSearchLinks"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

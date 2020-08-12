@@ -68,6 +68,7 @@ public class BottomSheetSort extends BottomSheetDialogFragment implements View.O
     }
 
     public void setChoosen_sort(int choosen_sort) {
+        if(State.getInstance().getFolders().getContent().isEmpty()) return;
         if (choosen_sort != this.choosen_sort) {
             this.choosen_sort = choosen_sort;
   //          if (mlistener != null) mlistener.onChange();
@@ -78,7 +79,6 @@ public class BottomSheetSort extends BottomSheetDialogFragment implements View.O
                 if (Integer.parseInt(foldersOfUser.get(0).getId()) <
                         Integer.parseInt(foldersOfUser.get(foldersOfUser.size() - 1).getId())) {
                     Collections.reverse(foldersOfUser);
-                    System.err.println("testttttttttttttt");
                     State.getInstance().getFolders().setContent(foldersOfUser);
                 }
                 break;

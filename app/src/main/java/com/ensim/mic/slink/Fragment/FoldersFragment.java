@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FoldersFragment extends Fragment implements View.OnClickListener{
 
     //State of the user
-    static public int userId = State.getInstance().getCurrentUser().getContent().getId();
+    public int userId;
 
     static public String userName = State.getInstance().getCurrentUser().getContent().getUserName();
 
@@ -75,6 +75,8 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        userId = State.getInstance().getCurrentUser().getContent().getId();
 
         //init views
         ivRefresh = view.findViewById(R.id.ivRefresh);

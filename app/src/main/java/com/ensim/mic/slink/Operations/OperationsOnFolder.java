@@ -8,6 +8,7 @@ import com.ensim.mic.slink.Table.Folder;
 import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.utils.FolderFilter;
 import com.ensim.mic.slink.utils.RequestState;
+import com.ensim.mic.slink.utils.SortStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,7 +151,7 @@ public class OperationsOnFolder {
     }
 
     //create folder and update state
-    public void createFolder(String name,int owner) {
+    public void createFolder(String name, final int owner) {
         System.out.println("create folder ------------------------------------- ");
 
         state.getFolders().setState(RequestState.LOADING);
@@ -179,6 +180,7 @@ public class OperationsOnFolder {
                 folderOfUser.setOwner(userName);
                 folderOfUser.setName(folder.getName());
                 folderOfUser.setId(folder.getId()+"");
+                folderOfUser.setOwnerId(owner+"");
 
                 //update state
                 List<FolderOfUser> foldersOfUserTemp = state.getFolders().getContent();
@@ -266,6 +268,21 @@ public class OperationsOnFolder {
 
             }
         });
+    }
+
+    //TODO FIX SORT
+    /*
+    * get the folder already sorted from the api
+    * u should create a sort method that sorts list folder in state
+    * add new field in foldersState that remembers the state of the sort checked button
+    * call sortFolder method every time we want to display folders
+     */
+    public void sortFolders(SortStatus sortStatus){
+        List<FolderOfUser> folders = State.getInstance().getFolders().getContent();
+        if(folders.isEmpty()) return;
+
+
+
     }
 
     public void getFolder(int id){

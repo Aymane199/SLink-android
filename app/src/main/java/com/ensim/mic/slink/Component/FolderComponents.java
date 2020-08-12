@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.Gravity;
+import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +21,8 @@ import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 import io.github.ponnamkarthik.richlinkpreview.MetaData;
 import io.github.ponnamkarthik.richlinkpreview.ResponseListener;
@@ -168,6 +171,22 @@ public class FolderComponents {
 
     public void showLinkAddedDialog(final Context mContext, final FolderOfUser folderOutput) {
 
+
+        ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        String linkUrl;
+        try {
+            linkUrl = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).getText().toString();
+        }catch (Exception e){
+            Toast.makeText(mContext,"Please copy an URL. ",Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(!URLUtil.isValidUrl(linkUrl)){
+            Toast.makeText(mContext,"Please copy a valid URL. ",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
         TextView tvTitle = new TextView(mContext);
@@ -219,10 +238,6 @@ public class FolderComponents {
             }
 
         });
-
-        ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-        String linkUrl = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
-        System.out.println("clipboard link "+linkUrl);
 
         richPreview.getPreview(linkUrl);
 

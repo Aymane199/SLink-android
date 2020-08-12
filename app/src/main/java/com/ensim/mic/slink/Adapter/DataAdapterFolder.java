@@ -57,6 +57,7 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
         final FolderOfUser folderOutput = mData.get(i);
 
+        System.out.println(folderOutput);
         //set default image
         myViewHolder.im_folder.setImageResource(R.drawable.ic_folder);
 
@@ -76,9 +77,11 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
 
 
 
-        //TODO SHOW OTHER MENU EITHER THAN SETVISIBLITY TO INVISIBLE
+        //TODO SHOW OTHER MENU EITHER THAN SET VISIBLITY TO INVISIBLE
         if (Integer.parseInt(folderOutput.getOwnerId()) != userId)
             myViewHolder.ivMenu.setVisibility(View.INVISIBLE);
+        else
+            myViewHolder.ivMenu.setVisibility(View.VISIBLE);
 
         if (folderOutput.getLikes()==null)
             myViewHolder.tvLike.setText("0");
