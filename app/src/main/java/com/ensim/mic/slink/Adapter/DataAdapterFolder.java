@@ -66,8 +66,13 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
             String imgUrl = folderOutput.getPicture();
             if(folderOutput.getType().equals("share")){
                 Picasso.get().load(Uri.parse(imgUrl)).placeholder(R.drawable.ic_folder_publiv).error(R.drawable.ic_folder_publiv).into(myViewHolder.im_folder);
-            }else
-            Picasso.get().load(Uri.parse(imgUrl)).placeholder(R.drawable.ic_folder).error(R.drawable.ic_folder).into(myViewHolder.im_folder);
+                myViewHolder.ivMenu.setOnClickListener(new FolderMenuOtherUserListener(mContext, myViewHolder.ivMenu, folderOutput));
+
+            }else{
+                myViewHolder.ivMenu.setOnClickListener(new FolderMenuOwnerListener(mContext, myViewHolder.ivMenu, folderOutput));
+                Picasso.get().load(Uri.parse(imgUrl)).placeholder(R.drawable.ic_folder).error(R.drawable.ic_folder).into(myViewHolder.im_folder);
+
+            }
         } catch (Exception e) {
             Log.e(TAG, "error on loading image <" + folderOutput.getName() + ">");
 
@@ -78,10 +83,6 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
 
 
 
-        if (Integer.parseInt(folderOutput.getOwnerId()) != userId)
-            myViewHolder.ivMenu.setOnClickListener(new FolderMenuOwnerListener(mContext, myViewHolder.ivMenu, folderOutput));
-        else
-            myViewHolder.ivMenu.setOnClickListener(new FolderMenuOtherUserListener(mContext, myViewHolder.ivMenu, folderOutput));
 
         if (folderOutput.getLikes()==null)
             myViewHolder.tvLike.setText("0");
