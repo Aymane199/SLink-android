@@ -231,8 +231,8 @@ public class OperationsOnFolder {
         state.getFolders().setState(RequestState.LOADING);
         final int folderid = Integer.parseInt(folderOutput.getId());
         HashMap<String,Object> body=new HashMap<>();
-        body.put("userId",userId);
-        body.put("folderId",folderid);
+        body.put("user",userId);
+        body.put("folder",folderid);
         Call<Void> call = iApiServicesShare.deleteShare(body);
         call.enqueue(new Callback<Void>() {
             @Override
