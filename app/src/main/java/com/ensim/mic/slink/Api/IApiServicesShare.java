@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface IApiServicesShare {
 
@@ -19,5 +20,7 @@ public interface IApiServicesShare {
 Call<Object> deleteShare(@Path("id")int id);
 
     @DELETE("share")
-    Call<Void> deleteShare(HashMap<String ,Object> body);
+    Call<Void> deleteShare(
+            @Query("user") int idUser,
+            @Query("folder") int idfolder);
 }

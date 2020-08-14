@@ -233,7 +233,7 @@ public class OperationsOnFolder {
         HashMap<String,Object> body=new HashMap<>();
         body.put("user",userId);
         body.put("folder",folderid);
-        Call<Void> call = iApiServicesShare.deleteShare(body);
+        Call<Void> call = iApiServicesShare.deleteShare(userId,folderid);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

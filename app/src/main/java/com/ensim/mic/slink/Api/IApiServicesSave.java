@@ -16,7 +16,7 @@ public interface IApiServicesSave {
     Call<Object> createSave(@Body HashMap<String, Object> body);
 
     @DELETE("save/{id}")
-    Call<Void> deleteSave(@Path("id") int id,@Query("idUser") int idUser,@Query("idLink") int idLink);
+    Call<Void> deleteSave(@Path("id") int id,@Query("idUser") int idUser,@Query("idLink") String idLink);
 
 
 }

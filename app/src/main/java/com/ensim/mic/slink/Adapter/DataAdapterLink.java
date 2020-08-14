@@ -87,8 +87,8 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
                 @Override
                 public void onClick(View v) {
                     System.out.println("myViewHolder.ivSave.isChecked() : " + myViewHolder.ivSave.isChecked() );
-                    if(myViewHolder.ivSave.isChecked()) new OperationsOnSave().setSave(Integer.parseInt(link.getId()));
-                    else new OperationsOnSave().deleteSave(State.idUser,Integer.parseInt(link.getId()));
+                    if(myViewHolder.ivSave.isChecked()) new OperationsOnSave().setSave(link);
+                    else new OperationsOnSave().deleteSave(link);
                 }
             });
         final BottomSheetComment bottomSheetComment = new BottomSheetComment();
