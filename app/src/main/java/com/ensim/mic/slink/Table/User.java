@@ -17,6 +17,9 @@ public class User {
     @SerializedName("date")
     @Expose
     private String date;
+    @SerializedName("token")
+    @Expose
+    private String token;
 
 
     public User() {
@@ -26,19 +29,18 @@ public class User {
      *
      * @param gmail
      * @param date
-     * @param shares
-     * @param subscribes
-     * @param folders
      * @param id
      * @param userName
      */
-    public User(Integer id, String userName, String gmail, String date) {
+    public User(Integer id, String userName, String gmail, String date,String token) {
         super();
         this.id = id;
         this.userName = userName;
         this.gmail = gmail;
         this.date = date;
+        this.token = token;
     }
+
     public Integer getId() {
         return id;
     }
@@ -79,6 +81,15 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", gmail='" + gmail + '\'' +
                 ", date='" + date + '\'' +
+                ", token='" + token + '\'' +
                 '}';
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

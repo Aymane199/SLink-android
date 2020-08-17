@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "108430806874",
+    "firebase_url": "https://slink-1596373253172.firebaseio.com",
+    "project_id": "slink-1596373253172",
+    "storage_bucket": "slink-1596373253172.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108430806874:android:e46a64c6b5466bb132ed63",
+        "android_client_info": {
+          "package_name": "com.ensim.mic.slink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "108430806874-movjbaf7s6i9lo88slt8mpi69mlhagn3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ensim.mic.slink",
+            "certificate_hash": "01d4eb486f661b67aae85595befd4e0764ecafdf"
+          }
+        },
+        {
+          "client_id": "108430806874-ae5qgndd8bl76lkldj387cnqh9ljt8ng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi-5EOw4B_ZEpMMkbbVLpHBmRQd3r0wk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108430806874-ae5qgndd8bl76lkldj387cnqh9ljt8ng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

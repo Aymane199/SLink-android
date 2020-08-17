@@ -23,13 +23,14 @@ public class OperationsOnUser {
 
     }
 
-    public void createCurrentUser(String userName,String mail) {
+    public void createCurrentUser(String userName, String mail, String token) {
         System.out.println("createUser ------------------------------------- ");
         State.getInstance().getCurrentUser().setState(RequestState.LOADING);
 
-        HashMap<String,Object> body = new HashMap<>();
-        body.put("userName",userName);
-        body.put("Gmail",mail);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("userName", userName);
+        body.put("Gmail", mail);
+        body.put("token", token);
 
         Call<User> call = iApiServicesUser.createUser(body);
         call.enqueue(new Callback<User>() {
@@ -41,7 +42,7 @@ public class OperationsOnUser {
                     System.out.println("error: " + response.errorBody());
                     State.getInstance().getCurrentUser().setState(RequestState.FAILED);
 
-                    return ;
+                    return;
                 }
                 User user = response.body();
                 State.getInstance().getCurrentUser().setContent(user);
@@ -60,19 +61,18 @@ public class OperationsOnUser {
     }
 
     /**
-     * @param mailOrUserName
-     * search user using mail or userName
+     * @param mailOrUserName search user using mail or userName
      */
-    public void getSearchUser(String mailOrUserName ){
+    public void getSearchUser(String mailOrUserName) {
 
         System.out.println("-------------- get user ");
         State.getInstance().getSearchUser().setState(RequestState.LOADING);
-        HashMap<String,Object> body = new HashMap<>();
+        HashMap<String, Object> body = new HashMap<>();
         Call<User> call;
 
-        if(android.util.Patterns.EMAIL_ADDRESS.matcher(mailOrUserName).matches()){
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(mailOrUserName).matches()) {
             call = iApiServicesUser.getUserByGmail(mailOrUserName);
-        }else {
+        } else {
             call = iApiServicesUser.getUserByUserName(mailOrUserName);
         }
 
@@ -104,15 +104,13 @@ public class OperationsOnUser {
     }
 
     /**
-     * @param mailOrUserName
-     * search user using mail or userName
+     * @param mailOrUserName search user using mail or userName
      */
-    public void getCurrentUser(String mailOrUserName ){
+    public void getCurrentUser(String mailOrUserName) {
 
-        System.out.println("-------------- get user ");
         State.getInstance().getCurrentUser().setState(RequestState.LOADING);
-        HashMap<String,Object> body = new HashMap<>();
-        body.put("Gmail",mailOrUserName);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("Gmail", mailOrUserName);
         Call<User> call = iApiServicesUser.getUserByGmail(mailOrUserName);
 
 
@@ -143,16 +141,18 @@ public class OperationsOnUser {
 
     }
 
-    public void     updateUser(int id, User user) {
+    public void updateUser(int id, User user) {
         System.out.println("updateUser ------------------------------------- ");
 
         State.getInstance().getCurrentUser().setState(RequestState.LOADING);
 
-        HashMap<String,Object> body = new HashMap<>();
-        if(user.getGmail() != null)
-        body.put("Gmail",user.getGmail());
-        if(user.getUserName() != null)
-        body.put("userName",user.getUserName());
+        HashMap<String, Object> body = new HashMap<>();
+        if (user.getGmail() != null)
+            body.put("Gmail", user.getGmail());
+        if (user.getUserName() != null)
+            body.put("userName", user.getUserName());
+        if (user.getToken() != null)
+            body.put("token", user.getToken());
 
 
         Call<User> call = iApiServicesUser.updateUser(id, body);
@@ -181,6 +181,34 @@ public class OperationsOnUser {
         });
     }
 
+    public void updateToken(int id, String token) {
+        System.out.println("updateUser ------------------------------------- ");
+
+        HashMap<String, Object> body = new HashMap<>();
+        if (!token.isEmpty())
+            body.put("token", token);
+
+        Call<User> call = iApiServicesUser.updateUser(id, body);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Code: " + response.code());
+                    System.out.println("message: " + response.message());
+                    System.out.println("error: " + response.errorBody());
+                    return;
+                }
+                User user = response.body();
+                State.getInstance().getCurrentUser().setContent(user);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+
     public void deleteUser(int id) {
         System.out.println("updateUser ------------------------------------- ");
 
@@ -205,7 +233,7 @@ public class OperationsOnUser {
         });
     }
 
-    public void getUserAllFolders(int id , String search) {
+    public void getUserAllFolders(int id, String search) {
         System.out.println("getUserAllFolders ------------------------------------- ");
 
         Call<List<FolderOfUser>> call = iApiServicesUser.getUserAllFolders(id, search);
@@ -219,8 +247,8 @@ public class OperationsOnUser {
                     return;
                 }
                 List<FolderOfUser> folders = response.body();
-                for ( FolderOfUser folder: folders ) {
-                    System.out.println("folder : "+folder.toString());
+                for (FolderOfUser folder : folders) {
+                    System.out.println("folder : " + folder.toString());
                 }
 
 
@@ -233,7 +261,7 @@ public class OperationsOnUser {
         });
     }
 
-    public void getUserFolders(int id , String search) {
+    public void getUserFolders(int id, String search) {
         System.out.println("getUserFolders ------------------------------------- ");
 
         Call<List<FolderOfUser>> call = iApiServicesUser.getUserFolders(id, search);
@@ -247,8 +275,8 @@ public class OperationsOnUser {
                     return;
                 }
                 List<FolderOfUser> folders = response.body();
-                for ( FolderOfUser folder: folders ) {
-                    System.out.println("folder : "+folder.toString());
+                for (FolderOfUser folder : folders) {
+                    System.out.println("folder : " + folder.toString());
                 }
 
 
@@ -261,7 +289,7 @@ public class OperationsOnUser {
         });
     }
 
-    public void getUserShare(int id , String search) {
+    public void getUserShare(int id, String search) {
         System.out.println("getUserShare ------------------------------------- ");
 
         Call<List<FolderOfUser>> call = iApiServicesUser.getUserShare(id, search);
@@ -275,8 +303,8 @@ public class OperationsOnUser {
                     return;
                 }
                 List<FolderOfUser> folders = response.body();
-                for ( FolderOfUser folder: folders ) {
-                    System.out.println("folder : "+folder.toString());
+                for (FolderOfUser folder : folders) {
+                    System.out.println("folder : " + folder.toString());
                 }
 
 
@@ -289,7 +317,7 @@ public class OperationsOnUser {
         });
     }
 
-    public void getUserSubscribe(int id , String search) {
+    public void getUserSubscribe(int id, String search) {
         System.out.println("getUserSubscribe ------------------------------------- ");
 
         Call<List<FolderOfUser>> call = iApiServicesUser.getUserSubscribe(id, search);
@@ -303,8 +331,8 @@ public class OperationsOnUser {
                     return;
                 }
                 List<FolderOfUser> folders = response.body();
-                for ( FolderOfUser folder: folders ) {
-                    System.out.println("folder : "+folder.toString());
+                for (FolderOfUser folder : folders) {
+                    System.out.println("folder : " + folder.toString());
                 }
 
 

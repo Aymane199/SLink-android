@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progress = findViewById(R.id.progress_circular);
         btnSignIn = findViewById(R.id.btnSignIn);
         btnSignIn.setOnClickListener(this);
-
+        System.out.println("--------------> userid : " + State.getInstance().getCurrentUser().getContent().getId());
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onFailed() {
                 if(State.getInstance().getCurrentUser().getContent().getGmail() == null && !personEmail.isEmpty() && !personName.isEmpty()) {
                     Toast.makeText(getApplicationContext(),"Welcome "+personName,Toast.LENGTH_LONG).show();
-                    new OperationsOnUser().createCurrentUser(personName,personEmail);
+                    new OperationsOnUser().createCurrentUser(personName,personEmail,"");
                 }
             }
         });
