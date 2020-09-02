@@ -22,8 +22,7 @@ public interface IApiServicesUser {
     Call<List<User>> getUsers();
 
     @POST("user")
-    Call<User> createUser(@Body HashMap<String, Object> body
-    );
+    Call<User> createUser(@Body HashMap<String, Object> body    );
 
     @GET("user/{id}")
     Call<User> getUser(@Path("id") int id);

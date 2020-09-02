@@ -75,7 +75,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
      * show progress bar
      * init components
      * get the link URL
-     * get the link preview (picture, title ...)
+     * get the link preview (picture, title ...) - richpreview api
      * listner for search Edittext
      * add lisnter to State on change FolderList
      */
@@ -84,20 +84,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_folder);
 
-        tvEmptyList = findViewById(R.id.tvEmptyList);
-        progressBar = findViewById(R.id.progress_circular);
-        cardViewAdd = findViewById(R.id.card_view_add);
-        etSearch = findViewById(R.id.etSearch);
-        recyclerView = findViewById(R.id.my_recycler_view);
-        ivBack = findViewById(R.id.ivBack);
-        ivRefresh = findViewById(R.id.ivRefresh);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(ChooseFolderActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        cardViewAdd.setOnClickListener(this);
-        ivRefresh.setOnClickListener(this);
-        ivBack.setOnClickListener(this);
-        linkToPut = new LinkOfFolder();
+        initComponents();
 
         hideTvEmptyList();
         showProgress();
@@ -217,6 +204,23 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+    private void initComponents() {
+        tvEmptyList = findViewById(R.id.tvEmptyList);
+        progressBar = findViewById(R.id.progress_circular);
+        cardViewAdd = findViewById(R.id.card_view_add);
+        etSearch = findViewById(R.id.etSearch);
+        recyclerView = findViewById(R.id.my_recycler_view);
+        ivBack = findViewById(R.id.ivBack);
+        ivRefresh = findViewById(R.id.ivRefresh);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(ChooseFolderActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        cardViewAdd.setOnClickListener(this);
+        ivRefresh.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
+        linkToPut = new LinkOfFolder();
+    }
+
     /*
      *   open "add Folder"dialog
      */
@@ -305,6 +309,9 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /**
+     * show Progress bar on UI
+     */
     private void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }

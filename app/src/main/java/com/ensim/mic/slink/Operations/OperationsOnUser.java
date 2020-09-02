@@ -126,7 +126,7 @@ public class OperationsOnUser {
                     State.getInstance().getCurrentUser().setState(RequestState.FAILED);
                     return;
                 }
-                System.out.println(response.toString());
+                System.out.println("getCurrentUser response :"+response.toString());
                 assert response.body() != null;
                 User user = response.body();
                 State.getInstance().getCurrentUser().setContent(user);

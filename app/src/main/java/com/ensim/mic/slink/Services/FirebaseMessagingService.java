@@ -46,9 +46,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                         if(State.getInstance().getLinks().getFolderId() == Integer.parseInt(idFolder))
                         {
                             new OperationsOnLink().displayLinks("",idFolder,State.getInstance().getCurrentUser().getContent().getId()+"");
+                        }else
                             Toast.makeText(getApplicationContext(),remoteMessage.getNotification().getTitle(),Toast.LENGTH_LONG).show();
 
-                        }
                         break;
 
                     case "comment":

@@ -37,10 +37,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        progress = findViewById(R.id.progress_circular);
-        btnSignIn = findViewById(R.id.btnSignIn);
-        btnSignIn.setOnClickListener(this);
+        initComponents();
+
+        user = new User();
+
         System.out.println("--------------> userid : " + State.getInstance().getCurrentUser().getContent().getId());
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -50,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        final boolean[] uCanCreateUser = {true};
         State.getInstance().getCurrentUser().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
@@ -61,21 +64,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 String token = FirebaseInstanceId.getInstance().getToken();
                 Integer idUser = State.getInstance().getCurrentUser().getContent().getId();
-                assert token != null;
+                if(token != null)
                 new OperationsOnUser().updateToken(idUser,token);
-                //new OperationsOnUser().updateUser(State.getInstance().getCurrentUser().getContent().getId(),user);
                 finish();
             }
 
             @Override
             public void onFailed() {
-                if(State.getInstance().getCurrentUser().getContent().getGmail() == null && !user.getGmail().isEmpty() && !user.getUserName().isEmpty()) {
-                    Toast.makeText(getApplicationContext(),"Welcome "+user.getUserName(),Toast.LENGTH_LONG).show();
-                    new OperationsOnUser().createCurrentUser(user.getUserName(),user.getGmail(),"",user.getPicture());
+                if(State.getInstance().getCurrentUser().getContent().getGmail() == null && !user.getGmail().isEmpty() && !user.getUserName().isEmpty() && uCanCreateUser[0]) {
+                        new OperationsOnUser().createCurrentUser(user.getUserName(),user.getGmail(),"NoTokenAssigned","");
+                        uCanCreateUser[0] = false;
+                        finish();
                 }
             }
         });
 
+    }
+
+    private void initComponents() {
+        progress = findViewById(R.id.progress_circular);
+        btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignIn.setOnClickListener(this);
     }
 
     @Override
@@ -93,20 +102,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             btnSignIn.setVisibility(View.INVISIBLE);
             showProgress();
 
-            user = new User();
             user.setGmail(account.getEmail());
             user.setUserName(account.getDisplayName());
-            user.setPicture(account.getPhotoUrl().toString());
 
-            System.out.println(user.toString());
+            new OperationsOnUser().getCurrentUser(account.getEmail());
 
-            new OperationsOnUser().getCurrentUser(user.getGmail());
-
-            System.out.println("u are already signed : "+user.getUserName());
-
-
+            Toast.makeText(getApplicationContext(),"Welcome "+account.getDisplayName(), Toast.LENGTH_LONG).show();
 
         } else {
+
             hideProgress();
             btnSignIn.setVisibility(View.VISIBLE);
         }
@@ -116,10 +120,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnSignIn:
-                signIn();
-                break;
+        if (v.getId() == R.id.btnSignIn) {
+            signIn();
         }
     }
 
@@ -146,6 +148,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             // Signed in successfully, show authenticated UI.
+
             updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.

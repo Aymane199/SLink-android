@@ -39,8 +39,6 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
     //State of the user
     public int userId;
 
-    static public String userName = State.getInstance().getCurrentUser().getContent().getUserName();
-
     //BottomSheetView
     public BottomSheetFilter bottomSheetFilter;
     private BottomSheetSort bottomSheetSort;
