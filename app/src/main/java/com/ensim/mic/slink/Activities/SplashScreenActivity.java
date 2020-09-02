@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -72,6 +73,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                String token = FirebaseInstanceId.getInstance().getToken();
+                Integer idUser = State.getInstance().getCurrentUser().getContent().getId();
+                assert token != null;
+                new OperationsOnUser().updateToken(idUser,token);
                 finish();
             }
 
@@ -80,6 +85,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 hideProgress();
             }
         });
+
 
 
 

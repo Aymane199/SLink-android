@@ -1,40 +1,71 @@
 package com.ensim.mic.slink.Services;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
 
-import com.ensim.mic.slink.Activities.MainActivity;
-import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.Operations.OperationsOnComment;
+import com.ensim.mic.slink.Operations.OperationsOnFolder;
+import com.ensim.mic.slink.Operations.OperationsOnLink;
+import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.utils.FolderFilter;
 import com.google.firebase.messaging.RemoteMessage;
 
-import androidx.core.app.NotificationCompat;
 
+@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        showNotification(remoteMessage.getData().get("message"));
+        System.out.println("message :" + remoteMessage.getData().get("behavior"));
+
+        refreshAdequateObservableObject(remoteMessage);
+
+
     }
 
-    private void showNotification(String message) {
+    private void refreshAdequateObservableObject(final RemoteMessage remoteMessage) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                String behavior = remoteMessage.getData().get("behavior");
+                if(behavior == null ) return;
 
-        Intent i = new Intent(this, MainActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                switch (behavior) {
+                    case "share":
+                        new OperationsOnFolder().displayFolders(FolderFilter.FILTER_ANYONE, "");
+                        Toast.makeText(getApplicationContext(),remoteMessage.getNotification().getTitle(),Toast.LENGTH_LONG).show();
+                        break;
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+                    case "link":
+                        String idFolder = remoteMessage.getData().get("idFolder");
+                        if(idFolder == null) return;
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setAutoCancel(true)
-                .setContentTitle("FCM Test")
-                .setContentText(message)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                .setContentIntent(pendingIntent);
+                        if(State.getInstance().getLinks().getFolderId() == Integer.parseInt(idFolder))
+                        {
+                            new OperationsOnLink().displayLinks("",idFolder,State.getInstance().getCurrentUser().getContent().getId()+"");
+                            Toast.makeText(getApplicationContext(),remoteMessage.getNotification().getTitle(),Toast.LENGTH_LONG).show();
 
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        }
+                        break;
 
-        manager.notify(0, builder.build());
+                    case "comment":
+                        String idLink = remoteMessage.getData().get("idLink");
+                        if(idLink == null) return;
+
+                        if(State.getInstance().getComments().getLinkId() == Integer.parseInt(idLink))
+                            new OperationsOnComment().displayComments(State.getInstance().getComments().getLinkId());
+                        else
+                            Toast.makeText(getApplicationContext(),remoteMessage.getNotification().getTitle(),Toast.LENGTH_LONG).show();
+
+                        break;
+
+                }
+
+            }
+        });
     }
 
 

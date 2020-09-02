@@ -1,6 +1,7 @@
 package com.ensim.mic.slink.Fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,11 +30,11 @@ import androidx.fragment.app.Fragment;
 
 public class PreferencesFragment extends Fragment implements View.OnClickListener {
 
-    View mview;
-    ImageView ivSave,ivChangeName;
-    TextView tvSave,tvChangeName,tvUserName,tvMail;
-    CardView cdDisconnect,cdDeleteAccount;
-
+    private View mview;
+    private ImageView ivSave,ivChangeName;
+    private TextView tvSave,tvChangeName,tvUserName,tvMail;
+    private CardView cdDisconnect,cdDeleteAccount;
+    private ImageView ivPicture;
 
     @Nullable
     @Override
@@ -47,6 +49,7 @@ public class PreferencesFragment extends Fragment implements View.OnClickListene
         tvMail = mview.findViewById(R.id.tvMail);
         cdDisconnect = mview.findViewById(R.id.cdDisconnect);
         cdDeleteAccount = mview.findViewById(R.id.cdDeleteAccount);
+        ivPicture = mview.findViewById(R.id.ivPicture);
 
         ivSave.setOnClickListener(this);
         tvSave.setOnClickListener(this);
@@ -70,6 +73,10 @@ public class PreferencesFragment extends Fragment implements View.OnClickListene
                 User user = State.getInstance().getCurrentUser().getContent();
                 tvUserName.setText(user.getUserName());
                 tvMail.setText(user.getGmail());
+                String picture = user.getPicture();
+                if(picture != null)
+                Picasso.get().load(Uri.parse(picture)).placeholder(R.drawable.ic_face_black_24dp).error(R.drawable.ic_face_black_24dp).into(ivPicture);
+
             }
 
             @Override

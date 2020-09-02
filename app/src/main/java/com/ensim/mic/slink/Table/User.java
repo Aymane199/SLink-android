@@ -20,25 +20,28 @@ public class User {
     @SerializedName("token")
     @Expose
     private String token;
-
+    @SerializedName("picture")
+    @Expose
+    private String picture;
 
     public User() {
     }
 
     /**
-     *
+     *  @param id
+     * @param userName
      * @param gmail
      * @param date
-     * @param id
-     * @param userName
+     * @param picture
      */
-    public User(Integer id, String userName, String gmail, String date,String token) {
+    public User(Integer id, String userName, String gmail, String date, String token, String picture) {
         super();
         this.id = id;
         this.userName = userName;
         this.gmail = gmail;
         this.date = date;
         this.token = token;
+        this.picture = picture;
     }
 
     public Integer getId() {
@@ -91,5 +94,13 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

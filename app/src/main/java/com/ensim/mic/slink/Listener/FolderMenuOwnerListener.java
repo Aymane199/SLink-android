@@ -12,6 +12,7 @@ import com.ensim.mic.slink.Activities.FolderDetailsActivity;
 import com.ensim.mic.slink.Activities.ShareActivity;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
 
 /*
@@ -78,7 +79,7 @@ public class FolderMenuOwnerListener implements View.OnClickListener  {
                 new FolderComponents().showDeleteDialog(mContext,folderOutput);
                 break;
             case R.id.menuAdd_link:
-                new FolderComponents().showLinkAddedDialog(mContext,folderOutput);
+                new FolderComponents().showLinkAddedDialog(mContext,folderOutput, State.getInstance().getCurrentUser().getContent().getId());
                 break;
            /* case R.id.menuMake_public:
                 new FolderComponents().showMakeItPublicDialog(mContext,folderOutput);

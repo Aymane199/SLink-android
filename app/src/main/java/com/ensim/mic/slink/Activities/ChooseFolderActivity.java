@@ -97,6 +97,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         cardViewAdd.setOnClickListener(this);
         ivRefresh.setOnClickListener(this);
         ivBack.setOnClickListener(this);
+        linkToPut = new LinkOfFolder();
 
         hideTvEmptyList();
         showProgress();
@@ -118,16 +119,17 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         }
 
         // check mime type
-        url = receiverdIntent.getStringExtra(Intent.EXTRA_TEXT);
+        linkToPut.setUrl(receiverdIntent.getStringExtra(Intent.EXTRA_TEXT));
 
-        if (!URLUtil.isValidUrl(url)) {
+        //System.out.println(receiverdIntent.toString());
+
+        if (!URLUtil.isValidUrl(linkToPut.getUrl())) {
             Toast.makeText(this, "This is not a Url", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        linkToPut = new LinkOfFolder();
-        linkToPut.setUrl(url);
+
 
 
         richPreview = new RichPreview(new ResponseListener() {
@@ -142,6 +144,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onError(Exception e) {
+                System.out.println(e.toString());
                 hideProgress();
             }
         });

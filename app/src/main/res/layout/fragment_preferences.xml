@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/ivPicture"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="30dp"
@@ -85,7 +85,7 @@
         android:text="Aymanerzk"
         android:textColor="@color/colorStrokeComment"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/ivPicture"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -97,7 +97,7 @@
         android:text="aymanerzk@gmail.com"
         android:textColor="@color/colorStrokeComment"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/ivPicture"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
     <TextView
@@ -195,6 +195,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="35dp"
         android:clickable="true"
+        android:visibility="invisible"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="6dp"
         app:cardCornerRadius="7dp"

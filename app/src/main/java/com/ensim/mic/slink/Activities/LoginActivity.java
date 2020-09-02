@@ -1,7 +1,6 @@
 package com.ensim.mic.slink.Activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,12 +11,14 @@ import com.ensim.mic.slink.Operations.OperationsOnUser;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Table.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -28,8 +29,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = "LoginActivity";
     private GoogleSignInClient mGoogleSignInClient;
     private CardView btnSignIn;
-    private String personName;
-    private String personEmail;
+    private User user;
     private ProgressBar progress;
 
     @Override
@@ -59,14 +59,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onDataReady() {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                String token = FirebaseInstanceId.getInstance().getToken();
+                Integer idUser = State.getInstance().getCurrentUser().getContent().getId();
+                assert token != null;
+                new OperationsOnUser().updateToken(idUser,token);
+                //new OperationsOnUser().updateUser(State.getInstance().getCurrentUser().getContent().getId(),user);
                 finish();
             }
 
             @Override
             public void onFailed() {
-                if(State.getInstance().getCurrentUser().getContent().getGmail() == null && !personEmail.isEmpty() && !personName.isEmpty()) {
-                    Toast.makeText(getApplicationContext(),"Welcome "+personName,Toast.LENGTH_LONG).show();
-                    new OperationsOnUser().createCurrentUser(personName,personEmail,"");
+                if(State.getInstance().getCurrentUser().getContent().getGmail() == null && !user.getGmail().isEmpty() && !user.getUserName().isEmpty()) {
+                    Toast.makeText(getApplicationContext(),"Welcome "+user.getUserName(),Toast.LENGTH_LONG).show();
+                    new OperationsOnUser().createCurrentUser(user.getUserName(),user.getGmail(),"",user.getPicture());
                 }
             }
         });
@@ -87,25 +92,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (account != null) {
             btnSignIn.setVisibility(View.INVISIBLE);
             showProgress();
-            personEmail = account.getEmail();
-            personName = account.getDisplayName();
-            String personGivenName = account.getGivenName();
-            String personFamilyName = account.getFamilyName();
-            String personId = account.getId();
-            Uri personPhoto = account.getPhotoUrl();
 
-            System.out.println("profile [ " +
-                    ", Name :"+personName+"" +
-                    ", personGivenName :"+personGivenName+"" +
-                    ", personFamilyName :"+personFamilyName+"" +
-                    ", personEmail :"+personEmail+"" +
-                    ", personId :"+personId+"" +
-                    ", personPhoto :"+personPhoto+"" +
-                    "]");
+            user = new User();
+            user.setGmail(account.getEmail());
+            user.setUserName(account.getDisplayName());
+            user.setPicture(account.getPhotoUrl().toString());
 
-            new OperationsOnUser().getCurrentUser(personEmail);
+            System.out.println(user.toString());
 
-            System.out.println("u are already signed : "+personName);
+            new OperationsOnUser().getCurrentUser(user.getGmail());
+
+            System.out.println("u are already signed : "+user.getUserName());
 
 
 
@@ -158,11 +155,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    void showProgress(){
+    private void showProgress(){
         progress.setVisibility(View.VISIBLE);
     }
 
-    void hideProgress(){
+    private void hideProgress(){
         progress.setVisibility(View.INVISIBLE);
     }
 

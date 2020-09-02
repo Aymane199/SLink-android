@@ -169,7 +169,7 @@ public class FolderComponents {
         alertDialogBuilder.show();
     }
 
-    public void showLinkAddedDialog(final Context mContext, final FolderOfUser folderOutput) {
+    public void showLinkAddedDialog(final Context mContext, final FolderOfUser folderOutput, final int idUser) {
 
 
         ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -227,7 +227,7 @@ public class FolderComponents {
                 link.setPicture(metaData.getImageurl());
                 link.setUrl(metaData.getUrl());
 
-                new OperationsOnLink().addLinktoFolder(folderOutput,link);
+                new OperationsOnLink().addLinktoFolder(folderOutput,link, idUser);
                 alertDialogBuilder.show();
 
 

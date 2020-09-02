@@ -30,10 +30,10 @@ public class OperationsOnComment {
     }
 
     //call links comments and update the state
-    public void displayComments(int linkId) {
+    public void displayComments(final int linkId) {
 
         state.getComments().setState(RequestState.LOADING);
-        System.out.println("display Comments :"+linkId);
+        System.out.println("display Comments : "+linkId);
         // etablish the request
         //Call<List<Comment>> call;
         Call<LinkOfFolder> call;
@@ -52,10 +52,12 @@ public class OperationsOnComment {
                     state.getComments().setState(RequestState.FAILED);
                     return;
                 }
-                assert response.body() != null;
+                if(response.body() == null) return;
                 System.out.println(response.body().toString());
+
                 //update state
                 state.getComments().setContent(response.body().getComments());
+                state.getComments().setLinkId(linkId);
                 state.getComments().setState(RequestState.SUCCESSFUL);
 
             }

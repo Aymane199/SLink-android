@@ -11,6 +11,7 @@ import android.widget.PopupMenu;
 import com.ensim.mic.slink.Activities.FolderDetailsActivity;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
 
 /*
@@ -60,7 +61,7 @@ public class FolderMenuOtherUserListener implements View.OnClickListener  {
                 mContext.startActivity(intent);
                 break;
            case R.id.menuAdd_link:
-                new FolderComponents().showLinkAddedDialog(mContext,folderOutput);
+                new FolderComponents().showLinkAddedDialog(mContext,folderOutput, State.getInstance().getCurrentUser().getContent().getId());
                 break;
             case R.id.menuQuit:
                 new FolderComponents().showQuitFolderDialog(mContext,folderOutput);

@@ -81,16 +81,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/frameLayout"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:layout_gravity="center"
-        android:layout_marginTop="26dp"
-        android:layout_marginBottom="25dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="6dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/shape_bnt_filter"
             android:padding="6dp">

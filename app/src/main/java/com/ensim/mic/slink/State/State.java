@@ -6,14 +6,11 @@ import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.ensim.mic.slink.Table.SharePersonne;
 import com.ensim.mic.slink.Table.User;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class State {
-
-    static public int idUser = 3;
 
     static private State INSTATNCE = new State();
 
@@ -21,22 +18,13 @@ public class State {
         return INSTATNCE;
     }
 
-    private GoogleSignInClient mGoogleSignInClient;
-
     private BaseObjectState<User> currentUser;
-
     private FoldersState folders;
-
     private LinksState links;
-
-    private BaseObjectState<List<Comment>> comments;
-
+    private CommentsState comments;
     private BaseObjectState<List<LinkOfFolder>> savedLinks;
-
     private BaseObjectState<Folder> folder;
-
     private BaseObjectState<List<SharePersonne>> sharePeople;
-
     private BaseObjectState<User> searchUser;
 
 
@@ -45,7 +33,7 @@ public class State {
         currentUser = new BaseObjectState<>(new User());
         folders = new FoldersState(new ArrayList<FolderOfUser>());
         links = new LinksState(new ArrayList<LinkOfFolder>());
-        comments = new BaseObjectState<List<Comment>>(new ArrayList<Comment>());
+        comments = new CommentsState(new ArrayList<Comment>());
         savedLinks = new BaseObjectState<List<LinkOfFolder>>(new ArrayList<LinkOfFolder>());
         folder = new BaseObjectState<>(new Folder());
         sharePeople = new BaseObjectState<List<SharePersonne>>(new ArrayList<SharePersonne>());
@@ -64,7 +52,7 @@ public class State {
         return links;
     }
 
-    public BaseObjectState<List<Comment>> getComments() {
+    public CommentsState getComments() {
         return comments;
     }
 

@@ -1,5 +1,6 @@
 package com.ensim.mic.slink.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import com.ensim.mic.slink.Fragment.FoldersFragment;
 import com.ensim.mic.slink.Fragment.PreferencesFragment;
 import com.ensim.mic.slink.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.Objects;
 
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+        Intent intent2 = new Intent(this, FirebaseMessagingService.class);
+        startService(intent2);
 
 
     }

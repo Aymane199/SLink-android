@@ -23,7 +23,7 @@ public class OperationsOnUser {
 
     }
 
-    public void createCurrentUser(String userName, String mail, String token) {
+    public void createCurrentUser(String userName, String mail, String token,String picture) {
         System.out.println("createUser ------------------------------------- ");
         State.getInstance().getCurrentUser().setState(RequestState.LOADING);
 
@@ -31,6 +31,7 @@ public class OperationsOnUser {
         body.put("userName", userName);
         body.put("Gmail", mail);
         body.put("token", token);
+        body.put("picture", picture);
 
         Call<User> call = iApiServicesUser.createUser(body);
         call.enqueue(new Callback<User>() {
@@ -104,7 +105,8 @@ public class OperationsOnUser {
     }
 
     /**
-     * @param mailOrUserName search user using mail or userName
+     * @param mailOrUserName
+     * search user using mail or userName
      */
     public void getCurrentUser(String mailOrUserName) {
 
@@ -208,6 +210,9 @@ public class OperationsOnUser {
             }
         });
     }
+
+
+
 
     public void deleteUser(int id) {
         System.out.println("updateUser ------------------------------------- ");

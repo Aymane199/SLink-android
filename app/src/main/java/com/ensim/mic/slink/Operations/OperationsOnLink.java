@@ -94,7 +94,7 @@ public class OperationsOnLink {
         });
     }
 
-    public void addLinktoFolder(final FolderOfUser folderOutput, LinkOfFolder link) {
+    public void addLinktoFolder(final FolderOfUser folderOutput, LinkOfFolder link,int idUser) {
         state.getLinks().setState(RequestState.LOADING);
         state.getFolders().setState(RequestState.LOADING);
 
@@ -108,6 +108,7 @@ public class OperationsOnLink {
         if (link.getName() != null)
             body.put("name", link.getName());
         body.put("folder", folderOutput.getId());
+        body.put("owner", idUser);
 
         Call<Object> call = iApiServicesLink.createLink(body);
         call.enqueue(new Callback<Object>() {

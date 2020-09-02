@@ -80,7 +80,7 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
             public void onClick(View v) {
                 System.out.println("myViewHolder.ivLike.isChecked() : " + myViewHolder.ivLike.isChecked() );
                 if(myViewHolder.ivLike.isChecked()) new OperationsOnLike().setLike(Integer.parseInt(link.getId()));
-                else new OperationsOnLike().deleteLike(State.idUser,Integer.parseInt(link.getId()));
+                else new OperationsOnLike().deleteLike(State.getInstance().getCurrentUser().getContent().getId(),Integer.parseInt(link.getId()));
             }
         });
         myViewHolder.ivSave.setOnClickListener(new View.OnClickListener() {

@@ -17,12 +17,10 @@ import com.ensim.mic.slink.Component.BottomSheetFilter;
 import com.ensim.mic.slink.Component.BottomSheetSort;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.Operations.OperationsOnFolder;
-import com.ensim.mic.slink.Operations.OperationsOnUser;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.State.OnChangeObject;
 import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.List;
 
@@ -44,7 +42,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
     static public String userName = State.getInstance().getCurrentUser().getContent().getUserName();
 
     //BottomSheetView
-    private BottomSheetFilter bottomSheetFilter;
+    public BottomSheetFilter bottomSheetFilter;
     private BottomSheetSort bottomSheetSort;
 
     //search Text
@@ -131,7 +129,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         ivRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new OperationsOnFolder().displayEditableFolders(searchText);
+                new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
             }
         });
 
@@ -168,14 +166,6 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
             }
         });
         new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
-
-
-        String token = FirebaseInstanceId.getInstance().getToken();
-
-        Integer id = State.getInstance().getCurrentUser().getContent().getId();
-
-        new OperationsOnUser().updateToken(id,token);
-
 
     }
 

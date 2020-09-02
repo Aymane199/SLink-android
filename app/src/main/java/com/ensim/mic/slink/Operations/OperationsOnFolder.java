@@ -50,9 +50,6 @@ public class OperationsOnFolder {
         Call<List<FolderOfUser>> call;
         //set filter
         switch (filter){
-            case FILTER_ANYONE:
-                call = iApiServicesUser.getUserAllFolders(userId, searchText);
-                break;
             case FILTER_OWNED_BY_ME :
                 call = iApiServicesUser.getUserFolders(userId, searchText);
                 break;
@@ -187,7 +184,7 @@ public class OperationsOnFolder {
 
                 //update state
                 List<FolderOfUser> foldersOfUserTemp = state.getFolders().getContent();
-                foldersOfUserTemp.add(folderOfUser);
+                foldersOfUserTemp.add(0,folderOfUser);
                 state.getFolders().setContent(foldersOfUserTemp);
                 state.getFolders().setState(RequestState.SUCCESSFUL);
 

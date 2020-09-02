@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.ensim.mic.slink.Api.IApiServicesLink;
 import com.ensim.mic.slink.Api.RetrofitFactory;
 import com.ensim.mic.slink.R;
+import com.ensim.mic.slink.State.State;
 import com.ensim.mic.slink.Table.FolderOfUser;
 import com.ensim.mic.slink.Table.LinkOfFolder;
 import com.squareup.picasso.Picasso;
@@ -39,11 +40,15 @@ public class DataAdapterChooseFolder extends RecyclerView.Adapter<DataAdapterCho
     private OnItemClickListener mListener;
 
 
-    public DataAdapterChooseFolder(Context mContext, List<FolderOfUser> mData, LinkOfFolder linkToput) {
+    public DataAdapterChooseFolder(Context mContext, List<FolderOfUser> mData, LinkOfFolder linkToPut) {
         this.mContext = mContext;
-        this.mData = mData;
-        this.linkToput = linkToput;
         iApiServicesLink = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesLink.class);
+        this.mData = mData;
+        this.linkToput = linkToPut;
+        Uri uri = Uri.parse(linkToPut.getUrl());
+        if(linkToPut.getName().isEmpty())
+        linkToPut.setName(uri.getHost()+" : "+uri.getLastPathSegment());
+        System.out.println("----->"+linkToPut);
 
     }
 
@@ -87,7 +92,7 @@ public class DataAdapterChooseFolder extends RecyclerView.Adapter<DataAdapterCho
             public void onClick(View view) {
                 System.out.println(link);
                 //link
-                showLinkAddedDialog(folderOutput, link);
+                addLinkToFolder(folderOutput, link, State.getInstance().getCurrentUser().getContent().getId());
             }
         });
 
@@ -98,18 +103,24 @@ public class DataAdapterChooseFolder extends RecyclerView.Adapter<DataAdapterCho
         return mData.size();
     }
 
-    private void showLinkAddedDialog(final FolderOfUser folderOutput, LinkOfFolder link) {
+    private void addLinkToFolder(final FolderOfUser folderOutput, LinkOfFolder link, int idUser) {
 
         HashMap<String, Object> body = new HashMap<>();
         if (link.getUrl() != null)
             body.put("URL", link.getUrl());
         else
             return;
+
         if (link.getPicture() != null)
             body.put("picture", link.getPicture());
+
         if (link.getName() != null)
             body.put("name", link.getName());
+
         body.put("folder", folderOutput.getId());
+        body.put("owner", idUser);
+
+        System.out.println(body.toString());
         Call<Object> call = iApiServicesLink.createLink(body);
         call.enqueue(new Callback<Object>() {
             @Override
