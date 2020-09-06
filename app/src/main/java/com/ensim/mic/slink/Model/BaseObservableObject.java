@@ -1,25 +1,25 @@
-package com.ensim.mic.slink.State;
+package com.ensim.mic.slink.Model;
 
 import com.ensim.mic.slink.utils.RequestState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseObjectState<T> {
+public class BaseObservableObject<T> {
 
     private T content;
     private RequestState state;
     private List<OnChangeObject> onChangeObjectListeners;
 
 
-    public BaseObjectState(T t, RequestState state) {
+    public BaseObservableObject(T t, RequestState state) {
         this.content = t;
         this.state = state;
         onChangeObjectListeners = new ArrayList<>();
         notifyListeners();
     }
 
-    public BaseObjectState(T t) {
+    public BaseObservableObject(T t) {
         this.content = t;
         state = RequestState.SUCCESSFUL;
         onChangeObjectListeners = new ArrayList<>();
@@ -44,25 +44,25 @@ public class BaseObjectState<T> {
 
     }
 
-    public void addOnChangeObjectListener(OnChangeObject onChangeObjectListners) {
-        this.onChangeObjectListeners.add(onChangeObjectListners);
+    public void addOnChangeObjectListener(OnChangeObject onChangeObjectListener) {
+        this.onChangeObjectListeners.add(onChangeObjectListener);
     }
 
     private void notifyListeners(){
         switch (state){
             case LOADING:
-                for (OnChangeObject listner : onChangeObjectListeners) {
-                    listner.onLoading();
+                for (OnChangeObject listener : onChangeObjectListeners) {
+                    listener.onLoading();
                 }
                 break;
             case SUCCESSFUL:
-                for (OnChangeObject listner : onChangeObjectListeners) {
-                    listner.onDataReady();
+                for (OnChangeObject listener : onChangeObjectListeners) {
+                    listener.onDataReady();
                 }
                 break;
             case FAILED:
-                for (OnChangeObject listner : onChangeObjectListeners) {
-                    listner.onFailed();
+                for (OnChangeObject listener : onChangeObjectListeners) {
+                    listener.onFailed();
                 }
                 break;
         }

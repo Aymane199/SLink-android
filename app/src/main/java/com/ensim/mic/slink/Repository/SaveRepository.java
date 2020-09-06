@@ -1,9 +1,9 @@
-package com.ensim.mic.slink.Operations;
+package com.ensim.mic.slink.Repository;
 
-import com.ensim.mic.slink.Api.IApiServicesSave;
-import com.ensim.mic.slink.Api.RetrofitFactory;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Retrofit.IApiServicesSave;
+import com.ensim.mic.slink.Retrofit.RetrofitFactory;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.Link;
 import com.ensim.mic.slink.utils.RequestState;
 
 import java.util.HashMap;
@@ -13,25 +13,25 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OperationsOnSave {
+public class SaveRepository {
 
     //user state
     private int userId;
 
     private IApiServicesSave iApiServicesSave;
-    private State state;
+    private Model model;
 
 
-    public OperationsOnSave() {
+    public SaveRepository() {
         iApiServicesSave = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesSave.class);
-        state = State.getInstance();
-        userId = State.getInstance().getCurrentUser().getContent().getId();
+        model = Model.getInstance();
+        userId = Model.getInstance().getCurrentUser().getContent().getId();
     }
 
     //call like and update links state
-    public void setSave(final LinkOfFolder link) {
+    public void setSave(final Link link) {
 
-        State.getInstance().getSavedLinks().setState(RequestState.LOADING);
+        Model.getInstance().getSavedLinks().setState(RequestState.LOADING);
         System.out.println("set Save");
         //create body
         HashMap<String, Object> body = new HashMap<>();
@@ -48,27 +48,27 @@ public class OperationsOnSave {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    State.getInstance().getSavedLinks().setState(RequestState.FAILED);
+                    Model.getInstance().getSavedLinks().setState(RequestState.FAILED);
                     return;
                 }
-                List<LinkOfFolder> content = State.getInstance().getSavedLinks().getContent();
+                List<Link> content = Model.getInstance().getSavedLinks().getContent();
                 content.add(0,link);
-                State.getInstance().getSavedLinks().setContent(content);
-                State.getInstance().getSavedLinks().setState(RequestState.SUCCESSFUL);
+                Model.getInstance().getSavedLinks().setContent(content);
+                Model.getInstance().getSavedLinks().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
                 System.out.println(t.getMessage());
-                State.getInstance().getSavedLinks().setState(RequestState.FAILED);
+                Model.getInstance().getSavedLinks().setState(RequestState.FAILED);
 
             }
         });
     }
 
-    public void deleteSave(final LinkOfFolder link) {
-        State.getInstance().getSavedLinks().setState(RequestState.LOADING);
+    public void deleteSave(final Link link) {
+        Model.getInstance().getSavedLinks().setState(RequestState.LOADING);
 
         System.out.println("delete Save");
 
@@ -82,22 +82,22 @@ public class OperationsOnSave {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    State.getInstance().getSavedLinks().setState(RequestState.FAILED);
+                    Model.getInstance().getSavedLinks().setState(RequestState.FAILED);
                     return;
                 }
                 //
                 System.out.println("saved successfully");
-                List<LinkOfFolder> content = State.getInstance().getSavedLinks().getContent();
+                List<Link> content = Model.getInstance().getSavedLinks().getContent();
                 content.remove(link);
-                State.getInstance().getSavedLinks().setContent(content);
-                State.getInstance().getSavedLinks().setState(RequestState.SUCCESSFUL);
+                Model.getInstance().getSavedLinks().setContent(content);
+                Model.getInstance().getSavedLinks().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 System.out.println(t.getMessage());
-                State.getInstance().getSavedLinks().setState(RequestState.FAILED);
+                Model.getInstance().getSavedLinks().setState(RequestState.FAILED);
 
             }
         });

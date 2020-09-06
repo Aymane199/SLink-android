@@ -3,17 +3,18 @@ package com.ensim.mic.slink.Component;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Operations.OperationsOnLink;
+import com.ensim.mic.slink.Repository.LinkRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Table.Link;
 
 
 public class LinkComponents {
 
-    public void showDeleteDialog(final Context mContext, final LinkOfFolder link) {
+    public void showDeleteDialog(final Context mContext, final Link link) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
@@ -30,7 +31,7 @@ public class LinkComponents {
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new OperationsOnLink(). deleteLink(link);
+                new LinkRepository(). deleteLink(link);
 
             }
         });
@@ -46,6 +47,15 @@ public class LinkComponents {
         alertDialogBuilder.show();
     }
 
+    public void showShareIntent(final Context mContext, final Link link) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String shareSub = link.getName();
+        String shareBody = link.getUrl();
+        intent.putExtra(Intent.EXTRA_SUBJECT,shareSub);
+        intent.putExtra(Intent.EXTRA_TEXT,shareBody);
+        mContext.startActivity(Intent.createChooser(intent,"Share using"));
 
+    }
 
 }

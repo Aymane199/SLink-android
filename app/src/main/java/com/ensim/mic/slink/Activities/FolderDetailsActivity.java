@@ -9,11 +9,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Adapter.DataAdapterSharePersonnes;
-import com.ensim.mic.slink.Operations.OperationsOnShare;
+import com.ensim.mic.slink.Repository.ShareRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Model.OnChangeObject;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
 import com.ensim.mic.slink.Table.SharePersonne;
 import com.squareup.picasso.Picasso;
 
@@ -39,32 +39,30 @@ public class FolderDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder_details);
 
-
+        // get folder form intent
         Intent intent = getIntent();
-
         Bundle bundle = intent.getExtras();
-        assert bundle != null;
-        FolderOfUser folder =
-                (FolderOfUser) bundle.getSerializable("folder");
+        if(bundle == null ) finish();
+        FolderWithoutUser folder =
+                (FolderWithoutUser) bundle.getSerializable("folder");
 
-        progressBar = findViewById(R.id.progress_circular);
-        tvName = findViewById(R.id.tvUserName);
-        tvDescription = findViewById(R.id.tvDescription);
-        tvLikes = findViewById(R.id.tvLikes);
-        tvLinks = findViewById(R.id.tvLinks);
-        ivImage = findViewById(R.id.ivImage);
-        recyclerView = findViewById(R.id.myRecycleView);
-        tvEmptyList = findViewById(R.id.tvEmptyList);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(FolderDetailsActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        hideTvEmptyList();
+        if(folder == null) finish();
+
+        initComponents();
+
+        hideTextViewEmptyList();
+
         hideProgress();
 
-        System.out.println("get extra :" + folder);
+        fieldComponents(folder);
 
+        Model.getInstance().getFolderMembers().addOnChangeObjectListener(getOnChangeFolderMembersListener());
 
-        assert folder != null;
+        new ShareRepository().dispalySharePersonnes(Integer.parseInt(folder.getId()));
+
+    }
+
+    private void fieldComponents(FolderWithoutUser folder) {
         tvName.setText(folder.getName());
         tvDescription.setText(folder.getDescription());
         if (folder.getLikes() == null)
@@ -81,8 +79,10 @@ public class FolderDetailsActivity extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println("error loading image");
         }
+    }
 
-        State.getInstance().getSharePeople().addOnChangeObjectListener(new OnChangeObject() {
+    private OnChangeObject getOnChangeFolderMembersListener() {
+        return new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -91,22 +91,34 @@ public class FolderDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                List<SharePersonne> content = State.getInstance().getSharePeople().getContent();
+                List<SharePersonne> content = Model.getInstance().getFolderMembers().getContent();
 
                 mAdapter = new DataAdapterSharePersonnes(FolderDetailsActivity.this, content);
                 recyclerView.setAdapter(mAdapter);
 
-                if(content.isEmpty()) showTvEmptyList();
-                else hideTvEmptyList();
+                if(content.isEmpty()) showTextViewEmptyList();
+                else hideTextViewEmptyList();
             }
 
             @Override
             public void onFailed() {
                 hideProgress();
             }
-        });
-        new OperationsOnShare().dispalySharePersonnes(Integer.parseInt(folder.getId()));
+        };
+    }
 
+    private void initComponents() {
+        progressBar = findViewById(R.id.progress_circular);
+        tvName = findViewById(R.id.tvUserName);
+        tvDescription = findViewById(R.id.tvDescription);
+        tvLikes = findViewById(R.id.tvLikes);
+        tvLinks = findViewById(R.id.tvLinks);
+        ivImage = findViewById(R.id.ivImage);
+        recyclerView = findViewById(R.id.myRecycleView);
+        tvEmptyList = findViewById(R.id.tvEmptyList);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(FolderDetailsActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     private void showProgress() {
@@ -117,10 +129,10 @@ public class FolderDetailsActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void showTvEmptyList(){
+    private void showTextViewEmptyList(){
         tvEmptyList.setVisibility(View.VISIBLE);
     }
 
-    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
+    private void hideTextViewEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
 
 }

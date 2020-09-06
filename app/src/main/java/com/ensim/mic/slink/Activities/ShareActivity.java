@@ -13,12 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ensim.mic.slink.Adapter.DataAdapterSharePersonnes;
-import com.ensim.mic.slink.Operations.OperationsOnShare;
-import com.ensim.mic.slink.Operations.OperationsOnUser;
+import com.ensim.mic.slink.Repository.ShareRepository;
+import com.ensim.mic.slink.Repository.UserRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Model.OnChangeObject;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
 import com.ensim.mic.slink.Table.SharePersonne;
 import com.ensim.mic.slink.Table.User;
 
@@ -49,20 +49,14 @@ public class ShareActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Bundle bundle = intent.getExtras();
-        assert bundle != null;
-        final FolderOfUser folder =
-                (FolderOfUser) bundle.getSerializable("folder");
+        if( bundle == null ) finish();
+
+        final FolderWithoutUser folder =
+                (FolderWithoutUser) bundle.getSerializable("folder");
 
 
-        ivRefresh = findViewById(R.id.ivRefresh);
-        recyclerView = findViewById(R.id.my_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(ShareActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        etSearch = findViewById(R.id.etSearch);
-        cvAdd = findViewById(R.id.cvAdd);
-        progressBar = findViewById(R.id.progress_circular);
-        tvEmptyList = findViewById(R.id.tvEmptyList);
+        initComponents();
+
         hideTvEmptyList();
         hideProgress();
 
@@ -76,7 +70,7 @@ public class ShareActivity extends AppCompatActivity {
                     searchText = etSearch.getText().toString();
                     String userName = etSearch.getText().toString();
                     if(!userName.isEmpty())  {
-                        new OperationsOnUser().getSearchUser(userName);
+                        new UserRepository().getSearchUser(userName);
                         etSearch.setText("");
                         etSearch.clearFocus();
                     }
@@ -91,7 +85,7 @@ public class ShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String userName = etSearch.getText().toString();
                 if(userName.isEmpty()) return;
-                new OperationsOnUser().getSearchUser(userName);
+                new UserRepository().getSearchUser(userName);
                 etSearch.clearFocus();
                 etSearch.setText("");
 
@@ -101,7 +95,7 @@ public class ShareActivity extends AppCompatActivity {
         ivRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new OperationsOnShare().dispalySharePersonnes(Integer.parseInt(folder.getId()));
+                new ShareRepository().dispalySharePersonnes(Integer.parseInt(folder.getId()));
             }
         });
 
@@ -112,7 +106,7 @@ public class ShareActivity extends AppCompatActivity {
             }
         });
 
-        State.getInstance().getSearchUser().addOnChangeObjectListener(new OnChangeObject() {
+        Model.getInstance().getSearchUser().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 //Toast.makeText(ShareActivity.this,"onLoading",Toast.LENGTH_SHORT).show();
@@ -121,10 +115,10 @@ public class ShareActivity extends AppCompatActivity {
 
             @Override
             public void onDataReady() {
-                User user = State.getInstance().getSearchUser().getContent();
+                User user = Model.getInstance().getSearchUser().getContent();
                 assert user.getId()!=null;
-                new OperationsOnShare().addPersonne(Integer.parseInt(folder.getId()),user.getId());
-                System.out.println("add personne "+State.getInstance().getSearchUser().getContent());
+                new ShareRepository().addPersonne(Integer.parseInt(folder.getId()),user.getId());
+                System.out.println("add personne "+ Model.getInstance().getSearchUser().getContent());
                 hideProgress();
 
 
@@ -138,7 +132,7 @@ public class ShareActivity extends AppCompatActivity {
             }
         });
 
-        State.getInstance().getSharePeople().addOnChangeObjectListener(new OnChangeObject() {
+        Model.getInstance().getFolderMembers().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -147,7 +141,7 @@ public class ShareActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                List<SharePersonne> content = State.getInstance().getSharePeople().getContent();
+                List<SharePersonne> content = Model.getInstance().getFolderMembers().getContent();
 
                 mAdapter = new DataAdapterSharePersonnes(ShareActivity.this, content);
                 recyclerView.setAdapter(mAdapter);
@@ -162,8 +156,20 @@ public class ShareActivity extends AppCompatActivity {
             }
         });
         assert folder != null;
-        new OperationsOnShare().dispalySharePersonnes(Integer.parseInt(folder.getId()));
+        new ShareRepository().dispalySharePersonnes(Integer.parseInt(folder.getId()));
 
+    }
+
+    private void initComponents() {
+        ivRefresh = findViewById(R.id.ivRefresh);
+        recyclerView = findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(ShareActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        etSearch = findViewById(R.id.etSearch);
+        cvAdd = findViewById(R.id.cvAdd);
+        progressBar = findViewById(R.id.progress_circular);
+        tvEmptyList = findViewById(R.id.tvEmptyList);
     }
 
     private void showProgress() {

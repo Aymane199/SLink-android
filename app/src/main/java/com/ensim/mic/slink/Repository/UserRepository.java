@@ -1,9 +1,9 @@
-package com.ensim.mic.slink.Operations;
+package com.ensim.mic.slink.Repository;
 
-import com.ensim.mic.slink.Api.IApiServicesUser;
-import com.ensim.mic.slink.Api.RetrofitFactory;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Retrofit.IApiServicesUser;
+import com.ensim.mic.slink.Retrofit.RetrofitFactory;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
 import com.ensim.mic.slink.Table.User;
 import com.ensim.mic.slink.utils.RequestState;
 
@@ -14,18 +14,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OperationsOnUser {
+public class UserRepository {
 
     private IApiServicesUser iApiServicesUser;
 
-    public OperationsOnUser() {
+    public UserRepository() {
         iApiServicesUser = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesUser.class);
 
     }
 
     public void createCurrentUser(String userName, String mail, String token,String picture) {
         System.out.println("createUser ------------------------------------- ");
-        State.getInstance().getCurrentUser().setState(RequestState.LOADING);
+        Model.getInstance().getCurrentUser().setState(RequestState.LOADING);
 
         HashMap<String, Object> body = new HashMap<>();
         body.put("userName", userName);
@@ -41,13 +41,13 @@ public class OperationsOnUser {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+                    Model.getInstance().getCurrentUser().setState(RequestState.FAILED);
 
                     return;
                 }
                 User user = response.body();
-                State.getInstance().getCurrentUser().setContent(user);
-                State.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
+                Model.getInstance().getCurrentUser().setContent(user);
+                Model.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
 
                 System.out.println(user.toString());
             }
@@ -55,7 +55,7 @@ public class OperationsOnUser {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 System.out.println(t.getMessage());
-                State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+                Model.getInstance().getCurrentUser().setState(RequestState.FAILED);
                 return;
             }
         });
@@ -67,7 +67,7 @@ public class OperationsOnUser {
     public void getSearchUser(String mailOrUserName) {
 
         System.out.println("-------------- get user ");
-        State.getInstance().getSearchUser().setState(RequestState.LOADING);
+        Model.getInstance().getSearchUser().setState(RequestState.LOADING);
         HashMap<String, Object> body = new HashMap<>();
         Call<User> call;
 
@@ -84,21 +84,21 @@ public class OperationsOnUser {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    State.getInstance().getSearchUser().setState(RequestState.FAILED);
+                    Model.getInstance().getSearchUser().setState(RequestState.FAILED);
                     return;
                 }
                 System.out.println(response.toString());
                 assert response.body() != null;
                 User user = response.body();
-                State.getInstance().getSearchUser().setContent(user);
-                State.getInstance().getSearchUser().setState(RequestState.SUCCESSFUL);
+                Model.getInstance().getSearchUser().setContent(user);
+                Model.getInstance().getSearchUser().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 System.out.println("--------- onfailure");
                 System.out.println(t.getMessage());
-                State.getInstance().getSearchUser().setState(RequestState.FAILED);
+                Model.getInstance().getSearchUser().setState(RequestState.FAILED);
             }
         });
 
@@ -110,7 +110,7 @@ public class OperationsOnUser {
      */
     public void getCurrentUser(String mailOrUserName) {
 
-        State.getInstance().getCurrentUser().setState(RequestState.LOADING);
+        Model.getInstance().getCurrentUser().setState(RequestState.LOADING);
         HashMap<String, Object> body = new HashMap<>();
         body.put("Gmail", mailOrUserName);
         Call<User> call = iApiServicesUser.getUserByGmail(mailOrUserName);
@@ -123,21 +123,21 @@ public class OperationsOnUser {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+                    Model.getInstance().getCurrentUser().setState(RequestState.FAILED);
                     return;
                 }
                 System.out.println("getCurrentUser response :"+response.toString());
                 assert response.body() != null;
                 User user = response.body();
-                State.getInstance().getCurrentUser().setContent(user);
-                State.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
+                Model.getInstance().getCurrentUser().setContent(user);
+                Model.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 System.out.println("--------- onfailure");
                 System.out.println(t.getMessage());
-                State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+                Model.getInstance().getCurrentUser().setState(RequestState.FAILED);
             }
         });
 
@@ -146,7 +146,7 @@ public class OperationsOnUser {
     public void updateUser(int id, User user) {
         System.out.println("updateUser ------------------------------------- ");
 
-        State.getInstance().getCurrentUser().setState(RequestState.LOADING);
+        Model.getInstance().getCurrentUser().setState(RequestState.LOADING);
 
         HashMap<String, Object> body = new HashMap<>();
         if (user.getGmail() != null)
@@ -165,20 +165,20 @@ public class OperationsOnUser {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+                    Model.getInstance().getCurrentUser().setState(RequestState.FAILED);
                     return;
                 }
                 User user = response.body();
                 assert user != null;
                 user.setGmail("");
-                State.getInstance().getCurrentUser().setContent(user);
-                State.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
+                Model.getInstance().getCurrentUser().setContent(user);
+                Model.getInstance().getCurrentUser().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 System.out.println(t.getMessage());
-                State.getInstance().getCurrentUser().setState(RequestState.FAILED);
+                Model.getInstance().getCurrentUser().setState(RequestState.FAILED);
             }
         });
     }
@@ -201,7 +201,7 @@ public class OperationsOnUser {
                     return;
                 }
                 User user = response.body();
-                State.getInstance().getCurrentUser().setContent(user);
+                Model.getInstance().getCurrentUser().setContent(user);
             }
 
             @Override
@@ -241,18 +241,18 @@ public class OperationsOnUser {
     public void getUserAllFolders(int id, String search) {
         System.out.println("getUserAllFolders ------------------------------------- ");
 
-        Call<List<FolderOfUser>> call = iApiServicesUser.getUserAllFolders(id, search);
-        call.enqueue(new Callback<List<FolderOfUser>>() {
+        Call<List<FolderWithoutUser>> call = iApiServicesUser.getUserAllFolders(id, search);
+        call.enqueue(new Callback<List<FolderWithoutUser>>() {
             @Override
-            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
+            public void onResponse(Call<List<FolderWithoutUser>> call, Response<List<FolderWithoutUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<FolderOfUser> folders = response.body();
-                for (FolderOfUser folder : folders) {
+                List<FolderWithoutUser> folders = response.body();
+                for (FolderWithoutUser folder : folders) {
                     System.out.println("folder : " + folder.toString());
                 }
 
@@ -260,7 +260,7 @@ public class OperationsOnUser {
             }
 
             @Override
-            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
+            public void onFailure(Call<List<FolderWithoutUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });
@@ -269,18 +269,18 @@ public class OperationsOnUser {
     public void getUserFolders(int id, String search) {
         System.out.println("getUserFolders ------------------------------------- ");
 
-        Call<List<FolderOfUser>> call = iApiServicesUser.getUserFolders(id, search);
-        call.enqueue(new Callback<List<FolderOfUser>>() {
+        Call<List<FolderWithoutUser>> call = iApiServicesUser.getUserFolders(id, search);
+        call.enqueue(new Callback<List<FolderWithoutUser>>() {
             @Override
-            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
+            public void onResponse(Call<List<FolderWithoutUser>> call, Response<List<FolderWithoutUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<FolderOfUser> folders = response.body();
-                for (FolderOfUser folder : folders) {
+                List<FolderWithoutUser> folders = response.body();
+                for (FolderWithoutUser folder : folders) {
                     System.out.println("folder : " + folder.toString());
                 }
 
@@ -288,7 +288,7 @@ public class OperationsOnUser {
             }
 
             @Override
-            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
+            public void onFailure(Call<List<FolderWithoutUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });
@@ -297,18 +297,18 @@ public class OperationsOnUser {
     public void getUserShare(int id, String search) {
         System.out.println("getUserShare ------------------------------------- ");
 
-        Call<List<FolderOfUser>> call = iApiServicesUser.getUserShare(id, search);
-        call.enqueue(new Callback<List<FolderOfUser>>() {
+        Call<List<FolderWithoutUser>> call = iApiServicesUser.getUserShare(id, search);
+        call.enqueue(new Callback<List<FolderWithoutUser>>() {
             @Override
-            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
+            public void onResponse(Call<List<FolderWithoutUser>> call, Response<List<FolderWithoutUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<FolderOfUser> folders = response.body();
-                for (FolderOfUser folder : folders) {
+                List<FolderWithoutUser> folders = response.body();
+                for (FolderWithoutUser folder : folders) {
                     System.out.println("folder : " + folder.toString());
                 }
 
@@ -316,7 +316,7 @@ public class OperationsOnUser {
             }
 
             @Override
-            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
+            public void onFailure(Call<List<FolderWithoutUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });
@@ -325,18 +325,18 @@ public class OperationsOnUser {
     public void getUserSubscribe(int id, String search) {
         System.out.println("getUserSubscribe ------------------------------------- ");
 
-        Call<List<FolderOfUser>> call = iApiServicesUser.getUserSubscribe(id, search);
-        call.enqueue(new Callback<List<FolderOfUser>>() {
+        Call<List<FolderWithoutUser>> call = iApiServicesUser.getUserSubscribe(id, search);
+        call.enqueue(new Callback<List<FolderWithoutUser>>() {
             @Override
-            public void onResponse(Call<List<FolderOfUser>> call, Response<List<FolderOfUser>> response) {
+            public void onResponse(Call<List<FolderWithoutUser>> call, Response<List<FolderWithoutUser>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
                     return;
                 }
-                List<FolderOfUser> folders = response.body();
-                for (FolderOfUser folder : folders) {
+                List<FolderWithoutUser> folders = response.body();
+                for (FolderWithoutUser folder : folders) {
                     System.out.println("folder : " + folder.toString());
                 }
 
@@ -344,7 +344,7 @@ public class OperationsOnUser {
             }
 
             @Override
-            public void onFailure(Call<List<FolderOfUser>> call, Throwable t) {
+            public void onFailure(Call<List<FolderWithoutUser>> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });

@@ -39,9 +39,9 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
         android:text="Comments"
-        android:layout_marginTop="5dp"
         android:textStyle="bold" />
 
 
@@ -79,7 +79,7 @@
         android:id="@+id/cvComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frameLayout"
+        android:layout_above="@+id/etText"
         android:layout_alignParentRight="true"
         android:layout_gravity="center"
         android:clickable="true"

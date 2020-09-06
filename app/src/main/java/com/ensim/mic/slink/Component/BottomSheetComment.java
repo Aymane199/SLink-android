@@ -15,10 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Adapter.DataAdapterComment;
-import com.ensim.mic.slink.Operations.OperationsOnComment;
+import com.ensim.mic.slink.Repository.CommentRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Model.OnChangeObject;
+import com.ensim.mic.slink.Model.Model;
 import com.ensim.mic.slink.Table.Comment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -47,7 +47,8 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_layout_comment, container, false);
-        userId = State.getInstance().getCurrentUser().getContent().getId();
+
+        userId = Model.getInstance().getCurrentUser().getContent().getId();
 
         //init views
         progressBar = v.findViewById(R.id.progress_circular);
@@ -59,6 +60,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
         recyclerView.setLayoutManager(layoutManager);
         ivRefresh = v.findViewById(R.id.ivRefresh);
         tvEmptyList = v.findViewById(R.id.tvEmptyList);
+
         hideTvEmptyList();
 
 
@@ -67,21 +69,21 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 String text = etText.getText().toString();
                 if (!text.isEmpty()) {
-                    new OperationsOnComment().createComment(idLink, userId, text);
+                    new CommentRepository().createComment(idLink, userId, text);
                     etText.setText("");
                 }
-
             }
         });
 
         ivRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new OperationsOnComment().displayComments(idLink);
+                new CommentRepository().displayComments(idLink);
             }
         });
 
-        State.getInstance().getComments().addOnChangeObjectListener(new OnChangeObject() {
+        Model.getInstance().getComments().addOnChangeObjectListener(new OnChangeObject() {
+
             @Override
             public void onLoading() {
                 showProgress();
@@ -90,7 +92,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
             @Override
             public void onDataReady() {
                 hideProgress();
-                List<Comment> content = State.getInstance().getComments().getContent();
+                List<Comment> content = Model.getInstance().getComments().getContent();
 
                 mAdapter = new DataAdapterComment(getActivity(), content, userId);
                 recyclerView.setAdapter(mAdapter);
@@ -115,7 +117,7 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
 
     public void setIdLink(int idLink) {
             this.idLink = idLink;
-            new OperationsOnComment().displayComments(idLink);
+            new CommentRepository().displayComments(idLink);
     }
 
     @NonNull @Override
@@ -129,7 +131,6 @@ public class BottomSheetComment extends BottomSheetDialogFragment {
         });
         return  dialog;
     }
-
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
         FrameLayout bottomSheet = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);

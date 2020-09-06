@@ -12,17 +12,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ensim.mic.slink.Adapter.DataAdapterChooseFolder;
 import com.ensim.mic.slink.Component.FolderComponents;
-import com.ensim.mic.slink.Operations.OperationsOnFolder;
-import com.ensim.mic.slink.Operations.OperationsOnUser;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Model.OnChangeObject;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Repository.FolderRepository;
+import com.ensim.mic.slink.Repository.UserRepository;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
+import com.ensim.mic.slink.Table.Link;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,17 +44,16 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
     private static final int RC_SIGN_IN = 1;
     //user state information
     public int userId;
-    public String userName;
-    List<FolderOfUser> folderOutputList;
     //link to add in the choosen foolder
-    LinkOfFolder linkToPut;
-    //search test
-    String searchText = "";
-    //components
+    Link linkToPut;
     String url;
-    EditText etSearch;
-    RichPreview richPreview;
+    String searchText = "";
+    //search test
+    //components
     private GoogleSignInClient mGoogleSignInClient;
+    private RichPreview richPreview;
+
+    private EditText etSearch;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -64,12 +62,6 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
     private TextView tvEmptyList;
     private ImageView ivRefresh;
     private ImageView ivBack;
-
-    public ChooseFolderActivity() {
-        //userId = State.getInstance().getCurrentUser().getContent().getId();
-        //userName = State.getInstance().getCurrentUser().getContent().getUserName();
-        //Toast.makeText(this,userName,Toast.LENGTH_LONG).show();
-    }
 
     /*
      * show progress bar
@@ -84,48 +76,52 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_folder);
 
-        initComponents();
-
-        hideTvEmptyList();
-        showProgress();
+        userId = Model.getInstance().getCurrentUser().getContent().getId();
+        linkToPut = new Link();
 
         //get URL link
-        Intent receiverdIntent = getIntent();
-        String receivedAction = receiverdIntent.getAction();
-        String receivedType = receiverdIntent.getType();
+        Intent receivedIntent = getIntent();
+        String receivedAction = receivedIntent.getAction();
+        String receivedType = receivedIntent.getType();
+        String url = receivedIntent.getStringExtra(Intent.EXTRA_TEXT);
 
-        /*
-            if the action is a test -> url
-            we will try to get the link preview
-        */
-
-        assert receivedAction != null;
-        assert receivedType != null;
-        if (!receivedAction.equals(Intent.ACTION_SEND) || !receivedType.startsWith("text/")) {
+        if (receivedAction == null ||
+                receivedType == null ||
+                !receivedAction.equals(Intent.ACTION_SEND) ||
+                !receivedType.startsWith("text/") ||
+                !URLUtil.isValidUrl(url)) {
             finish();
         }
 
-        // check mime type
-        linkToPut.setUrl(receiverdIntent.getStringExtra(Intent.EXTRA_TEXT));
+        initComponents();
 
-        //System.out.println(receiverdIntent.toString());
+        hideTextViewEmptyList();
+        showProgress();
 
-        if (!URLUtil.isValidUrl(linkToPut.getUrl())) {
-            Toast.makeText(this, "This is not a Url", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+        linkToPut.setUrl(url);
 
+        richPreview = new RichPreview(getRichPreviewResponseListener());
 
+        Model.getInstance().getCurrentUser().addOnChangeObjectListener(getOnChangeCurrentUserListeners());
 
+        Model.getInstance().getFolders().addOnChangeObjectListener(getOnChangeFoldersListener());
 
-        richPreview = new RichPreview(new ResponseListener() {
+        etSearch.setOnEditorActionListener(showSearchButtonOnEditText());
+
+        checkConnection();
+    }
+
+    private ResponseListener getRichPreviewResponseListener() {
+        return new ResponseListener() {
             @Override
             public void onData(MetaData metaData) {
+                // prepare link to put
                 linkToPut.setPicture(metaData.getImageurl());
                 linkToPut.setName(metaData.getTitle());
                 linkToPut.setDescription(metaData.getDescription());
-                new OperationsOnFolder().displayEditableFolders(searchText);
+                // show editable folders
+                new FolderRepository().displayEditableFolders(searchText);
+
                 hideProgress();
             }
 
@@ -134,9 +130,62 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
                 System.out.println(e.toString());
                 hideProgress();
             }
-        });
+        };
+    }
 
-        State.getInstance().getCurrentUser().addOnChangeObjectListener(new OnChangeObject() {
+    private TextView.OnEditorActionListener showSearchButtonOnEditText() {
+        return new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    etSearch.clearFocus();
+
+                    InputMethodManager in = (InputMethodManager) ChooseFolderActivity.this.getSystemService(ChooseFolderActivity.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+
+                    searchText = etSearch.getText().toString();
+
+                    if (linkToPut.getUrl() != null)
+                        new FolderRepository().displayEditableFolders(searchText);
+
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private OnChangeObject getOnChangeFoldersListener() {
+        return new OnChangeObject() {
+            @Override
+            public void onLoading() {
+                showProgress();
+            }
+
+            @Override
+            public void onDataReady() {
+                hideProgress();
+                List<FolderWithoutUser> content = Model.getInstance().getFolders().getContent();
+
+                if (linkToPut.getUrl() != null)
+                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, content, linkToPut);
+                recyclerView.setAdapter(mAdapter);
+
+                if (content.isEmpty()) showTextViewEmptyList();
+                else hideTextViewEmptyList();
+            }
+
+            @Override
+            public void onFailed() {
+                hideProgress();
+
+            }
+        };
+    }
+
+    private OnChangeObject getOnChangeCurrentUserListeners() {
+        return new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -156,52 +205,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
             public void onFailed() {
                 hideProgress();
             }
-        });
-
-        State.getInstance().getFolders().addOnChangeObjectListener(new OnChangeObject() {
-            @Override
-            public void onLoading() {
-                showProgress();
-            }
-
-            @Override
-            public void onDataReady() {
-                hideProgress();
-                List<FolderOfUser> content = State.getInstance().getFolders().getContent();
-
-                mAdapter = new DataAdapterChooseFolder(ChooseFolderActivity.this, content, linkToPut);
-                recyclerView.setAdapter(mAdapter);
-
-                if (content.isEmpty()) showTvEmptyList();
-                else hideTvEmptyList();
-            }
-
-            @Override
-            public void onFailed() {
-                hideProgress();
-
-            }
-        });
-
-        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    etSearch.clearFocus();
-                    InputMethodManager in = (InputMethodManager) ChooseFolderActivity.this.getSystemService(ChooseFolderActivity.INPUT_METHOD_SERVICE);
-                    in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
-                    searchText = etSearch.getText().toString();
-                    if (linkToPut.getUrl() != null)
-                        new OperationsOnFolder().displayEditableFolders(searchText);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        checkConnection();
-
-
+        };
     }
 
     private void initComponents() {
@@ -218,7 +222,6 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         cardViewAdd.setOnClickListener(this);
         ivRefresh.setOnClickListener(this);
         ivBack.setOnClickListener(this);
-        linkToPut = new LinkOfFolder();
     }
 
     /*
@@ -229,7 +232,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
             new FolderComponents().showAddFolderDialog(ChooseFolderActivity.this, userId);
         }
         if (v.getId() == R.id.ivRefresh) {
-            new OperationsOnFolder().displayEditableFolders(searchText);
+            new FolderRepository().displayEditableFolders(searchText);
         }
         if (v.getId() == R.id.ivBack) {
             finish();
@@ -238,7 +241,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void checkConnection() {
-        if(State.getInstance().getCurrentUser().getContent().getGmail() != null){
+        if(Model.getInstance().getCurrentUser().getContent().getGmail() != null){
             richPreview.getPreview(linkToPut.getUrl());
             return;
         }
@@ -274,7 +277,7 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
                     ", personPhoto :" + personPhoto + "" +
                     "]");
 
-            new OperationsOnUser().getCurrentUser(account.getEmail());
+            new UserRepository().getCurrentUser(account.getEmail());
 
         } else {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -320,11 +323,11 @@ public class ChooseFolderActivity extends AppCompatActivity implements View.OnCl
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void showTvEmptyList() {
+    private void showTextViewEmptyList() {
         tvEmptyList.setVisibility(View.VISIBLE);
     }
 
-    private void hideTvEmptyList() {
+    private void hideTextViewEmptyList() {
         tvEmptyList.setVisibility(View.INVISIBLE);
     }
 

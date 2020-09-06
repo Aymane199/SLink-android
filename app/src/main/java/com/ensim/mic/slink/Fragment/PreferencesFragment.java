@@ -13,8 +13,8 @@ import com.ensim.mic.slink.Activities.LoginActivity;
 import com.ensim.mic.slink.Activities.SavedLinksActivity;
 import com.ensim.mic.slink.Component.UserComponents;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Model.OnChangeObject;
+import com.ensim.mic.slink.Model.Model;
 import com.ensim.mic.slink.Table.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -58,11 +58,11 @@ public class PreferencesFragment extends Fragment implements View.OnClickListene
         cdDisconnect.setOnClickListener(this);
         cdDeleteAccount.setOnClickListener(this);
 
-        User user = State.getInstance().getCurrentUser().getContent();
+        User user = Model.getInstance().getCurrentUser().getContent();
         tvUserName.setText(user.getUserName());
         tvMail.setText(user.getGmail());
 
-        State.getInstance().getCurrentUser().addOnChangeObjectListener(new OnChangeObject() {
+        Model.getInstance().getCurrentUser().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
 
@@ -70,7 +70,7 @@ public class PreferencesFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void onDataReady() {
-                User user = State.getInstance().getCurrentUser().getContent();
+                User user = Model.getInstance().getCurrentUser().getContent();
                 tvUserName.setText(user.getUserName());
                 tvMail.setText(user.getGmail());
                 String picture = user.getPicture();
@@ -104,10 +104,10 @@ public class PreferencesFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.tvChangeName:
             case R.id.ivChangeName:
-                new UserComponents().showRenameUserName(getActivity(), State.getInstance().getCurrentUser().getContent());
+                new UserComponents().showRenameUserName(getActivity(), Model.getInstance().getCurrentUser().getContent());
                 break;
             case R.id.cdDeleteAccount:
-                new UserComponents().showDeleteDialog(getActivity(), State.getInstance().getCurrentUser().getContent().getId());
+                new UserComponents().showDeleteDialog(getActivity(), Model.getInstance().getCurrentUser().getContent().getId());
                 break;
             case R.id.cdDisconnect:
                 signOut();

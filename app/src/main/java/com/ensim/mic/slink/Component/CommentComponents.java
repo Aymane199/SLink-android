@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Operations.OperationsOnComment;
+import com.ensim.mic.slink.Repository.CommentRepository;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.Comment;
 
@@ -31,7 +31,7 @@ public class CommentComponents {
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new OperationsOnComment().deleteComment(comment);
+                new CommentRepository().deleteComment(comment);
 
             }
         });

@@ -11,13 +11,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ensim.mic.slink.Adapter.DataAdapterLink;
-import com.ensim.mic.slink.Api.IApiServicesFolder;
-import com.ensim.mic.slink.Api.RetrofitFactory;
-import com.ensim.mic.slink.Operations.OperationsOnLink;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Model.OnChangeObject;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Repository.LinkRepository;
+import com.ensim.mic.slink.Table.Link;
 
 import java.util.List;
 
@@ -27,13 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SavedLinksActivity extends AppCompatActivity {
 
-    //List of likns to display
-    List<LinkOfFolder> links;
-
-    //services
-    IApiServicesFolder IApiServicesFolder;
-
-    //income information -> current user
+     //income information -> current user
     String idUser;
 
     //search text
@@ -56,48 +48,30 @@ public class SavedLinksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save);
 
-        //get services
-        IApiServicesFolder = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesFolder.class);
-
-
         //get id user
-        idUser = State.getInstance().getCurrentUser().getContent().getId()+ "";
+        idUser = Model.getInstance().getCurrentUser().getContent().getId()+ "";
 
-        //init views
-        ivRefresh = findViewById(R.id.ivRefresh);
-        recyclerView = findViewById(R.id.my_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        etSearch = findViewById(R.id.etSearchLinks);
-        progressBar = findViewById(R.id.progress_circular);
-        tvEmptyList =findViewById(R.id.tvEmptyList);
-        hideTvEmptyList();
+        initComponents();
 
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        hideTextViewEmptyList();
 
         // set on action listener to search compoment
-        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    etSearch.clearFocus();
-                    InputMethodManager in = (InputMethodManager) SavedLinksActivity.
-                            this.getSystemService(INPUT_METHOD_SERVICE);
-                    in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
-                    searchText = etSearch.getText().toString();
-                    new OperationsOnLink().displaySavedLinks(searchText, idUser);
-                    return true;
-                }
-                return false;
-            }
-        });
+        etSearch.setOnEditorActionListener(showSearchButtonOnEditText());
 
+        setListenerRefreshAndBack();
+
+        //add behavior when "List Links State" changes
+        Model.getInstance().getSavedLinks().addOnChangeObjectListener(getOnChangeSavedLinksListener());
+
+        new LinkRepository().displaySavedLinks(searchText, idUser);
+    }
+
+    private void setListenerRefreshAndBack() {
         //set behavior to refresh
         ivRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new OperationsOnLink().displaySavedLinks(searchText, idUser);
+                new LinkRepository().displaySavedLinks(searchText, idUser);
             }
         });
 
@@ -107,9 +81,10 @@ public class SavedLinksActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
-        //add behavior when "List Links State" changes
-        State.getInstance().getSavedLinks().addOnChangeObjectListener(new OnChangeObject() {
+    private OnChangeObject getOnChangeSavedLinksListener() {
+        return new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -118,22 +93,54 @@ public class SavedLinksActivity extends AppCompatActivity {
             @Override
             public void onDataReady() {
                 hideProgress();
-                List<LinkOfFolder> content = State.getInstance().getSavedLinks().getContent();
+                List<Link> content = Model.getInstance().getSavedLinks().getContent();
 
                 mAdapter = new DataAdapterLink(SavedLinksActivity.this, content);
                 recyclerView.setAdapter(mAdapter);
 
-                if(content.isEmpty()) showTvEmptyList();
-                else hideTvEmptyList();
+                if(content.isEmpty()) showTextViewEmptyList();
+                else hideTextViewEmptyList();
             }
 
             @Override
             public void onFailed() {
                 hideProgress();
             }
-        });
+        };
+    }
 
-        new OperationsOnLink().displaySavedLinks(searchText, idUser);
+    private TextView.OnEditorActionListener showSearchButtonOnEditText() {
+        return new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    etSearch.clearFocus();
+
+                    InputMethodManager in = (InputMethodManager) SavedLinksActivity.
+                            this.getSystemService(INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+
+                    searchText = etSearch.getText().toString();
+                    new LinkRepository().displaySavedLinks(searchText, idUser);
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private void initComponents() {
+        //init views
+        ivRefresh = findViewById(R.id.ivRefresh);
+        recyclerView = findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        etSearch = findViewById(R.id.etSearchLinks);
+        progressBar = findViewById(R.id.progress_circular);
+        tvEmptyList =findViewById(R.id.tvEmptyList);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     private void showProgress() {
@@ -144,10 +151,10 @@ public class SavedLinksActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void showTvEmptyList(){
+    private void showTextViewEmptyList(){
         tvEmptyList.setVisibility(View.VISIBLE);
     }
 
-    private void hideTvEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
+    private void hideTextViewEmptyList(){tvEmptyList.setVisibility(View.INVISIBLE);}
 
 }

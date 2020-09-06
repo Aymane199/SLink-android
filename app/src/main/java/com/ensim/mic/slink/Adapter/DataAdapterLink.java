@@ -14,11 +14,11 @@ import android.widget.TextView;
 import com.ensim.mic.slink.Activities.BrowserActivity;
 import com.ensim.mic.slink.Component.BottomSheetComment;
 import com.ensim.mic.slink.Listener.LinkMenuListener;
-import com.ensim.mic.slink.Operations.OperationsOnLike;
-import com.ensim.mic.slink.Operations.OperationsOnSave;
+import com.ensim.mic.slink.Repository.LikeRepository;
+import com.ensim.mic.slink.Repository.SaveRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.Link;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -32,12 +32,12 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
     private static final String TAG = "DataAdapter_link";
 
     Context mContext;
-    public List<LinkOfFolder> mData;
+    public List<Link> mData;
     private OnItemClickListener mListener;
 
 
 
-    public DataAdapterLink(Context mContext, List<LinkOfFolder> mData) {
+    public DataAdapterLink(Context mContext, List<Link> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -57,7 +57,7 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
-        final LinkOfFolder link = mData.get(i);
+        final Link link = mData.get(i);
 
         //set default image
         try {
@@ -79,16 +79,16 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
             @Override
             public void onClick(View v) {
                 System.out.println("myViewHolder.ivLike.isChecked() : " + myViewHolder.ivLike.isChecked() );
-                if(myViewHolder.ivLike.isChecked()) new OperationsOnLike().setLike(Integer.parseInt(link.getId()));
-                else new OperationsOnLike().deleteLike(State.getInstance().getCurrentUser().getContent().getId(),Integer.parseInt(link.getId()));
+                if(myViewHolder.ivLike.isChecked()) new LikeRepository().setLike(Integer.parseInt(link.getId()));
+                else new LikeRepository().deleteLike(Model.getInstance().getCurrentUser().getContent().getId(),Integer.parseInt(link.getId()));
             }
         });
         myViewHolder.ivSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     System.out.println("myViewHolder.ivSave.isChecked() : " + myViewHolder.ivSave.isChecked() );
-                    if(myViewHolder.ivSave.isChecked()) new OperationsOnSave().setSave(link);
-                    else new OperationsOnSave().deleteSave(link);
+                    if(myViewHolder.ivSave.isChecked()) new SaveRepository().setSave(link);
+                    else new SaveRepository().deleteSave(link);
                 }
             });
         final BottomSheetComment bottomSheetComment = new BottomSheetComment();
@@ -103,7 +103,6 @@ public class DataAdapterLink extends RecyclerView.Adapter<DataAdapterLink.myView
 
             }
         });
-
 
         myViewHolder.ivMenu.setOnClickListener(new LinkMenuListener(mContext,myViewHolder.ivMenu,link));
 

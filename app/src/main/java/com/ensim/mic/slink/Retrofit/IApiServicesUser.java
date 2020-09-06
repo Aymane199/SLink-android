@@ -1,7 +1,7 @@
-package com.ensim.mic.slink.Api;
+package com.ensim.mic.slink.Retrofit;
 
-import com.ensim.mic.slink.Table.FolderOfUser;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
+import com.ensim.mic.slink.Table.Link;
 import com.ensim.mic.slink.Table.User;
 
 import java.util.HashMap;
@@ -45,22 +45,22 @@ public interface IApiServicesUser {
     Call<Void> deleteUser(@Path("id") int id);
 
     @GET("user/{id}/allfolders")
-    Call<List<FolderOfUser>> getUserAllFolders(@Path("id") int id,
-                                               @Query("search") String search);
+    Call<List<FolderWithoutUser>> getUserAllFolders(@Path("id") int id,
+                                                    @Query("search") String search);
 
     @GET("user/{id}/folder")
-    Call<List<FolderOfUser>> getUserFolders(@Path("id") int id,
-                                            @Query("search") String search);
+    Call<List<FolderWithoutUser>> getUserFolders(@Path("id") int id,
+                                                 @Query("search") String search);
 
     @GET("user/{id}/share")
-    Call<List<FolderOfUser>> getUserShare(@Path("id") int id,
-                                          @Query("search") String search);
+    Call<List<FolderWithoutUser>> getUserShare(@Path("id") int id,
+                                               @Query("search") String search);
 
     @GET("user/{id}/subscribe")
-    Call<List<FolderOfUser>> getUserSubscribe(@Path("id") int id,
-                                              @Query("search") String search);
+    Call<List<FolderWithoutUser>> getUserSubscribe(@Path("id") int id,
+                                                   @Query("search") String search);
 
     @GET("user/{id}/save")
-    Call<List<LinkOfFolder>> getFolderSaved(@Path("id") String idUser,
-                                            @Query("search") String searchText);
+    Call<List<Link>> getFolderSaved(@Path("id") String idUser,
+                                    @Query("search") String searchText);
 }

@@ -1,6 +1,6 @@
-package com.ensim.mic.slink.Api;
+package com.ensim.mic.slink.Retrofit;
 
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Table.Link;
 
 import java.util.HashMap;
 
@@ -15,7 +15,7 @@ public interface IApiServicesLink {
 
 
     @GET("link/{id}")
-    Call<LinkOfFolder> showLink(@Path("id") int id);
+    Call<Link> showLink(@Path("id") int id);
 
     @POST("link")
     Call<Object> createLink(@Body HashMap<String, Object> body);

@@ -1,9 +1,9 @@
-package com.ensim.mic.slink.Operations;
+package com.ensim.mic.slink.Repository;
 
-import com.ensim.mic.slink.Api.IApiServicesFolder;
-import com.ensim.mic.slink.Api.IApiServicesShare;
-import com.ensim.mic.slink.Api.RetrofitFactory;
-import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Retrofit.IApiServicesFolder;
+import com.ensim.mic.slink.Retrofit.IApiServicesShare;
+import com.ensim.mic.slink.Retrofit.RetrofitFactory;
+import com.ensim.mic.slink.Model.Model;
 import com.ensim.mic.slink.Table.SharePersonne;
 import com.ensim.mic.slink.utils.RequestState;
 
@@ -14,23 +14,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OperationsOnShare {
+public class ShareRepository {
 
     private IApiServicesFolder iApiServicesFolder;
     private IApiServicesShare iApiServicesShare;
-    private State state;
+    private Model model;
 
 
-    public OperationsOnShare() {
+    public ShareRepository() {
         iApiServicesFolder = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesFolder.class);
         iApiServicesShare = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesShare.class);
-        state = State.getInstance();
+        model = Model.getInstance();
     }
 
     //call user folder and update the state
     public void dispalySharePersonnes(int idFolder) {
 
-        state.getSharePeople().setState(RequestState.LOADING);
+        model.getFolderMembers().setState(RequestState.LOADING);
         System.out.println("display Share Personnes");
         // etablish the request
         Call<List<SharePersonne>> call;
@@ -45,29 +45,29 @@ public class OperationsOnShare {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getSharePeople().setState(RequestState.FAILED);
+                    model.getFolderMembers().setState(RequestState.FAILED);
                     return;
                 }
                 //update state
-                state.getSharePeople().setContent(response.body());
-                state.getSharePeople().setState(RequestState.SUCCESSFUL);
+                model.getFolderMembers().setContent(response.body());
+                model.getFolderMembers().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<List<SharePersonne>> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.getSharePeople().setState(RequestState.FAILED);
+                model.getFolderMembers().setState(RequestState.FAILED);
             }
         });
     }
 
     public void addPersonne(int idFolder, int userId){
-        state.getSharePeople().setState(RequestState.LOADING);
+        model.getFolderMembers().setState(RequestState.LOADING);
         System.out.println("add Personne");
 
-        if(State.getInstance().getCurrentUser().getContent().getId() == userId){
-            state.getSharePeople().setState(RequestState.FAILED);
+        if(Model.getInstance().getCurrentUser().getContent().getId() == userId){
+            model.getFolderMembers().setState(RequestState.FAILED);
             return ;
         }
 
@@ -88,7 +88,7 @@ public class OperationsOnShare {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getSharePeople().setState(RequestState.FAILED);
+                    model.getFolderMembers().setState(RequestState.FAILED);
                     return;
                 }
                 //update state
@@ -96,23 +96,23 @@ public class OperationsOnShare {
                 assert personne != null;
                 personne.setUserName(personne.getUser().getUserName());
                 personne.setGmail(personne.getUser().getGmail());
-                List<SharePersonne> listPersonnes = state.getSharePeople().getContent();
+                List<SharePersonne> listPersonnes = model.getFolderMembers().getContent();
                 listPersonnes.add(personne);
-                state.getSharePeople().setContent(listPersonnes);
-                state.getSharePeople().setState(RequestState.SUCCESSFUL);
+                model.getFolderMembers().setContent(listPersonnes);
+                model.getFolderMembers().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<SharePersonne> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.getSharePeople().setState(RequestState.FAILED);
+                model.getFolderMembers().setState(RequestState.FAILED);
             }
         });
     }
 
     public void deleteShare(final SharePersonne sharePersonne){
-        state.getSharePeople().setState(RequestState.LOADING);
+        model.getFolderMembers().setState(RequestState.LOADING);
         final int id = Integer.parseInt(sharePersonne.getId());
         Call<Object> call = iApiServicesShare.deleteShare(id);
         call.enqueue(new Callback<Object>() {
@@ -122,18 +122,18 @@ public class OperationsOnShare {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getSharePeople().setState(RequestState.FAILED);
+                    model.getFolderMembers().setState(RequestState.FAILED);
                     return;
                 }
-                List<SharePersonne> content = state.getSharePeople().getContent();
+                List<SharePersonne> content = model.getFolderMembers().getContent();
                 content.remove(sharePersonne);
-                state.getSharePeople().setContent(content);
-                state.getSharePeople().setState(RequestState.SUCCESSFUL);
+                model.getFolderMembers().setContent(content);
+                model.getFolderMembers().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
-                state.getSharePeople().setState(RequestState.FAILED);
+                model.getFolderMembers().setState(RequestState.FAILED);
             }
         });
     }

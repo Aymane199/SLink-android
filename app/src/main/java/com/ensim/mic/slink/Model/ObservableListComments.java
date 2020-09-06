@@ -1,20 +1,20 @@
-package com.ensim.mic.slink.State;
+package com.ensim.mic.slink.Model;
 
 import com.ensim.mic.slink.Table.Comment;
 import com.ensim.mic.slink.utils.RequestState;
 
 import java.util.List;
 
-public class CommentsState extends BaseObjectState<List<Comment>> {
+public class ObservableListComments extends BaseObservableObject<List<Comment>> {
 
     private int linkId;
 
-    public CommentsState(List<Comment> comments, RequestState state, int linkId) {
+    public ObservableListComments(List<Comment> comments, RequestState state, int linkId) {
         super(comments, state);
         this.linkId = linkId;
     }
 
-    public CommentsState(List<Comment> comments) {
+    public ObservableListComments(List<Comment> comments) {
         super(comments);
     }
 

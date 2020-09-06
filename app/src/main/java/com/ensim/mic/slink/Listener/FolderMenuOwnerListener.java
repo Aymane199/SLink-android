@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
-import com.ensim.mic.slink.Activities.FolderDetailsActivity;
 import com.ensim.mic.slink.Activities.ShareActivity;
 import com.ensim.mic.slink.Component.FolderComponents;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
 
 /*
 *   Clean
@@ -22,10 +21,10 @@ public class FolderMenuOwnerListener implements View.OnClickListener  {
 
     ImageView imageView;
     Context mContext;
-    FolderOfUser folderOutput;
+    FolderWithoutUser folderOutput;
 
 
-    public FolderMenuOwnerListener(Context mContext, ImageView imageView, FolderOfUser folderOutput) {
+    public FolderMenuOwnerListener(Context mContext, ImageView imageView, FolderWithoutUser folderOutput) {
         this.mContext = mContext;
         this.imageView = imageView;
         this.folderOutput = folderOutput;
@@ -54,14 +53,14 @@ public class FolderMenuOwnerListener implements View.OnClickListener  {
 
     private void manageMenu(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menuDetails:
+            /*case R.id.menuDetails:
                 Intent intent = new Intent(mContext, FolderDetailsActivity.class);
                 intent.putExtra("idFolder",Integer.parseInt(folderOutput.getId()));
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("folder", folderOutput);
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
-                break;
+                break;*/
             case R.id.menuShare:
                 Intent intent1 = new Intent(mContext, ShareActivity.class);
                 Bundle bundle1 = new Bundle();
@@ -79,14 +78,14 @@ public class FolderMenuOwnerListener implements View.OnClickListener  {
                 new FolderComponents().showDeleteDialog(mContext,folderOutput);
                 break;
             case R.id.menuAdd_link:
-                new FolderComponents().showLinkAddedDialog(mContext,folderOutput, State.getInstance().getCurrentUser().getContent().getId());
+                new FolderComponents().showLinkAddedDialog(mContext,folderOutput, Model.getInstance().getCurrentUser().getContent().getId());
                 break;
            /* case R.id.menuMake_public:
                 new FolderComponents().showMakeItPublicDialog(mContext,folderOutput);
                 break;*/
-            case R.id.menuChange_picture:
+           /* case R.id.menuChange_picture:
                 new FolderComponents().showChangePictureDialog(mContext,folderOutput);
-                break;
+                break;*/
         }
     }
 

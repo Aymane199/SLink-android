@@ -1,19 +1,19 @@
-package com.ensim.mic.slink.State;
+package com.ensim.mic.slink.Model;
 
-import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
 import com.ensim.mic.slink.utils.RequestState;
 
 import java.util.List;
 
-public class FoldersState extends BaseObjectState<List<FolderOfUser>> {
+public class ObservableListFolders extends BaseObservableObject<List<FolderWithoutUser>> {
 
 
-    public FoldersState(List<FolderOfUser> folderOfUsers, RequestState state) {
-        super(folderOfUsers, state);
+    public ObservableListFolders(List<FolderWithoutUser> folders, RequestState state) {
+        super(folders, state);
     }
 
-    public FoldersState(List<FolderOfUser> folderOfUsers) {
-        super(folderOfUsers);
+    public ObservableListFolders(List<FolderWithoutUser> folders) {
+        super(folders);
     }
 
     public int findIndexFolderById(int id) {
@@ -26,7 +26,7 @@ public class FoldersState extends BaseObjectState<List<FolderOfUser>> {
     public void setNbLikes(int id, int likes) {
         int index = findIndexFolderById(id);
         if (index != -1) {
-            FolderOfUser folder = getContent().get(index);
+            FolderWithoutUser folder = getContent().get(index);
             int nbLikes;
             if(folder.getLikes() == null)
                 nbLikes = 0;
@@ -42,7 +42,7 @@ public class FoldersState extends BaseObjectState<List<FolderOfUser>> {
     public void setNbLink(int id, int link) {
         int index = findIndexFolderById(id);
         if (index != -1) {
-            FolderOfUser folder = getContent().get(index);
+            FolderWithoutUser folder = getContent().get(index);
             int nbLink;
             if(folder.getLinks() == null) {
                 nbLink = 0;
@@ -57,19 +57,19 @@ public class FoldersState extends BaseObjectState<List<FolderOfUser>> {
         }
     }
 
-    public void addlike(int id) {
+    public void addLike(int id) {
         setNbLikes(id, 1);
     }
 
-    public void deletelike(int id) {
+    public void deleteLike(int id) {
         setNbLikes(id, -1);
     }
 
-    public void addlink(int id) {
+    public void addLink(int id) {
         setNbLink(id, 1);
     }
 
-    public void deletelink(int id) {
+    public void deleteLink(int id) {
         setNbLink(id, -1);
     }
 

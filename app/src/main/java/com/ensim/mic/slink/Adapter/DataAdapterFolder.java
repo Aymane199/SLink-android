@@ -14,7 +14,7 @@ import com.ensim.mic.slink.Activities.LinksActivity;
 import com.ensim.mic.slink.Listener.FolderMenuOtherUserListener;
 import com.ensim.mic.slink.Listener.FolderMenuOwnerListener;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -28,11 +28,11 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
     private static final String TAG = "DataAdapter_folder";
 
     Context mContext;
-    public List<FolderOfUser> mData;
+    public List<FolderWithoutUser> mData;
     private OnItemClickListener mListener;
     private int userId;
 
-    public DataAdapterFolder(Context mContext, List<FolderOfUser> mData, int userId) {
+    public DataAdapterFolder(Context mContext, List<FolderWithoutUser> mData, int userId) {
         this.mContext = mContext;
         this.mData = mData;
         this.userId = userId;
@@ -56,7 +56,7 @@ public class DataAdapterFolder extends RecyclerView.Adapter<DataAdapterFolder.my
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder myViewHolder, final int i) {
-        final FolderOfUser folderOutput = mData.get(i);
+        final FolderWithoutUser folderOutput = mData.get(i);
 
         System.out.println(folderOutput);
         //set default image

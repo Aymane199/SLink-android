@@ -16,11 +16,11 @@ import com.ensim.mic.slink.Adapter.DataAdapterFolder;
 import com.ensim.mic.slink.Component.BottomSheetFilter;
 import com.ensim.mic.slink.Component.BottomSheetSort;
 import com.ensim.mic.slink.Component.FolderComponents;
-import com.ensim.mic.slink.Operations.OperationsOnFolder;
+import com.ensim.mic.slink.Repository.FolderRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Model.OnChangeObject;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
 
 import java.util.List;
 
@@ -77,7 +77,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userId = State.getInstance().getCurrentUser().getContent().getId();
+        userId = Model.getInstance().getCurrentUser().getContent().getId();
 
         //init views
         ivRefresh = view.findViewById(R.id.ivRefresh);
@@ -104,7 +104,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new DataAdapterFolder(getActivity(), State.getInstance().getFolders().getContent(), userId);
+        mAdapter = new DataAdapterFolder(getActivity(), Model.getInstance().getFolders().getContent(), userId);
         recyclerView.setAdapter(mAdapter);
 
         //add action on click search
@@ -116,7 +116,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
                     InputMethodManager in = (InputMethodManager) requireActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
                     searchText = etSearch.getText().toString();
-                    new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
+                    new FolderRepository().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
                     return true;
                 }
                 return false;
@@ -127,7 +127,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         ivRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
+                new FolderRepository().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
             }
         });
 
@@ -135,12 +135,12 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
         bottomSheetFilter.setListener(new BottomSheetFilter.ChangeListener() {
             @Override
             public void onChange() {
-                new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
+                new FolderRepository().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
             }
         });
 
         //add behavier when "List Folder State" changes
-        State.getInstance().getFolders().addOnChangeObjectListener(new OnChangeObject() {
+        Model.getInstance().getFolders().addOnChangeObjectListener(new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -149,7 +149,7 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onDataReady() {
                 hideProgress();
-                List<FolderOfUser> content = State.getInstance().getFolders().getContent();
+                List<FolderWithoutUser> content = Model.getInstance().getFolders().getContent();
 
                 mAdapter.mData = content;
                 mAdapter.notifyDataSetChanged();
@@ -163,14 +163,14 @@ public class FoldersFragment extends Fragment implements View.OnClickListener{
                 hideProgress();
             }
         });
-        new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
+        new FolderRepository().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        new OperationsOnFolder().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
+        new FolderRepository().displayFolders(bottomSheetFilter.getChoosen_filter(),searchText);
     }
 
     /*

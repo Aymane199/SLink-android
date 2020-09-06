@@ -9,8 +9,8 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Collections;
@@ -68,25 +68,25 @@ public class BottomSheetSort extends BottomSheetDialogFragment implements View.O
     }
 
     public void setChoosen_sort(int choosen_sort) {
-        if(State.getInstance().getFolders().getContent().isEmpty()) return;
+        if(Model.getInstance().getFolders().getContent().isEmpty()) return;
         if (choosen_sort != this.choosen_sort) {
             this.choosen_sort = choosen_sort;
   //          if (mlistener != null) mlistener.onChange();
         }
-        List<FolderOfUser> foldersOfUser = State.getInstance().getFolders().getContent();
+        List<FolderWithoutUser> foldersOfUser = Model.getInstance().getFolders().getContent();
         switch (choosen_sort) {
             case BottomSheetSort.SORT_MOST_RECENT:
                 if (Integer.parseInt(foldersOfUser.get(0).getId()) <
                         Integer.parseInt(foldersOfUser.get(foldersOfUser.size() - 1).getId())) {
                     Collections.reverse(foldersOfUser);
-                    State.getInstance().getFolders().setContent(foldersOfUser);
+                    Model.getInstance().getFolders().setContent(foldersOfUser);
                 }
                 break;
             case BottomSheetSort.SORT_OLDEST:
                 if (Integer.parseInt(foldersOfUser.get(0).getId()) >
                         Integer.parseInt(foldersOfUser.get(foldersOfUser.size() - 1).getId())) {
                     Collections.reverse(foldersOfUser);
-                    State.getInstance().getFolders().setContent(foldersOfUser);
+                    Model.getInstance().getFolders().setContent(foldersOfUser);
                 }
                 break;
         }

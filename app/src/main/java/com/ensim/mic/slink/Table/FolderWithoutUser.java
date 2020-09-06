@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class FolderOfUser implements Serializable {
+public class FolderWithoutUser implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;
@@ -41,7 +41,7 @@ public class FolderOfUser implements Serializable {
      * No args constructor for use in serialization
      *
      */
-    public FolderOfUser() {
+    public FolderWithoutUser() {
     }
 
     /**
@@ -57,7 +57,7 @@ public class FolderOfUser implements Serializable {
      * @param picture
      * @param likes
      */
-    public FolderOfUser(String id, String name, String description, String picture, String _public, String ownerId, String owner, String links, String likes, String type) {
+    public FolderWithoutUser(String id, String name, String description, String picture, String _public, String ownerId, String owner, String links, String likes, String type) {
         super();
         this.id = id;
         this.name = name;

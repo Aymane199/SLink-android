@@ -15,11 +15,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ensim.mic.slink.Operations.OperationsOnFolder;
-import com.ensim.mic.slink.Operations.OperationsOnLink;
+import com.ensim.mic.slink.Repository.FolderRepository;
+import com.ensim.mic.slink.Repository.LinkRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.Table.FolderOfUser;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
+import com.ensim.mic.slink.Table.Link;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -64,7 +64,7 @@ public class FolderComponents {
 
                 Toast.makeText(context, input.getText() + "created",
                         Toast.LENGTH_LONG).show();
-                new OperationsOnFolder().createFolder(input.getText().toString(), userId);
+                new FolderRepository().createFolder(input.getText().toString(), userId);
             }
         });
 
@@ -78,7 +78,7 @@ public class FolderComponents {
         alertDialogBuilder.show();
     }
 
-    public void showChangePictureDialog(final Context mContext, final FolderOfUser folderOutput) {
+    public void showChangePictureDialog(final Context mContext, final FolderWithoutUser folderOutput) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
@@ -131,7 +131,7 @@ public class FolderComponents {
         alertDialogBuilder.show();
     }
 
-    public void showMakeItPublicDialog(final Context mContext, final FolderOfUser folderOutput) {
+    public void showMakeItPublicDialog(final Context mContext, final FolderWithoutUser folderOutput) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
 
@@ -169,7 +169,7 @@ public class FolderComponents {
         alertDialogBuilder.show();
     }
 
-    public void showLinkAddedDialog(final Context mContext, final FolderOfUser folderOutput, final int idUser) {
+    public void showLinkAddedDialog(final Context mContext, final FolderWithoutUser folderOutput, final int idUser) {
 
 
         ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -222,12 +222,12 @@ public class FolderComponents {
             @Override
             public void onData(MetaData metaData) {
 
-                LinkOfFolder link =new LinkOfFolder();
+                Link link =new Link();
                 link.setName(metaData.getTitle());
                 link.setPicture(metaData.getImageurl());
                 link.setUrl(metaData.getUrl());
 
-                new OperationsOnLink().addLinktoFolder(folderOutput,link, idUser);
+                new LinkRepository().addLinktoFolder(folderOutput,link, idUser);
                 alertDialogBuilder.show();
 
 
@@ -244,7 +244,7 @@ public class FolderComponents {
 
     }
 
-    public void showDeleteDialog(final Context mContext, final FolderOfUser folderOutput) {
+    public void showDeleteDialog(final Context mContext, final FolderWithoutUser folderOutput) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
@@ -261,7 +261,7 @@ public class FolderComponents {
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new OperationsOnFolder().deleteFolder(folderOutput);
+                new FolderRepository().deleteFolder(folderOutput);
 
             }
         });
@@ -277,7 +277,7 @@ public class FolderComponents {
         alertDialogBuilder.show();
     }
 
-    public void showQuitFolderDialog(final Context mContext, final FolderOfUser folderOutput) {
+    public void showQuitFolderDialog(final Context mContext, final FolderWithoutUser folderOutput) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
@@ -294,7 +294,7 @@ public class FolderComponents {
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new OperationsOnFolder().QuitFolder(folderOutput);
+                new FolderRepository().QuitFolder(folderOutput);
 
             }
         });
@@ -311,7 +311,7 @@ public class FolderComponents {
     }
 
 
-    public void showRenameDialog(final Context mContext, final FolderOfUser folderOutput) {
+    public void showRenameDialog(final Context mContext, final FolderWithoutUser folderOutput) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialog);
 
 
@@ -321,6 +321,7 @@ public class FolderComponents {
         input.setLayoutParams(layoutParams);
         input.setInputType(EditText.AUTOFILL_TYPE_TEXT);
         input.setSingleLine();
+        input.setText(folderOutput.getName());
 
         LinearLayout layout = new LinearLayout(mContext);
         layout.addView(input);
@@ -331,7 +332,7 @@ public class FolderComponents {
         tvTitle.setTextSize(20F);
         tvTitle.setTextColor(Color.BLACK);
 
-        alertDialogBuilder.setMessage("Please entre the new folder name ?")
+        alertDialogBuilder.setMessage("Please enter the new name ?")
                 .setCustomTitle(tvTitle)
                 .setCancelable(true)
                 .setView(layout)
@@ -344,7 +345,7 @@ public class FolderComponents {
                 String newName = input.getText().toString();
                 if(!newName.isEmpty()) {
                     folderOutput.setName(newName);
-                    new OperationsOnFolder().updateFolder(folderOutput);
+                    new FolderRepository().updateFolder(folderOutput);
                 }
             }
         });

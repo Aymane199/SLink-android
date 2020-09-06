@@ -9,10 +9,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
 
-import com.ensim.mic.slink.Operations.OperationsOnUser;
+import com.ensim.mic.slink.Repository.UserRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Model.OnChangeObject;
+import com.ensim.mic.slink.Model.Model;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -58,13 +58,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if (account != null) {
-            new OperationsOnUser().getCurrentUser(account.getEmail());
+            new UserRepository().getCurrentUser(account.getEmail());
             videoView.setVisibility(View.INVISIBLE);
         } else {
             playVideo();
         }
 
-        State.getInstance().getCurrentUser().addOnChangeObjectListener(new OnChangeObject() {
+        Model.getInstance().getCurrentUser().addOnChangeObjectListener(getOnChangeCurrentUserListener());
+
+    }
+
+    private OnChangeObject getOnChangeCurrentUserListener() {
+        return new OnChangeObject() {
             @Override
             public void onLoading() {
                 showProgress();
@@ -74,9 +79,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void onDataReady() {
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                 String token = FirebaseInstanceId.getInstance().getToken();
-                Integer idUser = State.getInstance().getCurrentUser().getContent().getId();
+                Integer idUser = Model.getInstance().getCurrentUser().getContent().getId();
                 assert token != null;
-                new OperationsOnUser().updateToken(idUser,token);
+                new UserRepository().updateToken(idUser,token);
                 finish();
             }
 
@@ -84,11 +89,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void onFailed() {
                 hideProgress();
             }
-        });
-
-
-
-
+        };
     }
 
     @Override

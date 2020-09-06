@@ -13,14 +13,14 @@ import com.ensim.mic.slink.Table.Link;
 /*
 *   Clean
  */
-public class LinkMenuListener implements View.OnClickListener {
+public class LinkMenuOtherUserListener implements View.OnClickListener {
 
     ImageView imageView;
     Context mContext;
     Link link;
 
 
-    public LinkMenuListener(Context mContext, ImageView imageView, Link link) {
+    public LinkMenuOtherUserListener(Context mContext, ImageView imageView, Link link) {
         this.mContext = mContext;
         this.imageView = imageView;
         this.link = link;
@@ -32,7 +32,7 @@ public class LinkMenuListener implements View.OnClickListener {
         //creating a popup menu
         PopupMenu popup = new PopupMenu(mContext, imageView);
         //inflating menu from xml resource
-        popup.inflate(R.menu.link_menu);
+        popup.inflate(R.menu.link_menu_other_user);
         //adding click listener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -50,9 +50,6 @@ public class LinkMenuListener implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.id.menuDelete:
                 new LinkComponents().showDeleteDialog(mContext, link);
-                break;
-            case R.id.menuShare:
-                new LinkComponents().showShareIntent(mContext, link);
                 break;
 
         }

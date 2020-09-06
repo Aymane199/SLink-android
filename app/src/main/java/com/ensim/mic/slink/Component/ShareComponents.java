@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.widget.TextView;
 
-import com.ensim.mic.slink.Operations.OperationsOnShare;
+import com.ensim.mic.slink.Repository.ShareRepository;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.SharePersonne;
 
@@ -31,7 +31,7 @@ public class ShareComponents {
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new OperationsOnShare().deleteShare(sharePersonne);
+                new ShareRepository().deleteShare(sharePersonne);
 
             }
         });

@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.ensim.mic.slink.Operations.OperationsOnUser;
+import com.ensim.mic.slink.Repository.UserRepository;
 import com.ensim.mic.slink.R;
-import com.ensim.mic.slink.State.OnChangeObject;
-import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Model.OnChangeObject;
+import com.ensim.mic.slink.Model.Model;
 import com.ensim.mic.slink.Table.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CardView btnSignIn;
     private User user;
     private ProgressBar progress;
+    private boolean[] uCanCreateUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         user = new User();
 
-        System.out.println("--------------> userid : " + State.getInstance().getCurrentUser().getContent().getId());
+        System.out.println("--------------> userid : " + Model.getInstance().getCurrentUser().getContent().getId());
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -52,8 +53,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        final boolean[] uCanCreateUser = {true};
-        State.getInstance().getCurrentUser().addOnChangeObjectListener(new OnChangeObject() {
+        uCanCreateUser = new boolean[]{true};
+
+        Model.getInstance().getCurrentUser().addOnChangeObjectListener(getOnChangeCurrentUserListener());
+
+    }
+
+    private OnChangeObject getOnChangeCurrentUserListener() {
+        return new OnChangeObject() {
             @Override
             public void onLoading() {
 
@@ -63,22 +70,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onDataReady() {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 String token = FirebaseInstanceId.getInstance().getToken();
-                Integer idUser = State.getInstance().getCurrentUser().getContent().getId();
+                Integer idUser = Model.getInstance().getCurrentUser().getContent().getId();
                 if(token != null)
-                new OperationsOnUser().updateToken(idUser,token);
+                new UserRepository().updateToken(idUser,token);
                 finish();
             }
 
             @Override
             public void onFailed() {
-                if(State.getInstance().getCurrentUser().getContent().getGmail() == null && !user.getGmail().isEmpty() && !user.getUserName().isEmpty() && uCanCreateUser[0]) {
-                        new OperationsOnUser().createCurrentUser(user.getUserName(),user.getGmail(),"NoTokenAssigned","");
+                if(Model.getInstance().getCurrentUser().getContent().getGmail() == null && !user.getGmail().isEmpty() && !user.getUserName().isEmpty() && uCanCreateUser[0]) {
+                        new UserRepository().createCurrentUser(user.getUserName(),user.getGmail(),"NoTokenAssigned","");
                         uCanCreateUser[0] = false;
                         finish();
                 }
             }
-        });
-
+        };
     }
 
     private void initComponents() {
@@ -105,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             user.setGmail(account.getEmail());
             user.setUserName(account.getDisplayName());
 
-            new OperationsOnUser().getCurrentUser(account.getEmail());
+            new UserRepository().getCurrentUser(account.getEmail());
 
             Toast.makeText(getApplicationContext(),"Welcome "+account.getDisplayName(), Toast.LENGTH_LONG).show();
 

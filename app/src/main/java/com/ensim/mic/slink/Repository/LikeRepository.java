@@ -1,8 +1,8 @@
-package com.ensim.mic.slink.Operations;
+package com.ensim.mic.slink.Repository;
 
-import com.ensim.mic.slink.Api.IApiServicesLike;
-import com.ensim.mic.slink.Api.RetrofitFactory;
-import com.ensim.mic.slink.State.State;
+import com.ensim.mic.slink.Retrofit.IApiServicesLike;
+import com.ensim.mic.slink.Retrofit.RetrofitFactory;
+import com.ensim.mic.slink.Model.Model;
 import com.ensim.mic.slink.utils.RequestState;
 
 import java.util.HashMap;
@@ -11,19 +11,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OperationsOnLike {
+public class LikeRepository {
 
     //user state
     private int userId;
 
     private IApiServicesLike iApiServicesLike;
-    private State state;
+    private Model model;
 
 
-    public OperationsOnLike() {
+    public LikeRepository() {
         iApiServicesLike = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesLike.class);
-        state = State.getInstance();
-        userId = State.getInstance().getCurrentUser().getContent().getId();
+        model = Model.getInstance();
+        userId = Model.getInstance().getCurrentUser().getContent().getId();
     }
 
     //call like and update links state
@@ -47,9 +47,9 @@ public class OperationsOnLike {
                     return;
                 }
                 //update folder state, delete one like
-                state.getFolders().addlike(state.getLinks().getFolderId());
+                model.getFolders().addLike(model.getLinks().getFolderId());
                 //state.setFoldersState(RequestState.LOADING);
-                state.getFolders().setState(RequestState.SUCCESSFUL);
+                model.getFolders().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
@@ -75,9 +75,9 @@ public class OperationsOnLike {
                     return;
                 }
                 //update folder state, delete one like
-                state.getFolders().deletelike(state.getLinks().getFolderId());
+                model.getFolders().deleteLike(model.getLinks().getFolderId());
                 //state.setFoldersState(RequestState.LOADING);
-                state.getFolders().setState(RequestState.SUCCESSFUL);
+                model.getFolders().setState(RequestState.SUCCESSFUL);
 
             }
 

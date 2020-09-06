@@ -1,7 +1,7 @@
-package com.ensim.mic.slink.Api;
+package com.ensim.mic.slink.Retrofit;
 
 import com.ensim.mic.slink.Table.Folder;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Table.Link;
 import com.ensim.mic.slink.Table.SharePersonne;
 
 import java.util.HashMap;
@@ -39,9 +39,9 @@ public interface IApiServicesFolder {
 
     //folder/6/links?iduser=3&search=co
     @GET("folder/{id}/links")
-    Call<List<LinkOfFolder>> getFolderLinks(@Path("id") String id,
-                                            @Query("iduser") String idUser,
-                                            @Query("search") String search);
+    Call<List<Link>> getFolderLinks(@Path("id") String id,
+                                    @Query("iduser") String idUser,
+                                    @Query("search") String search);
 
 
     @GET("folder/{id}/share")

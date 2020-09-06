@@ -1,4 +1,4 @@
-package com.ensim.mic.slink.Api;
+package com.ensim.mic.slink.Retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,12 +1,12 @@
-package com.ensim.mic.slink.Operations;
+package com.ensim.mic.slink.Repository;
 
-import com.ensim.mic.slink.Api.IApiServicesFolder;
-import com.ensim.mic.slink.Api.IApiServicesLink;
-import com.ensim.mic.slink.Api.IApiServicesUser;
-import com.ensim.mic.slink.Api.RetrofitFactory;
-import com.ensim.mic.slink.State.State;
-import com.ensim.mic.slink.Table.FolderOfUser;
-import com.ensim.mic.slink.Table.LinkOfFolder;
+import com.ensim.mic.slink.Retrofit.IApiServicesFolder;
+import com.ensim.mic.slink.Retrofit.IApiServicesLink;
+import com.ensim.mic.slink.Retrofit.IApiServicesUser;
+import com.ensim.mic.slink.Retrofit.RetrofitFactory;
+import com.ensim.mic.slink.Model.Model;
+import com.ensim.mic.slink.Table.FolderWithoutUser;
+import com.ensim.mic.slink.Table.Link;
 import com.ensim.mic.slink.utils.RequestState;
 
 import java.util.HashMap;
@@ -16,87 +16,87 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OperationsOnLink {
+public class LinkRepository {
 
     private IApiServicesUser iApiServicesUser;
     private IApiServicesFolder iApiServicesFolder;
     private IApiServicesLink iApiServicesLink;
-    private State state;
+    private Model model;
 
 
-    public OperationsOnLink() {
+    public LinkRepository() {
         iApiServicesFolder = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesFolder.class);
         iApiServicesUser = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesUser.class);
         iApiServicesLink = RetrofitFactory.getINSTANCE().getRetrofit().create(IApiServicesLink.class);
-        state = State.getInstance();
+        model = Model.getInstance();
     }
 
     public void displayLinks(String searchText, final String idFolder, String idUser) {
-        state.getLinks().setState(RequestState.LOADING);
+        model.getLinks().setState(RequestState.LOADING);
 
         // etablish the request
-        Call<List<LinkOfFolder>> call = iApiServicesFolder.getFolderLinks(idFolder, idUser, searchText);
+        Call<List<Link>> call = iApiServicesFolder.getFolderLinks(idFolder, idUser, searchText);
 
         //fill the folder list
-        call.enqueue(new Callback<List<LinkOfFolder>>() {
+        call.enqueue(new Callback<List<Link>>() {
 
             @Override
-            public void onResponse(Call<List<LinkOfFolder>> call, Response<List<LinkOfFolder>> response) {
+            public void onResponse(Call<List<Link>> call, Response<List<Link>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getLinks().setState(RequestState.FAILED);
+                    model.getLinks().setState(RequestState.FAILED);
                     return;
                 }
                 System.out.println("body" + response.body());
-                state.getLinks().setContent(response.body());
-                state.getLinks().setFolderId(Integer.parseInt(idFolder));
-                state.getLinks().setState(RequestState.SUCCESSFUL);
+                model.getLinks().setContent(response.body());
+                model.getLinks().setFolderId(Integer.parseInt(idFolder));
+                model.getLinks().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
-            public void onFailure(Call<List<LinkOfFolder>> call, Throwable t) {
+            public void onFailure(Call<List<Link>> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.getLinks().setState(RequestState.FAILED);
+                model.getLinks().setState(RequestState.FAILED);
             }
         });
     }
 
     public void displaySavedLinks(String searchText, String idUser) {
-        state.getSavedLinks().setState(RequestState.LOADING);
+        model.getSavedLinks().setState(RequestState.LOADING);
 
         // etablish the request
-        Call<List<LinkOfFolder>> call = iApiServicesUser.getFolderSaved(idUser, searchText);
+        Call<List<Link>> call = iApiServicesUser.getFolderSaved(idUser, searchText);
 
         //fill the folder list
-        call.enqueue(new Callback<List<LinkOfFolder>>() {
+        call.enqueue(new Callback<List<Link>>() {
 
             @Override
-            public void onResponse(Call<List<LinkOfFolder>> call, Response<List<LinkOfFolder>> response) {
+            public void onResponse(Call<List<Link>> call, Response<List<Link>> response) {
                 if (!response.isSuccessful()) {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getSavedLinks().setState(RequestState.FAILED);
+                    model.getSavedLinks().setState(RequestState.FAILED);
                     return;
                 }
                 System.out.println("body" + response.body());
-                state.getSavedLinks().setContent(response.body());
-                state.getSavedLinks().setState(RequestState.SUCCESSFUL);
+                model.getSavedLinks().setContent(response.body());
+                model.getSavedLinks().setState(RequestState.SUCCESSFUL);
             }
 
             @Override
-            public void onFailure(Call<List<LinkOfFolder>> call, Throwable t) {
+            public void onFailure(Call<List<Link>> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.getSavedLinks().setState(RequestState.FAILED);
+                model.getSavedLinks().setState(RequestState.FAILED);
             }
         });
     }
 
-    public void addLinktoFolder(final FolderOfUser folderOutput, LinkOfFolder link,int idUser) {
-        state.getLinks().setState(RequestState.LOADING);
-        state.getFolders().setState(RequestState.LOADING);
+    public void addLinktoFolder(final FolderWithoutUser folderOutput, Link link, int idUser) {
+        model.getLinks().setState(RequestState.LOADING);
+        model.getFolders().setState(RequestState.LOADING);
 
         HashMap<String, Object> body = new HashMap<>();
         if (link.getUrl() != null)
@@ -118,8 +118,8 @@ public class OperationsOnLink {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getLinks().setState(RequestState.FAILED);
-                    state.getFolders().setState(RequestState.FAILED);
+                    model.getLinks().setState(RequestState.FAILED);
+                    model.getFolders().setState(RequestState.FAILED);
 
                     return;
                 }
@@ -128,25 +128,25 @@ public class OperationsOnLink {
                 List<LinkOfFolder> links = state.getLinks().getContent();
                 links.add(link);
                 state.getLinks().setContent(links);*/
-                state.getFolders().addlink(Integer.parseInt(folderOutput.getId()));
-                state.getFolders().setState(RequestState.SUCCESSFUL);
-                state.getLinks().setState(RequestState.SUCCESSFUL);
+                model.getFolders().addLink(Integer.parseInt(folderOutput.getId()));
+                model.getFolders().setState(RequestState.SUCCESSFUL);
+                model.getLinks().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
                 System.out.println(t.getMessage());
-                state.getLinks().setState(RequestState.FAILED);
-                state.getFolders().setState(RequestState.FAILED);
+                model.getLinks().setState(RequestState.FAILED);
+                model.getFolders().setState(RequestState.FAILED);
 
             }
         });
 
     }
 
-    public void deleteLink(final LinkOfFolder link){
-        state.getLinks().setState(RequestState.LOADING);
+    public void deleteLink(final Link link){
+        model.getLinks().setState(RequestState.LOADING);
         final int linkid = Integer.parseInt(link.getId());
         Call<Object> call = iApiServicesLink.deleteLink(linkid);
         call.enqueue(new Callback<Object>() {
@@ -156,22 +156,22 @@ public class OperationsOnLink {
                     System.out.println("Code: " + response.code());
                     System.out.println("message: " + response.message());
                     System.out.println("error: " + response.errorBody());
-                    state.getLinks().setState(RequestState.FAILED);
+                    model.getLinks().setState(RequestState.FAILED);
                     return;
                 }
-                List<LinkOfFolder> links = state.getLinks().getContent();
+                List<Link> links = model.getLinks().getContent();
                 links.remove(link);
-                state.getLinks().setContent(links);
+                model.getLinks().setContent(links);
                 //update folder state, delete one link
-                state.getFolders().deletelink(state.getLinks().getFolderId());
-                state.getLinks().setState(RequestState.SUCCESSFUL);
-                state.getFolders().setState(RequestState.SUCCESSFUL);
+                model.getFolders().deleteLink(model.getLinks().getFolderId());
+                model.getLinks().setState(RequestState.SUCCESSFUL);
+                model.getFolders().setState(RequestState.SUCCESSFUL);
 
             }
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
-                state.getLinks().setState(RequestState.FAILED);
+                model.getLinks().setState(RequestState.FAILED);
             }
         });
     }

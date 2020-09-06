@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ensim.mic.slink.Operations.OperationsOnUser;
+import com.ensim.mic.slink.Repository.UserRepository;
 import com.ensim.mic.slink.R;
 import com.ensim.mic.slink.Table.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -45,7 +45,7 @@ public class UserComponents {
                 User user = new User();
                 user.setUserName("SLink user");
                 user.setGmail("Slink@gmail.com");
-                new OperationsOnUser().updateUser(idUser,user);
+                new UserRepository().updateUser(idUser,user);
 
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
@@ -116,7 +116,7 @@ public class UserComponents {
                 {
                     User user1 = new User();
                     user1.setUserName(input.getText().toString());
-                    new OperationsOnUser().updateUser(user.getId(), user1);
+                    new UserRepository().updateUser(user.getId(), user1);
                     dialog.dismiss();
 
                 }else{

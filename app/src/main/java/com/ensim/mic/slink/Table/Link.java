@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class LinkOfFolder {
+public class Link {
 
     @SerializedName("id")
     @Expose
@@ -36,7 +36,7 @@ public class LinkOfFolder {
      * No args constructor for use in serialization
      *
      */
-    public LinkOfFolder() {
+    public Link() {
     }
 
     /**
@@ -49,7 +49,7 @@ public class LinkOfFolder {
      * @param save
      * @param comments
      */
-    public LinkOfFolder(String id, String name, String picture, String url, String description, Object like, String save, List<Comment> comments) {
+    public Link(String id, String name, String picture, String url, String description, Object like, String save, List<Comment> comments) {
         super();
         this.id = id;
         this.name = name;

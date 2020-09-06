@@ -1,4 +1,4 @@
-package com.ensim.mic.slink.Api;
+package com.ensim.mic.slink.Retrofit;
 
 import com.ensim.mic.slink.Table.SharePersonne;
 

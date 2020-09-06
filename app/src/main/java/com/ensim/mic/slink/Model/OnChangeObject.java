@@ -1,4 +1,4 @@
-package com.ensim.mic.slink.State;
+package com.ensim.mic.slink.Model;
 
 public interface OnChangeObject {
 
