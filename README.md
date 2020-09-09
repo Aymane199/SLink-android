@@ -19,6 +19,7 @@ Overview
 
  [![](https://slink.s3.us-east-2.amazonaws.com/overview1.png)](https://slink.s3.us-east-2.amazonaws.com/overview1.png)
 [![](https://slink.s3.us-east-2.amazonaws.com/overview3.png)](https://slink.s3.us-east-2.amazonaws.com/overview3.png)
+
 # Architecture overview
 The app is a stateless client: all operations are performed
 by calling api endpoints over the network.
@@ -40,14 +41,15 @@ The data is stored as Observables objects in Model class. We interact with the a
 - /**utils**		*(contains enum classes & useful classes)*
 
 # External dependencies
-
 - [Retrofit](https://square.github.io/retrofit/ "Retrofit") : Consume api service
 - [Picasso](https://github.com/square/picasso "Picasso") : Display images 
 - [Richlinkpreview](https://github.com/ponnamkarthik/RichLinkPreview "Richlinkpreview") : Get link preview
 - [Play-services-auth ](https://developers.google.com/identity/sign-in/android/start "Play-services-auth ") : Sign in with google account
 - [Firebase-messaging ](https://firebase.google.com/docs/cloud-messaging "Firebase-messaging ") : Real time notification (http push)
 
+# License
 
-
+`Slink android is distributed under the GPL-3.0 License.  
+Copyright (c) 2020 Rizke Aymane`
 
 
